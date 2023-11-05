@@ -1,0 +1,25 @@
+{
+  "name": "seng513project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:backend": "cd backend && mvn spring-boot:run",
+    "start:frontend": "cd frontend && npm run serve",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HAPPYSACKS/SENG513Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HAPPYSACKS/SENG513Project/issues"
+  },
+  "homepage": "https://github.com/HAPPYSACKS/SENG513Project#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
