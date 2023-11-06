@@ -19,7 +19,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 Before you begin, ensure you have the following tools installed and running:
 
-- [Node.js and npm](https://nodejs.org/en/): You will need Node.js and npm to run the Vue.js frontend.
+- [Node.js and npm](https://nodejs.org/en/): You will need Node.js and npm to run the Vue.js frontend. Installing Node.js will also install npm.
 - [Java JDK 17](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html): Required to compile and run the Spring backend. Only needed to run frontend and backend on your local machine (so if you're doing the frontend I think you don't need it?)
 - [Maven](https://maven.apache.org/): Necessary for dependency management and running the Spring backend. Only needed to run frontend and backend on your local machine (so if you're doing the frontend I think you don't need it?)
 
