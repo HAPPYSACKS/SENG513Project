@@ -79,7 +79,6 @@ coverage
 # Node.js dependencies
 /node_modules/
 
-
 # Optional npm cache directory
 .npm
 
