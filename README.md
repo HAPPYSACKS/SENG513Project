@@ -9,7 +9,7 @@ This project is built with Vue.js for the frontend and Java Spring for the backe
   - [Installation](#installation)
 - [Running the Frontend](#running-the-frontend)
 - [Running the Backend](#running-the-backend)
-- [Contributing](#contributing)
+
 
 ## Getting Started
 
