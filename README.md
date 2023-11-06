@@ -38,8 +38,8 @@ To set up the project for development, you'll need to clone the repository and i
 
 ## Running the Backend
 
-1. cd backend/backend
-2. mvn spring-boot:run
+1. `cd backend/backend`
+2. `mvn spring-boot:run`
 
 ## Running both frontend and backend
 
