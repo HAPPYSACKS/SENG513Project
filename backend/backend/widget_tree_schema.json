@@ -1,0 +1,28 @@
+{
+  "Widgets": {
+    "WidgetID1": {
+      "RoomID": "RoomID1",
+      "OwnerID": "UserID1",
+      "Type": "to-do list",
+      "State": {
+        // This structure will depend on what the widget requires
+        // For a to-do list, it could be an array of tasks
+        "tasks": [
+          { "task": "Task 1", "completed": false },
+          { "task": "Task 2", "completed": true }
+          // ... Additional tasks
+        ]
+      },
+      "Visibility": {
+        "Scope": "collaborative",
+        "Participants": ["UserID2", "UserID3"]
+        // UserIDs of participants who can interact with the widget
+      },
+      "LastUpdatedTimestamp": "2023-11-16T12:00:00Z"
+    },
+    "WidgetID2": {
+      // ... Another widget with potentially different structure
+    }
+    // ... Additional widgets
+  }
+}

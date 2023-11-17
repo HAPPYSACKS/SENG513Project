@@ -1,0 +1,26 @@
+{
+  "Widgets": {
+    "WidgetID1": {
+      "RoomID": "RoomID1",
+      "OwnerID": "UserID1",
+      "Type": "timer",
+      "State": {
+        "countdownTime": "00:05:00" // This is an example for a timer widget
+      },
+      "LastUpdatedTimestamp": "2023-11-16T12:00:00Z"
+    },
+    "WidgetID2": {
+      "RoomID": "RoomID1",
+      "OwnerID": "UserID2",
+      "Type": "to-do list",
+      "State": {
+        "items": [
+          { "item": "Item 1", "completed": false },
+          { "item": "Item 2", "completed": true }
+        ]
+      },
+      "LastUpdatedTimestamp": "2023-11-16T12:05:00Z"
+    }
+    // ... Additional widgets
+  }
+}

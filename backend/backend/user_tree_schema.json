@@ -1,0 +1,29 @@
+{
+  "Users": {
+    "UserID1": {
+      "Username": "UserOne",
+      "Email": "userone@example.com",
+      "ProfilePictureURL": "http://example.com/url-to-image.jpg",
+      "AuthDetails": {
+        "AuthProvider": "Google",
+        "LastLoginTimestamp": "2023-11-16T08:00:00Z"
+      },
+      "Preferences": {
+        "Theme": "dark",
+        "NotificationSettings": {
+          "Email": true,
+          "Push": false
+        },
+        "Language": "en"
+      },
+      "PrivacySettings": {
+        "ProfileVisibility": "friends only",
+        "ShareDataConsent": true
+      }
+    },
+    "UserID2": {
+      // Another user's details structured in the same way
+    }
+    // Additional users follow the same structure
+  }
+}

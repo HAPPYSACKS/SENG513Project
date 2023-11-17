@@ -1,0 +1,46 @@
+{
+  "AccessControl": {
+    "Rooms": {
+      "RoomID1": {
+        "OwnerID": "UserID1",
+        "ParticipantPermissions": {
+          "UserID2": {
+            "Role": "editor",
+            "SpecificPermissions": {
+              "canEdit": true,
+              "canView": true,
+              "canDelete": false
+            }
+          },
+          "UserID3": {
+            "Role": "viewer",
+            "SpecificPermissions": {
+              "canEdit": false,
+              "canView": true,
+              "canDelete": false
+            }
+          }
+          // ... Additional participants
+        }
+      }
+      // ... Additional rooms
+    },
+    "Widgets": {
+      "WidgetID1": {
+        "OwnerID": "UserID1",
+        "WidgetPermissions": {
+          "UserID2": {
+            "Role": "editor",
+            "AccessType": "read-write"
+          },
+          "UserID3": {
+            "Role": "viewer",
+            "AccessType": "read-only"
+          }
+          // ... Additional users with permissions
+        }
+      }
+      // ... Additional widgets
+    }
+  }
+}

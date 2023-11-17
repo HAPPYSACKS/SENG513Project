@@ -1,0 +1,31 @@
+{
+  "Rooms": {
+    "RoomID1": {
+      "Owner": "UserID1",
+      "Participants": {
+        "UserID2": {
+          "Status": "active",
+          "Role": "viewer"
+        },
+        "UserID3": {
+          "Status": "inactive",
+          "Role": "contributor"
+        }
+        // ... Additional participants
+      },
+      "Status": "active",
+      "CreationTimestamp": "2023-11-16T10:00:00Z",
+      "LastActivityTimestamp": "2023-11-16T11:00:00Z",
+      "Widgets": ["WidgetID1", "WidgetID2"]
+      // This is an array of WidgetIDs for quick reference
+      },
+      "ChatLogs": {
+        // ... Chat log data
+      }
+    },
+    "RoomID2": {
+      // ... Structure similar to RoomID1
+    }
+    // ... Additional rooms
+  }
+}
