@@ -1,0 +1,131 @@
+<template>
+    <div class="menu">
+            <ClockWidget/>
+            <div class="widget">
+              <div class="left">
+                <div class="item">
+                  <img @click="showPopup('roomMember')" id="roomMember" src='@/assets/icons/roomMember.png' alt="Room Member List">
+                </div>
+                <div class="item">
+                  <img  @click="showPopup('chat')" id="chat" src='@/assets/icons/chat.png' alt="Chat">
+                </div>
+                <div class="item">
+                  <img src='@/assets/icons/call.png' alt="Call">
+                </div>
+                <div class="item">
+                  <img id="speaker" src='@/assets/icons/speaker.png' alt="Ambient Sound">
+                </div>
+                <div class="item">
+                  <img id="spotify" src='@/assets/icons/spotify.png' alt="Music">
+                </div>
+                <div class="item">
+                  <img id="youtube" src='@/assets/icons/youtube.png' alt="YouTube">
+                </div>
+                <div class="item">
+                  <img id="timer" src='@/assets/icons/timer.png' alt="Timer">
+                </div>
+                <div class="item">
+                  <img id="calendar" src='@/assets/icons/calendar.png' alt="Calendar">
+                </div>
+                <div class="item">
+                  <img id="toDoList" src='@/assets/icons/toDoList.png' alt="To Do List">
+                </div>
+                <div class="item">
+                  <img id="stickynotes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
+                </div>
+                <div class="item">
+                  <img id="sticker" src='@/assets/icons/sticker.png' alt="Sticker">
+                </div>
+                <div class="item">
+                  <img id="draw" src='@/assets/icons/draw.png' alt="Draw">
+                </div>
+              </div>
+            </div>
+            
+              <div class="right">
+                <div class="divider"></div>
+                <div class="item">
+                  <img src='@/assets/icons/changeBackground.png' alt="Change Background">
+                </div>
+                <div class="item">
+                  <img src='@/assets/icons/settings.png' alt="Settings">
+                </div>
+              </div>
+        </div>
+</template>
+
+<script>
+import ClockWidget from './ClockWidget.vue'
+
+export default {
+    components: {ClockWidget},
+    methods: {
+      showPopup(imgID){
+        this.$emit('show', imgID)
+      }
+    }
+
+}
+</script>
+
+<style scoped>
+    .menu{
+        position: absolute;
+        bottom: 22px;
+        width: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color:#ECECEC;
+        border: 1px solid #000;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .widget{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .left{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .right{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .divider{
+        width: 1px;
+        height: 30px;
+        background-color: black;
+    }
+
+
+    .item{
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+    .item img{
+        width: 100%;
+        height: 100%; 
+        object-fit: contain;
+    }
+    .item:hover{
+        background-color: grey;
+        border-radius: 5px;   
+    }
+    
+</style>
