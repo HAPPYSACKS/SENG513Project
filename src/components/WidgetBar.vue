@@ -18,26 +18,31 @@
                 <div class="item">
                   <img id="spotify" src='@/assets/icons/spotify.png' alt="Music">
                 </div>
-                <div class="item">
-                  <img id="youtube" src='@/assets/icons/youtube.png' alt="YouTube">
+                <div v-show="!iconsActive" @click="toggleMoreWidgets" class="item" id="moreWidget" ref="moreWidgetIcon">
+                  <img src="@/assets/icons/widgets.png" alt="More Widgets">
                 </div>
-                <div class="item">
-                  <img id="timer" src='@/assets/icons/timer.png' alt="Timer">
-                </div>
-                <div class="item">
-                  <img id="calendar" src='@/assets/icons/calendar.png' alt="Calendar">
-                </div>
-                <div class="item">
-                  <img id="toDoList" src='@/assets/icons/toDoList.png' alt="To Do List">
-                </div>
-                <div class="item">
-                  <img id="stickynotes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
-                </div>
-                <div class="item">
-                  <img id="sticker" src='@/assets/icons/sticker.png' alt="Sticker">
-                </div>
-                <div class="item">
-                  <img id="draw" src='@/assets/icons/draw.png' alt="Draw">
+                <div class="groupedWidgets" :class="{active: iconsActive }" ref="widgetIcons">
+                  <div class="item">
+                    <img id="youtube" src='@/assets/icons/youtube.png' alt="YouTube">
+                  </div>
+                  <div class="item">
+                    <img id="timer" src='@/assets/icons/timer.png' alt="Timer">
+                  </div>
+                  <div class="item">
+                    <img id="calendar" src='@/assets/icons/calendar.png' alt="Calendar">
+                  </div>
+                  <div class="item">
+                    <img id="toDoList" src='@/assets/icons/toDoList.png' alt="To Do List">
+                  </div>
+                  <div class="item">
+                    <img id="stickynotes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
+                  </div>
+                  <div class="item">
+                    <img id="sticker" src='@/assets/icons/sticker.png' alt="Sticker">
+                  </div>
+                  <div class="item">
+                    <img id="draw" src='@/assets/icons/draw.png' alt="Draw">
+                  </div>
                 </div>
               </div>
             </div>
@@ -58,10 +63,25 @@
 import ClockWidget from './ClockWidget.vue'
 
 export default {
+    data(){
+      return{
+        iconsActive: false
+      }
+    },
     components: {ClockWidget},
     methods: {
       showPopup(imgID){
         this.$emit('show', imgID)
+      },
+      toggleMoreWidgets(){
+        this.iconsActive = !this.iconsActive
+        document.addEventListener('click', this.collapseIconsOnClickOutside);
+      },
+      collapseIconsOnClickOutside(event) {
+        if(!this.$refs.moreWidgetIcon.contains(event.target) && this.iconsActive && !this.$refs.widgetIcons.contains(event.target)){
+          this.iconsActive = !this.iconsActive
+        }
+
       }
     }
 
@@ -83,6 +103,7 @@ export default {
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
+        overflow: hidden;
     }
 
     .widget{
@@ -106,6 +127,26 @@ export default {
         gap: 10px;
     }
 
+    #moreWidget{
+      display: inherit;
+    }
+
+    .groupedWidgets{
+      display: flex;
+      overflow: hidden;
+      transition: max-width 0.5s ease; /* Add a smooth transition effect */
+      max-width: 0; /* Initially hide the icons */
+      gap: 10px;
+    }
+
+    .groupedWidgets.active{
+      max-width: 300px; /* Set the maximum width to show the icons */
+    }
+
+    .groupedWidgets.active .item{
+      display: block;
+    }
+
     .divider{
         width: 1px;
         height: 30px;
@@ -127,5 +168,9 @@ export default {
         background-color: grey;
         border-radius: 5px;   
     }
+
+    @media screen and (max-width: 1100px) {
+      
+  }
     
 </style>

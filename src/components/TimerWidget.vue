@@ -10,7 +10,7 @@
         </div>
 
         <div id="buttons">
-            <button @click="updateTimer">Start/Stop</button>
+            <button @click="startOrStopTimer">Start/Stop</button>
             <button @click="resetTimer" class="reset">Reset</button>
         </div>
 
@@ -26,17 +26,23 @@ export default {
         }
     },
     methods:{
+        startOrStopTimer(){
+            this.isCountingDown = !this.isCountingDown
+            if (this.isCountingDown){
+                this.updateTimer()
+            }
+        },
         updateTimer(){
             let timerID
-            if(this.timeLeft > 0){
+            if(this.timeLeft > 0 && this.isCountingDown){
                 this.timeLeft--
                 timerID = setTimeout(this.updateTimer, 1000)
             } else{
                 clearTimeout(timerID)
-                console.log("Timer reached 0")
             }
         },
         resetTimer(){
+            this.isCountingDown = false;
             this.timeLeft = 9
         }
     }
