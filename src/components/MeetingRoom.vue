@@ -1,7 +1,7 @@
 <template>
-    <WidgetPopup v-show="showPopup" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
-    <MusicWidget />
-    <TimerWidget />
+    <WidgetPopup v-show="showPopup" @getType="getTypeForWidget" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
+    <MusicWidget v-show="showMusicWidget" />
+    <TimerWidget v-show="showTimerWidget" :widgetType="widgetType" />
     <div class="item leaveRoom">
         <!-- @ alias for src -->
         <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
@@ -21,6 +21,9 @@ export default {
 
     data(){
         return {
+            widgetType: '',
+            showTimerWidget: false,
+            showMusicWidget: false,
             showPopup: false,
             imgID:'',
             top: 0,
@@ -29,16 +32,31 @@ export default {
     },
     methods:{
         togglePopupPLS(imgID){
-            this.showPopup = !this.showPopup
-            if(this.showPopup){
-                this.imgID = imgID
-
-                // Wait for the next DOM update before calling calc so offset is correct
-                this.$nextTick(() => {
-                    this.calc();
-                });
+            if(imgID === "sound"){
+                this.showMusicWidget = !this.showMusicWidget
             }
+            else{
+                this.showPopup = !this.showPopup
+                if(this.showPopup){
+                    this.imgID = imgID
 
+                    // Wait for the next DOM update before calling calc so offset is correct
+                    this.$nextTick(() => {
+                        this.calc()
+
+                    });
+                }
+            }
+        },
+
+        
+        getTypeForWidget(type){
+            switch(this.imgID){
+                case 'timer':
+                    this.showTimerWidget = true
+                    this.widgetType = type
+                    break
+            }
         },
 
         calc(){

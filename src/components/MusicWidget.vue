@@ -4,23 +4,21 @@
             <img src='@/assets/icons/move.png' alt="Move">
             <div>─</div>
         </div>
-        <div class="buttons">
+        <!-- <div class="buttons">
             <button @click = "onAmbient">Ambient</button>
             <button @click = "onMusic">Music</button>
-        </div>
+        </div> -->
         <div class="soundControl">
-            <div v-show="isOnMusic">
+            <div>
                 <div class="playlistOptions">
                     <button @click = "choosePlaylist('1')">1</button>
                     <button  @click = "choosePlaylist('2')">2</button>
                     <button  @click = "choosePlaylist('3')">3</button>
                 </div>
-                <iframe style="border-radius:12px" :src="source" width="100%" height="180" frameBorder="0" allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <iframe style="border-radius:12px" :src="source" width="100%" height="155" frameBorder="0" allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
             </div>
-            <div v-show="isOnAmbient">
-                <div class="ambientSliders">
-                    <VolumeSlider v-for="(sound, index) in labels" :key="index" :label="sound"/>
-                </div>
+            <div class="ambientSliders">
+                <VolumeSlider v-for="(sound, index) in labels" :key="index" :label="sound"/>
             </div>
             <!--rain: https://freesound.org/people/Garuda1982/sounds/627272/ -->
             <!--traffic: https://freesound.org/people/dheming/sounds/173410/ -->
@@ -84,7 +82,8 @@ export default {
     }
 
     .ambientSliders{
-        display: inline-block;
+        /* display: inline-block; */
+        width: 90%;
 
     }
 

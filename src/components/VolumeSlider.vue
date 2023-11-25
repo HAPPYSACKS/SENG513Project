@@ -52,10 +52,15 @@ export default {
 </script>
 
 <style scoped>
+p{
+   width: 170px;
+}
+
 .sliderContainer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
+  justify-content: space-around;
 }
 
 input[type='range'] {

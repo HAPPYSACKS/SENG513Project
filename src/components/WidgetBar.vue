@@ -13,10 +13,7 @@
                   <img src='@/assets/icons/call.png' alt="Call">
                 </div>
                 <div class="item">
-                  <img id="speaker" src='@/assets/icons/speaker.png' alt="Ambient Sound">
-                </div>
-                <div class="item">
-                  <img id="spotify" src='@/assets/icons/spotify.png' alt="Music">
+                  <img @click="showPopup('sound')" id="speaker" src='@/assets/icons/speaker.png' alt="Sound">
                 </div>
                 <div v-show="!iconsActive" @click="toggleMoreWidgets" class="item" id="moreWidget" ref="moreWidgetIcon">
                   <img src="@/assets/icons/widgets.png" alt="More Widgets">
@@ -26,7 +23,7 @@
                     <img id="youtube" src='@/assets/icons/youtube.png' alt="YouTube">
                   </div>
                   <div class="item">
-                    <img id="timer" src='@/assets/icons/timer.png' alt="Timer">
+                    <img @click="showPopup('timer')" id="timer" src='@/assets/icons/timer.png' alt="Timer">
                   </div>
                   <div class="item">
                     <img id="calendar" src='@/assets/icons/calendar.png' alt="Calendar">
@@ -78,6 +75,7 @@ export default {
         document.addEventListener('click', this.collapseIconsOnClickOutside);
       },
       collapseIconsOnClickOutside(event) {
+        // TO DO:  check for potential bug
         if(!this.$refs.moreWidgetIcon.contains(event.target) && this.iconsActive && !this.$refs.widgetIcons.contains(event.target)){
           this.iconsActive = !this.iconsActive
         }
@@ -93,6 +91,7 @@ export default {
         position: absolute;
         bottom: 22px;
         width: 60%;
+        transition: width 0.5s ease;
         left: 50%;
         transform: translateX(-50%);
         background-color:#ECECEC;
@@ -170,7 +169,10 @@ export default {
     }
 
     @media screen and (max-width: 1100px) {
-        
+        .menu{
+          width: 90%;
+          transition: width 0.5s ease;
+        }
     }
     
 </style>

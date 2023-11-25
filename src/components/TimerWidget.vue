@@ -2,6 +2,7 @@
     <div class="widget">
         <div id="top">
             <img src='@/assets/icons/move.png' alt="Move">
+            <p>{{widgetType}}</p>
             <div>─</div>
         </div>
 
@@ -19,6 +20,7 @@
 
 <script>
 export default {
+    props:["widgetType"],
     data(){
         return{
             timeLeft: 9,
@@ -50,6 +52,9 @@ export default {
 </script>
 
 <style scoped>
+    p{
+        margin:0;
+    }
     .reset{
         background-color: #ECECEC;
         color: #757575;

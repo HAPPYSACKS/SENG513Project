@@ -5,8 +5,8 @@
     :style="{ top: top + 'px', left: left + 'px' }"
   >
     <div class="rectangle">
-      <div @click="clickMyself" class="half for-myself">For Myself</div>
-      <div class="half for-room">For Room</div>
+      <div @click="chooseType('self')" class="half for-myself">For Myself</div>
+      <div @click="chooseType('room')" class="half for-room">For Room</div>
     </div>
     <!-- <div class="triangle"></div> -->
   </div>
@@ -16,9 +16,10 @@
 export default {
   props: ["imgID", "top", "left", "onTogglePopup"],
   methods: {
-    clickMyself() {
-      this.onTogglePopup(this.imgID);
-    },
+    chooseType(type){
+      this.onTogglePopup(this.imgID)
+      this.$emit('getType', type)
+    }
   },
 };
 </script>
