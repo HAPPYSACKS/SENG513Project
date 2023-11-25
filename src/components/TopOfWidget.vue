@@ -31,7 +31,6 @@ export default {
   }
 
   #container {
-    /* position: absolute; */
     margin: 15px 25px 0px 15px;
     display: flex;
     flex-direction: row;
