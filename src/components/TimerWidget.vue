@@ -77,12 +77,15 @@ export default {
       } else {
         clearTimeout(timerID);
         this.message = "Start"
-        this.isFlashing = true;
+        if(totalSeconds == 0){
+            this.isFlashing = true;
 
-         setTimeout(() => {
-          this.isFlashing = false; // Reset flashing after a short delay
-          this.message = "Start";
-        }, 1000);
+            setTimeout(() => {
+            this.isFlashing = false; // Reset flashing after a short delay
+            this.message = "Start";
+            }, 1000);
+        }
+
       }
     },
     resetTimer() {
