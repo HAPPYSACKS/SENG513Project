@@ -1,6 +1,6 @@
 <template>
+    <FullWidget :widData="testData"/>
     <WidgetPopup v-show="showPopup" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
-    <TimerWidget />
     <div class="item leaveRoom">
         <!-- @ alias for src -->
         <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
@@ -12,10 +12,10 @@
 <script>
 import WidgetBar from './WidgetBar.vue'
 import WidgetPopup from './WidgetPopup.vue'
-import TimerWidget from './TimerWidget.vue'
+import FullWidget from './Widget.vue'
 
 export default {
-    components: {WidgetBar, WidgetPopup, TimerWidget},
+    components: {WidgetBar, WidgetPopup, FullWidget},
 
     data(){
         return {
@@ -23,6 +23,14 @@ export default {
             imgID:'',
             top: 0,
             left: 0,
+            widgets: [],
+
+            testData: {
+                id: 0,
+                type: 0,
+                isGroup: true,
+                name: 'test'
+            }
         }
     },
     methods:{

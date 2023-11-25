@@ -1,24 +1,17 @@
 <template>
-    <div class="widget">
-        <div id="top">
-            <img src='@/assets/icons/move.png' alt="Move">
-            <div>─</div>
-        </div>
+    <div>
+        <span>{{timeLeft}}</span>
+    </div>
 
-        <div>
-            <span>{{timeLeft}}</span>
-        </div>
-
-        <div id="buttons">
-            <button @click="updateTimer">Start/Stop</button>
-            <button @click="resetTimer" class="reset">Reset</button>
-        </div>
-
+    <div id="buttons">
+        <button @click="updateTimer">Start/Stop</button>
+        <button @click="resetTimer" class="reset">Reset</button>
     </div>
 </template>
 
 <script>
 export default {
+    name: 'TimerWidget',
     data(){
         return{
             timeLeft: 9,
