@@ -1,11 +1,6 @@
 <template>
-    <div class="widget">
-        <div id="top">
-            <img src='@/assets/icons/move.png' alt="Move">
-            <p>{{widgetType}}</p>
-            <div>─</div>
-        </div>
-
+    <div class="widget" :style="{ left: containerPosition.left + 'px', top: containerPosition.top + 'px' }">
+        <TopOfWidget :widgetType="widgetType" @startDrag="startDrag" @handleDrag="handleDrag" @stopDrag="stopDrag" />
         <div>
             <span>{{timeLeft}}</span>
         </div>
@@ -19,15 +14,43 @@
 </template>
 
 <script>
+import TopOfWidget from './TopOfWidget.vue'
 export default {
+    components: {TopOfWidget},
     props:["widgetType"],
     data(){
         return{
             timeLeft: 9,
-            isCountingDown: false
+            isCountingDown: false,
+            containerPosition: { left: 0, top: 0 },
+            isDragging: false,
+            offsetX: 0,
+            offsetY: 0,
         }
     },
     methods:{
+        startDrag(event) {
+        this.isDragging = true;
+        this.offsetX = event.clientX - this.$el.getBoundingClientRect().left;
+        this.offsetY = event.clientY - this.$el.getBoundingClientRect().top;
+
+        document.addEventListener("mousemove", this.handleDrag);
+        document.addEventListener("mouseup", this.stopDrag);
+        },
+        handleDrag(event) {
+        if (this.isDragging) {
+            const x = event.clientX - this.offsetX;
+            const y = event.clientY - this.offsetY;
+
+            this.containerPosition = { left: x, top: y };
+        }
+        },
+        stopDrag() {
+        this.isDragging = false;
+        document.removeEventListener("mousemove", this.handleDrag);
+        document.removeEventListener("mouseup", this.stopDrag);
+        },
+
         startOrStopTimer(){
             this.isCountingDown = !this.isCountingDown
             if (this.isCountingDown){
@@ -52,9 +75,6 @@ export default {
 </script>
 
 <style scoped>
-    p{
-        margin:0;
-    }
     .reset{
         background-color: #ECECEC;
         color: #757575;
@@ -80,13 +100,6 @@ export default {
         display: flex;
         justify-content: center;
     }
-    #top{
-        margin: 15px 25px 0px 15px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between ;
-    }
     img{
         width: 25px;
     }
@@ -98,6 +111,6 @@ export default {
         border: 1px solid #000;
         display: flex;
         flex-direction: column;
-        
+        position: absolute;
     }
 </style>
