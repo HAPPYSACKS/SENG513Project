@@ -1,5 +1,6 @@
 <template>
     <WidgetPopup v-show="showPopup" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
+    <MusicWidget />
     <TimerWidget />
     <div class="item leaveRoom">
         <!-- @ alias for src -->
@@ -13,9 +14,10 @@
 import WidgetBar from './WidgetBar.vue'
 import WidgetPopup from './WidgetPopup.vue'
 import TimerWidget from './TimerWidget.vue'
+import MusicWidget from './MusicWidget.vue'
 
 export default {
-    components: {WidgetBar, WidgetPopup, TimerWidget},
+    components: {WidgetBar, WidgetPopup, TimerWidget, MusicWidget},
 
     data(){
         return {
