@@ -1,11 +1,11 @@
 <template>
     <WidgetPopup v-show="showPopup" @getType="getTypeForWidget" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
-    <MusicWidget v-show="showMusicWidget" />
-    <TimerWidget v-show="showTimerWidget" :widgetType="widgetType" />
     <div class="item leaveRoom">
         <!-- @ alias for src -->
         <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
     </div>
+    <WidgetPlaceholder v-show="showTimerWidget" :widgetName="'Timer'" :widgetType="widgetType" :widgetContent="'TimerWidget'" :width="300" :height="170"/>
+    <WidgetPlaceholder v-show="showMusicWidget" :widgetName="'Sound'" :widgetContent="'MusicWidget'" :width="300" :height="300"/>
 
     <WidgetBar @show="togglePopupPLS"/>
 </template>
@@ -13,11 +13,10 @@
 <script>
 import WidgetBar from './WidgetBar.vue'
 import WidgetPopup from './WidgetPopup.vue'
-import TimerWidget from './TimerWidget.vue'
-import MusicWidget from './MusicWidget.vue'
+import WidgetPlaceholder from './WidgetPlaceholder.vue'
 
 export default {
-    components: {WidgetBar, WidgetPopup, TimerWidget, MusicWidget},
+    components: {WidgetBar, WidgetPopup, WidgetPlaceholder},
 
     data(){
         return {

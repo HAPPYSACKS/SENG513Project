@@ -1,7 +1,5 @@
 <template>
-  <div class="widget" :style="{ left: containerPosition.left + 'px', top: containerPosition.top + 'px' }">
-    <TopOfWidget :widgetType="widgetType" @startDrag="startDrag" @handleDrag="handleDrag" @stopDrag="stopDrag" />
-
+  <div>
     <div style="display:flex; justify-content:center;">
       <input v-model="minutes" @input="validateInput" :class="{ 'flash': isFlashing }" class="input-field" />
       <p  style="margin: 0px; font-size: 50px;" :class="{ 'flash': isFlashing }">:</p>
@@ -16,46 +14,17 @@
 </template>
 
 <script>
-import TopOfWidget from './TopOfWidget.vue'
-
 export default {
-  components: { TopOfWidget },
-  props: ["widgetType"],
     data() {
     return {
         minutes: "10", // Set default minutes to 10
         seconds: "00", // Set default seconds to 00
         isCountingDown: false,
-        containerPosition: { left: 0, top: 0 },
-        isDragging: false,
-        offsetX: 0,
-        offsetY: 0,
         message: 'Start',
         isFlashing: false,
     };
   },
   methods: {
-    startDrag(event) {
-      this.isDragging = true;
-      this.offsetX = event.clientX - this.$el.getBoundingClientRect().left;
-      this.offsetY = event.clientY - this.$el.getBoundingClientRect().top;
-
-      document.addEventListener("mousemove", this.handleDrag);
-      document.addEventListener("mouseup", this.stopDrag);
-    },
-    handleDrag(event) {
-      if (this.isDragging) {
-        const x = event.clientX - this.offsetX;
-        const y = event.clientY - this.offsetY;
-
-        this.containerPosition = { left: x, top: y };
-      }
-    },
-    stopDrag() {
-      this.isDragging = false;
-      document.removeEventListener("mousemove", this.handleDrag);
-      document.removeEventListener("mouseup", this.stopDrag);
-    },
     startOrStopTimer() {
       this.isCountingDown = !this.isCountingDown;
       if (this.isCountingDown) {
@@ -155,16 +124,4 @@ button {
   display: flex;
   justify-content: space-evenly;
 }
-
-.widget {
-  width: 300px;
-  height: 170px;
-  border-radius: 26px;
-  background-color: #ececec;
-  border: 1px solid #000;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-}
-
 </style>
