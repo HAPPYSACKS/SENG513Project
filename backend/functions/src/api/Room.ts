@@ -7,6 +7,10 @@ import { verifyToken } from "../auth/verify";
 // Implement CRUD operations for rooms
 // Update Room on new participant
 // Update room on last activity
+// Test room deletion
+// Test room creation
+// Test room edit
+// Test room read
 
 admin.initializeApp();
 

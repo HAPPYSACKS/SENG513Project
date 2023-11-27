@@ -8,6 +8,10 @@ admin.initializeApp();
 // Create route for users to modify user information like email
 // Create route to get user information from uid
 // Create route to edit user information 
+// Test user deletion
+// Test user creation
+// Test user edit
+// Test user read
 // Implement user preferences?
 
 
