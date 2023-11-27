@@ -32,5 +32,7 @@ export default {
     #clock {
         font-size: 24px;
         text-align: center;
+        display: flex;
+        flex-shrink: 0;
     }
 </style>

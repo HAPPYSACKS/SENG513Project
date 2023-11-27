@@ -1,13 +1,19 @@
 <template>
+<<<<<<< HEAD
     <!--<FullWidget :widData="testData" @delete="(id)=>deleteWidget(id)"/>-->
     <div v-for="wid in widgets" :key="wid.id">
         <FullWidget :widData="wid" @delete="(id)=>deleteWidget(id)"/>
     </div>
     <WidgetPopup v-show="showPopup" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
+=======
+    <WidgetPopup v-show="showPopup" @getType="getTypeForWidget" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
+>>>>>>> carlos
     <div class="item leaveRoom">
         <!-- @ alias for src -->
         <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
     </div>
+    <WidgetPlaceholder v-show="showTimerWidget" :widgetName="'Timer'" :widgetType="widgetType" :widgetContent="'TimerWidget'" :width="300" :height="170"/>
+    <WidgetPlaceholder v-show="showMusicWidget" :widgetName="'Sound'" :widgetContent="'MusicWidget'" :width="300" :height="300"/>
 
     <WidgetBar @show="togglePopupPLS"/>
 </template>
@@ -16,13 +22,23 @@
 <script>
 import WidgetBar from './WidgetBar.vue'
 import WidgetPopup from './WidgetPopup.vue'
+<<<<<<< HEAD
 import FullWidget from './Widget.vue'
 
 export default {
     components: { WidgetBar, WidgetPopup, FullWidget},
+=======
+import WidgetPlaceholder from './WidgetPlaceholder.vue'
+
+export default {
+    components: {WidgetBar, WidgetPopup, WidgetPlaceholder},
+>>>>>>> carlos
 
     data(){
         return {
+            widgetType: '',
+            showTimerWidget: false,
+            showMusicWidget: false,
             showPopup: false,
             imgID:'',
             top: 0,
@@ -37,16 +53,31 @@ export default {
     },
     methods:{
         togglePopupPLS(imgID){
-            this.showPopup = !this.showPopup
-            if(this.showPopup){
-                this.imgID = imgID
-
-                // Wait for the next DOM update before calling calc so offset is correct
-                this.$nextTick(() => {
-                    this.calc();
-                });
+            if(imgID === "sound"){
+                this.showMusicWidget = !this.showMusicWidget
             }
+            else{
+                this.showPopup = !this.showPopup
+                if(this.showPopup){
+                    this.imgID = imgID
 
+                    // Wait for the next DOM update before calling calc so offset is correct
+                    this.$nextTick(() => {
+                        this.calc()
+
+                    });
+                }
+            }
+        },
+
+        
+        getTypeForWidget(type){
+            switch(this.imgID){
+                case 'timer':
+                    this.showTimerWidget = true
+                    this.widgetType = type
+                    break
+            }
         },
 
         calc(){
