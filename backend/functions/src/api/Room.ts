@@ -3,6 +3,11 @@ const admin = require("firebase-admin");
 import { Request, Response } from "express";
 import { verifyToken } from "../auth/verify";
 
+// TODO
+// Implement CRUD operations for rooms
+// Update Room on new participant
+// Update room on last activity
+
 admin.initializeApp();
 
 exports.getRoom = functions.https.onRequest(
@@ -53,8 +58,8 @@ exports.addRoom = functions.https.onRequest(
         LastActivityTimestamp: new Date().toISOString(), // Set current time as last activity timestamp
         Owner: ownerID,
         Participants: {},
-        Status: "active",
-        Widgets: [],
+        Status: "active", // UNUSED
+        Widgets: [], // UNUSED
       };
 
       // Adds a new room to the 'Room' node
