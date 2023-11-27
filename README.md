@@ -10,7 +10,6 @@ This project is built with Vue.js for the frontend and Java Spring for the backe
 - [Running the Frontend](#running-the-frontend)
 - [Running the Backend](#running-the-backend)
 
-
 ## Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
@@ -20,8 +19,6 @@ Follow these instructions to get a copy of the project up and running on your lo
 Before you begin, ensure you have the following tools installed and running:
 
 - [Node.js and npm](https://nodejs.org/en/): You will need Node.js and npm to run the Vue.js frontend. Installing Node.js will also install npm.
-- [Java JDK 17](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html): Required to compile and run the Spring backend. Only needed to run frontend and backend on your local machine (so if you're doing the frontend I think you don't need it?)
-- [Maven](https://maven.apache.org/): Necessary for dependency management and running the Spring backend. Only needed to run frontend and backend on your local machine (so if you're doing the frontend I think you don't need it?)
 
 ### Installation
 
@@ -34,15 +31,14 @@ To set up the project for development, you'll need to clone the repository and i
 
 1. `cd frontend` to goto the right folder.
 2. `npm install` to install the frontend's packages.
-3. `npm run serve` to run the frontend.
+3. `cd ..` to run the go back to the root directory.
+4. `npm run start:frontend`
 
 ## Running the Backend
 
-1. `cd backend/backend`
-2. `mvn spring-boot:run`
+1. `npm install`
+2. `npm run start:backend`
 
 ## Running both frontend and backend
-
-You will need all the [Prerequisites](#prerequisites) described above.
 
 1. `npm start`
