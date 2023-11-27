@@ -1,5 +1,8 @@
 <template>
-    <FullWidget :widData="testData"/>
+    <!--<FullWidget :widData="testData" @delete="(id)=>deleteWidget(id)"/>-->
+    <div v-for="wid in widgets" :key="wid.id">
+        <FullWidget :widData="wid" @delete="(id)=>deleteWidget(id)"/>
+    </div>
     <WidgetPopup v-show="showPopup" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
     <div class="item leaveRoom">
         <!-- @ alias for src -->
@@ -9,13 +12,14 @@
     <WidgetBar @show="togglePopupPLS"/>
 </template>
 
+
 <script>
 import WidgetBar from './WidgetBar.vue'
 import WidgetPopup from './WidgetPopup.vue'
 import FullWidget from './Widget.vue'
 
 export default {
-    components: {WidgetBar, WidgetPopup, FullWidget},
+    components: { WidgetBar, WidgetPopup, FullWidget},
 
     data(){
         return {
@@ -23,8 +27,6 @@ export default {
             imgID:'',
             top: 0,
             left: 0,
-            widgets: [],
-
             testData: {
                 id: 0,
                 type: 0,
@@ -54,6 +56,33 @@ export default {
             this.left = icon.left + icon.width/2 - popup.offsetWidth / 2
         }
     }
+}
+</script>
+
+<script setup>
+import { ref, toRaw } from 'vue'
+let widgets = ref([
+{
+    id: 0,
+    type: 0,
+    isGroup: true,
+    name: 'test'
+},
+{
+    id: 1,
+    type: 1,
+    isGroup: true,
+    name: 'Timer'
+},
+]);
+
+function deleteWidget(id) {
+    const wids = toRaw(widgets.value);
+    console.log(wids);
+    const wids2 = wids.filter((wid) => {return wid.id != id});
+    console.log(wids2);
+    widgets.value.splice(0, wids.length, ...wids2);
+    console.log(widgets.value);
 }
 </script>
 

@@ -1,8 +1,10 @@
 <template>
-    <div class="widget-wrapper-full widget-wrapper" ref="widget" v-if="getWidgetStyle(widData.type) == 'full'">
+    <div class="widget-wrapper-full widget-wrapper" v-if="getWidgetStyle(widData.type) == 'full'"
+    :style="{ width: dimension.width + 'px', height: dimension.height + 'px', left: containerPosition.left + 'px', top: containerPosition.top + 'px' }">
         <div class="top-bar-full">
             <div>
-                <i class="fa-solid fa-arrows-up-down-left-right fa-lg" @click="test()"></i>
+                <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
+                @mousedown="startDrag"></i>
             </div>
             <div>
                 <i v-if="widData.isGroup == true" class="fa-solid fa-users fa-lg"></i>
@@ -12,53 +14,54 @@
             <div>
                 <i class="fa-solid fa-minus fa-lg"></i>
                 &nbsp;
-                <i class="fa-solid fa-xmark fa-lg"></i>
+                <i class="fa-solid fa-xmark fa-lg"
+                @click="$emit('delete', widData.id)"></i>
             </div>
         </div>
         <div class="content content-full">
             <component :is="getWidget(widData.type)"></component>
         </div>
     </div>
-    <div class="widget-wrapper-compact widget-wrapper" ref="widget" v-if="getWidgetStyle(widData.type) == 'compact'">
+    <div class="widget-wrapper-compact widget-wrapper" v-if="getWidgetStyle(widData.type) == 'compact'"
+    :style="{ width: dimension.width + 'px', height: dimension.height + 'px', left: containerPosition.left + 'px', top: containerPosition.top + 'px' }">
         <div class="content content-compact">
             <component :is="getWidget(widData.type)"></component>
             <div class="bar-compact">
-                <i class="fa-solid fa-arrows-up-down-left-right fa-lg"></i>
+                <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
+                @mousedown="startDrag"></i>
                 &nbsp;
                 <i class="fa-solid fa-minus fa-lg"></i>
                 &nbsp;
-                <i class="fa-solid fa-xmark fa-lg"></i>
+                <i class="fa-solid fa-xmark fa-lg"
+                @click="$emit('delete', widData.id)"></i>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue';
 import WidgetDefault from './widgets/Default.vue';
 import TimerWidget from './TimerWidget.vue';
 export default {
     name: 'FullWidget',
     data() {
         return {
-            posX: 20,
-            posY: 30,
-            dragObject: {
-                offsetX: 0,
-                offsetY: 0,
-                stillDown: false
-            }
+            containerPosition: { left: 30, top: 20 },
+            dimension: {width: this.width, height: this.height},
+            isDragging: false,
+            offsetX: 0,
+            offsetY: 0,
         }
     },
     props: {
         widData: Object
     },
     components: {
-        // eslint-disable-next-line vue/no-unused-components
+        // eslint-disable vue/no-unused-components
         WidgetDefault,
-        // eslint-disable-next-line vue/no-unused-components
         TimerWidget
     },
+    emits: ['delete'],
     methods: {
         test() {
             console.log('widget');
@@ -83,29 +86,37 @@ export default {
             }
             return toReturn;
         },
-        dragWidget(e) {
-            console.log('a');
-            const widget = ref();
-            const mouseX = e.pageX;
-            const mouseY = e.pageY;
-            if(this.dragObject.stillDown) {
-                widget.value.style.left = mouseX - this.dragObject.offsetX;
-                widget.value.style.top = mouseY - this.dragObject.offsetY;
-            } else {
-                this.dragObject.offsetX = mouseX - this.dragObject.offsetX;
-                this.dragObject.offsetY = mouseY - this.dragObject.offsetY;
-                this.dragObject.stillDown = true;
+        startDrag(event) {
+            this.isDragging = true;
+            this.offsetX = event.clientX - this.containerPosition.left;
+            this.offsetY = event.clientY - this.containerPosition.top;
+
+            document.addEventListener("mousemove", this.handleDrag);
+            document.addEventListener("mouseup", this.stopDrag);
+        },
+        handleDrag(event) {
+            if (this.isDragging) {
+                const x = event.clientX - this.offsetX;
+                const y = event.clientY - this.offsetY;
+
+                this.containerPosition = { left: x, top: y };
             }
         },
-        dragWidgetStop() {
-            this.dragObject.stillDown = false;
-        }
+        stopDrag() {
+            this.isDragging = false;
+            document.removeEventListener("mousemove", this.handleDrag);
+            document.removeEventListener("mouseup", this.stopDrag);
+        },
     },
+    
 }
 </script>
 
 <style>
     @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
+    .widget-wrapper {
+        background-color: #cecece;
+    }
     .widget-wrapper-full {
         position: absolute;
         border: 2px solid #757575;
