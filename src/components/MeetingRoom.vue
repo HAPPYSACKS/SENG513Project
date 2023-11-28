@@ -15,7 +15,7 @@
       :height="widget.height"
     />
 
-    <WidgetBar @returnPopupInfo="getPopupInfo" @toggleNoPopupWidget="handleToggleNoPopupWidget"/>
+    <WidgetBar @returnPopupInfo="getPopupInfo" @showNoPopupWidget="handleShowNoPopupWidget"/>
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
     };
   },
   methods: {
-    handleToggleNoPopupWidget(widgetName) {
+    handleShowNoPopupWidget(widgetName) {
       this.showWidget(widgetName);
     },
 

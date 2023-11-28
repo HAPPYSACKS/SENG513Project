@@ -12,41 +12,41 @@
             <div class="widget">
               <div class="left">
                 <div class="item">
-                  <img @click="togglePopup('Room-Member')" id="Room-Member" src='@/assets/icons/roomMember.png' alt="Room Member List">
+                  <img @click="showPopup('Room-Member')" id="Room-Member" src='@/assets/icons/roomMember.png' alt="Room Member List">
                 </div>
                 <div class="item">
-                  <img  @click="togglePopup('Chat')" id="Chat" src='@/assets/icons/chat.png' alt="Chat">
+                  <img  @click="showPopup('Chat')" id="Chat" src='@/assets/icons/chat.png' alt="Chat">
                 </div>
                 <div class="item">
-                  <img @click="togglePopup('Call')" id="Call" src='@/assets/icons/call.png' alt="Call">
+                  <img @click="showPopup('Call')" id="Call" src='@/assets/icons/call.png' alt="Call">
                 </div>
                 <div class="item">
-                  <img @click="togglePopup('Sound')" id="Sound" src='@/assets/icons/speaker.png' alt="Sound">
+                  <img @click="showPopup('Sound')" id="Sound" src='@/assets/icons/speaker.png' alt="Sound">
                 </div>
                 <div v-show="!iconsActive" @click="toggleMoreWidgets" class="item" id="moreWidget" ref="moreWidgetIcon">
                   <img src="@/assets/icons/widgets.png" alt="More Widgets">
                 </div>
                 <div class="groupedWidgets" :class="{active: iconsActive }" ref="widgetIcons">
                   <div class="item">
-                    <img @click="togglePopup('Youtube')" id="Youtube" src='@/assets/icons/youtube.png' alt="YouTube">
+                    <img @click="showPopup('Youtube')" id="Youtube" src='@/assets/icons/youtube.png' alt="YouTube">
                   </div>
                   <div class="item">
-                    <img @click="togglePopup('Timer')" id="Timer" src='@/assets/icons/timer.png' alt="Timer">
+                    <img @click="showPopup('Timer')" id="Timer" src='@/assets/icons/timer.png' alt="Timer">
                   </div>
                   <div class="item">
-                    <img @click="togglePopup('Calendar')" id="Calendar" src='@/assets/icons/calendar.png' alt="Calendar">
+                    <img @click="showPopup('Calendar')" id="Calendar" src='@/assets/icons/calendar.png' alt="Calendar">
                   </div>
                   <div class="item">
-                    <img @click="togglePopup('To-Do-List')" id="To-Do-List" src='@/assets/icons/toDoList.png' alt="To Do List">
+                    <img @click="showPopup('To-Do-List')" id="To-Do-List" src='@/assets/icons/toDoList.png' alt="To Do List">
                   </div>
                   <div class="item">
-                    <img @click="togglePopup('Sticky-Notes')" id="Sticky-Notes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
+                    <img @click="showPopup('Sticky-Notes')" id="Sticky-Notes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
                   </div>
                   <div class="item">
-                    <img @click="togglePopup('Sticker')" id="Sticker" src='@/assets/icons/sticker.png' alt="Sticker">
+                    <img @click="showPopup('Sticker')" id="Sticker" src='@/assets/icons/sticker.png' alt="Sticker">
                   </div>
                   <div class="item">
-                    <img @click="togglePopup('Draw')" id="Draw" src='@/assets/icons/draw.png' alt="Draw">
+                    <img @click="showPopup('Draw')" id="Draw" src='@/assets/icons/draw.png' alt="Draw">
                   </div>
                 </div>
               </div>
@@ -79,7 +79,7 @@ export default {
       }
     },
     components: {ClockWidget},
-    emits: ['returnPopupInfo', 'toggleNoPopupWidget'],
+    emits: ['returnPopupInfo', 'showNoPopupWidget'],
     methods: {
       chooseType(type) {
         if(type ==="room"){
@@ -91,10 +91,10 @@ export default {
         this.isPopupShown = !this.isPopupShown
       },
 
-      togglePopup(widgetName){
+      showPopup(widgetName){
         this.widgetName = widgetName
         if(this.widgetName === "Sound"){
-          this.$emit("toggleNoPopupWidget", this.widgetName)
+          this.$emit("showNoPopupWidget", this.widgetName)
         }else{
           this.isPopupShown = !this.isPopupShown
 
