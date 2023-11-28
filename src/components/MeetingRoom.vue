@@ -1,8 +1,7 @@
 <template>
     <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid" @delete="(id)=>deleteWidget(id)"/>
     <div class="item leaveRoom">
-        <!-- @ alias for src -->
-        <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
+      <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
     </div>
     <!-- <ChangeBackground/> -->
     <WidgetBar @create="(data) => createWidget(data)"/>
@@ -12,64 +11,6 @@
 <script>
 import WidgetBar from './WidgetBarProcessing.vue'
 import FullWidget from './Widget.vue'
-/*
-export default {
-    components: { WidgetBar, WidgetPopup, FullWidget},
-
-    data(){
-        return {
-            /*widgetType: '',
-            showTimerWidget: false,
-            showMusicWidget: false,
-            showPopup: false,
-            imgID:'',
-            top: 0,
-            left: 0,
-            testData: {
-                id: 0,
-                type: 0,
-                isGroup: true,
-                name: 'test'
-            }
-        }
-    },
-    methods:{
-        togglePopupPLS(imgID){
-            if(imgID === "sound"){
-                this.showMusicWidget = !this.showMusicWidget
-            }
-            else{
-                this.showPopup = !this.showPopup
-                if(this.showPopup){
-                    this.imgID = imgID
-
-                    // Wait for the next DOM update before calling calc so offset is correct
-                    this.$nextTick(() => {
-                        this.calc()
-
-                    });
-                }
-            }
-        },
-
-        
-        getTypeForWidget(type){
-            switch(this.imgID){
-                case 'timer':
-                    this.showTimerWidget = true
-                    this.widgetType = type
-                    break
-            }
-        },
-
-        calc(){
-            const popup = document.getElementById('popup');
-            const icon = document.getElementById(this.imgID).getBoundingClientRect();
-            this.top = icon.top - popup.offsetHeight - 10
-            this.left = icon.left + icon.width/2 - popup.offsetWidth / 2
-        }
-    }
-}*/
 </script>
 
 <script setup>

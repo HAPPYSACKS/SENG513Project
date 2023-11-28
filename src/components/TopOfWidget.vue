@@ -2,7 +2,7 @@
   <div id="container">
     <img id="handle" @mousedown="startDrag" src="@/assets/icons/move.png" alt="Move">
     <div style="display: flex; flex-direction: row; gap: 10px;">
-      <img v-show="widgetType == 'room'" style="width: 30px" src="@/assets/icons/group.png" alt="For Room">
+      <img v-show="isGroup" style="width: 30px" src="@/assets/icons/group.png" alt="For Room">
       <p>{{ widgetName }}</p>
     </div>
     <div style="display: flex; flex-direction: row; gap: 15px;">
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ["widgetType", "widgetName"],
+  props: ["isGroup", "widgetName"],
   methods: {
     startDrag(event) {
       this.$emit("startDrag", event);
