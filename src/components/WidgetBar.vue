@@ -55,7 +55,7 @@
               <div class="right">
                 <div class="divider"></div>
                 <div class="item">
-                  <img src='@/assets/icons/changeBackground.png' alt="Change Background">
+                  <img @click="showPopup('ChangeBG')" src='@/assets/icons/changeBackground.png' alt="Change Background">
                 </div>
                 <div class="item">
                   <img src='@/assets/icons/settings.png' alt="Settings">
@@ -93,7 +93,7 @@ export default {
 
       showPopup(widgetName){
         this.widgetName = widgetName
-        if(this.widgetName === "Sound"){
+        if(this.widgetName === "Sound" || this.widgetName === "ChangeBG"){
           this.$emit("showNoPopupWidget", this.widgetName)
         }else{
           this.isPopupShown = !this.isPopupShown

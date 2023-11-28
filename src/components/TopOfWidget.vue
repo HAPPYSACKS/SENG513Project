@@ -29,11 +29,16 @@ export default {
   }
   
   #handle{
+        cursor: grab;
         -webkit-user-drag: none;
         user-select: none;
         -moz-user-select: none;
         -webkit-user-select: none;
         -ms-user-select: none;
+  }
+
+  #handle:active{
+    cursor: grabbing;
   }
 
   #container {
