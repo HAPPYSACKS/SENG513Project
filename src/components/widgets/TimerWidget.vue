@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 300px; height: 100px;">
     <div style="display:flex; justify-content:center;">
       <input v-model="minutes" @input="validateInput" :class="{ 'flash': isFlashing }" class="input-field" />
       <p  style="margin: 0px; font-size: 50px;" :class="{ 'flash': isFlashing }">:</p>

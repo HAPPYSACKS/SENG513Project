@@ -1,5 +1,7 @@
 <template>
+    <div id="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA LOOK HERE FOR WIDGETS">
     <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid" @delete="(id)=>deleteWidget(id)"/>
+    </div>
     <div class="item leaveRoom">
       <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
     </div>
@@ -18,15 +20,9 @@ import { ref, toRaw, isProxy } from 'vue'
 let counter = 2;
 let widgets = ref([
 {
-    id: 0,
-    type: "Default",
-    isGroup: false,
-    name: 'test'
-},
-{
     id: 1,
     type: "TimerWidget",
-    isGroup: true,
+    isGroup: false,
     name: 'Timer'
 },
 ]);
