@@ -1,19 +1,40 @@
 <template>
     <div class="widget" :style="{ width: dimension.width + 'px', height: dimension.height + 'px', left: containerPosition.left + 'px', top: containerPosition.top + 'px' }">
-        <TopOfWidget :widgetName="widgetName" :widgetType="widgetType" @startDrag="startDrag" @handleDrag="handleDrag" @stopDrag="stopDrag" />
+        <TopOfWidget :widgetName="widgetName" :isGroup="isGroup" @startDrag="startDrag" @handleDrag="handleDrag" @stopDrag="stopDrag" />
         <!-- INSERT WIDGET CONTENT HERE -->
         <component :is="widgetContent" />
     </div>
 </template>
 
 <script>
+import RoomMemberWidget from './widgets/RoomMemberWidget.vue'
+import ChatWidget from './widgets/ChatWidget.vue'
+import CallWidget from './widgets/CallWidget.vue'
+import MusicWidget from './widgets/MusicWidget.vue'
+import YoutubeWidget from './widgets/YoutubeWidget.vue'
+import TimerWidget from './widgets/TimerWidget.vue'
+import CalendarWidget from './widgets/CalendarWidget.vue'
+import ToDoListWidget from './widgets/ToDoListWidget.vue'
+import StickyNotesWidget from './widgets/StickyNotesWidget.vue'
+import StickerWidget from './widgets/StickerWidget.vue'
+import DrawWidget from './widgets/DrawWidget.vue'
 import TopOfWidget from './TopOfWidget.vue'
-import TimerWidget from './TimerWidget.vue'
-import MusicWidget from './MusicWidget.vue'
 
 export default {
-  components: { TopOfWidget, TimerWidget, MusicWidget},
-  props: ["widgetName", "widgetContent","widgetType", "width", "height"],
+  components: {
+    RoomMemberWidget, 
+    ChatWidget, 
+    CallWidget,
+    MusicWidget,
+    YoutubeWidget,
+    TimerWidget,
+    CalendarWidget,
+    ToDoListWidget,
+    StickyNotesWidget,
+    StickerWidget,
+    DrawWidget,
+    TopOfWidget},
+  props: ["widgetName", "widgetContent","isGroup", "width", "height"],
     data() {
         return {
             containerPosition: { left: 0, top: 0 },

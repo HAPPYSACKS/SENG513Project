@@ -1,75 +1,69 @@
 <template>
-    <WidgetPopup v-show="showPopup" @getType="getTypeForWidget" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
+  <div>
     <div class="item leaveRoom">
-        <!-- @ alias for src -->
-        <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
+      <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
     </div>
-    <WidgetPlaceholder v-show="showTimerWidget" :widgetName="'Timer'" :widgetType="widgetType" :widgetContent="'TimerWidget'" :width="300" :height="170"/>
-    <WidgetPlaceholder v-show="showMusicWidget" :widgetName="'Sound'" :widgetContent="'MusicWidget'" :width="300" :height="300"/>
-    <!-- <ChangeBackground/> -->
-    <WidgetBar @show="togglePopupPLS"/>
+
+    <WidgetPlaceholder
+      v-for="(widget, index) in widgets"
+      :key="index"
+      v-show="widget.show"
+      :widgetName="widget.name"
+      :isGroup="widget.isGroup"
+      :widgetContent="widget.content"
+      :width="widget.width"
+      :height="widget.height"
+    />
+
+    <WidgetBar @returnPopupInfo="getPopupInfo" @toggleNoPopupWidget="handleToggleNoPopupWidget"/>
+  </div>
 </template>
 
 <script>
 import WidgetBar from './WidgetBar.vue'
-import WidgetPopup from './WidgetPopup.vue'
 import WidgetPlaceholder from './WidgetPlaceholder.vue'
-// import ChangeBackground from './ChangeBackground.vue'
-
-// PASS IN TYPE(timer,whatever), ISGROUP, NAME
-// MAKE WIDGETPOPUP AND WIDGETBAR TOGETHER
 
 export default {
-    components: {WidgetBar, WidgetPopup, WidgetPlaceholder},
+  components: { WidgetBar, WidgetPlaceholder },
 
-    data(){
-        return {
-            widgetType: '',
-            showTimerWidget: false,
-            showMusicWidget: false,
-            showPopup: false,
-            imgID:'',
-            top: 0,
-            left: 0,
-        }
+  data() {
+    return {
+      widgets: [
+        { name: 'Room-Member', show: false, isGroup: false, content: 'RoomMemberWidget', width: 300, height: 170 },
+        { name: 'Chat', show: false, isGroup: false, content: 'ChatWidget', width: 300, height: 170 },
+        { name: 'Call', show: false, isGroup: false, content: 'CallWidget', width: 300, height: 170 },
+        { name: 'Sound', show: false, isGroup: false, content: 'MusicWidget', width: 300, height: 300 },
+        { name: 'Youtube', show: false, isGroup: false, content: 'YoutubeWidget', width: 300, height: 170 },
+        { name: 'Timer', show: false, isGroup: false, content: 'TimerWidget', width: 300, height: 170 },
+        { name: 'Calendar', show: false, isGroup: false, content: 'CalendarWidget', width: 300, height: 170 },
+        { name: 'To-Do-List', show: false, isGroup: false, content: 'ToDoListWidget', width: 300, height: 170 },
+        { name: 'Sticky-Notes', show: false, isGroup: false, content: 'StickyNotesWidget', width: 300, height: 170 },
+        { name: 'Sticker', show: false, isGroup: false, content: 'StickerWidget', width: 300, height: 170 },
+        { name: 'Draw', show: false, isGroup: false, content: 'DrawWidget', width: 300, height: 170 },
+      ],
+    };
+  },
+  methods: {
+    handleToggleNoPopupWidget(widgetName) {
+      this.showWidget(widgetName);
     },
-    methods:{
-        togglePopupPLS(imgID){
-            if(imgID === "sound"){
-                this.showMusicWidget = !this.showMusicWidget
-            }
-            else{
-                this.showPopup = !this.showPopup
-                if(this.showPopup){
-                    this.imgID = imgID
 
-                    // Wait for the next DOM update before calling calc so offset is correct
-                    this.$nextTick(() => {
-                        this.calc()
+    getPopupInfo(isGroup, widgetName) {
+      this.showWidget(widgetName, isGroup);
+    },
 
-                    });
-                }
-            }
-        },
+    // isGroup is optional, but set to false on default
+    showWidget(widgetName, isGroup = false) {
+      // return the wanted array if found into widget, else undefined
+      const widget = this.widgets.find(w => w.name === widgetName);
 
-        
-        getTypeForWidget(type){
-            switch(this.imgID){
-                case 'timer':
-                    this.showTimerWidget = true
-                    this.widgetType = type
-                    break
-            }
-        },
-
-        calc(){
-            const popup = document.getElementById('popup');
-            const icon = document.getElementById(this.imgID).getBoundingClientRect();
-            this.top = icon.top - popup.offsetHeight - 10
-            this.left = icon.left + icon.width/2 - popup.offsetWidth / 2
-        }
-    }
-}
+      if (widget) {
+        widget.show = true;
+        widget.isGroup = isGroup;
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
