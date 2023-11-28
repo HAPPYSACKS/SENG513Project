@@ -3,8 +3,8 @@
   <!--2: https://www.youtube.com/watch?v=N7JCXQJyBE4 -->
   <!--3: https://www.youtube.com/watch?v=TgQ7XJjdJsc -->
   <!--4: https://www.youtube.com/watch?v=15bZlN0LrFg -->
-  <!--5: https://www.youtube.com/watch?v=TA4mhuFF-Go -->
-  <!--6: https://www.youtube.com/watch?v=dx_1BLARLk4 -->
+  <!--5: https://www.youtube.com/watch?v=uZEnkpFXd9I -->
+  <!--6: https://www.youtube.com/watch?v=WKFMKV05OVU -->
   <!--7: https://www.youtube.com/watch?v=Q6Jm3JSZODU -->
   <!--8: https://www.youtube.com/watch?v=NXsZZxKfXwQ -->
 
@@ -86,17 +86,17 @@ export default {
           this.$emit("onChangeBG", this.videoSrc, this.videoTitle)
           break
         case 4:
-          this.videoSrc = "https://www.youtube.com/embed/40xZVEFVBuE?autoplay=1&amp;mute=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;playlist=40xZVEFVBuE"
-          this.title="Night Driving Seoul City | Gangnam and Expressway with Chill Lofi Hiphop Beats POV 4K HDR"
+          this.videoSrc = "https://www.youtube.com/embed/uZEnkpFXd9I?autoplay=1&amp;mute=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;playlist=uZEnkpFXd9I"
+          this.title="[4K] Oxford Tour, England | City Centre - Virtual Oxford Walking Tour"
           this.$emit("onChangeBG", this.videoSrc, this.videoTitle)
           break
         // Look for another video
         case 5:
-          this.videoSrc = "https://www.youtube.com/embed/4uFbcNNzkD4?autoplay=1&amp;mute=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;playlist=4uFbcNNzkD4"
-          this.title="West Vancouver Summer Night Drive 🇨🇦 BC, Canada, Virtual Driving Tour, 4K HDR 60fps"
+          console.log('hi')
+          this.videoSrc = "https://www.youtube.com/embed/WKFMKV05OVU?autoplay=1&amp;mute=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;playlist=WKFMKV05OVU"
+          this.title="Orient Train Ambience  -  A Journey from Colorado to New Mexico 1970"
           this.$emit("onChangeBG", this.videoSrc, this.videoTitle)
           break
-        // Look for another video
         case 6:
           this.videoSrc = "https://www.youtube.com/embed/Q6Jm3JSZODU?autoplay=1&amp;mute=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;playlist=Q6Jm3JSZODU"
           this.title="Cozy Fire"
@@ -196,19 +196,19 @@ export default {
 }
 
 .scrollContainer::-webkit-scrollbar {
-  height: 12px; /* Set the height of the horizontal scrollbar */
+  height: 12px;
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color of the thumb */
-  border-radius: 6px; /* Rounded corners of the thumb */
+  background-color: #888;
+  border-radius: 6px;
 }
 
 .scrollContainer::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Color of the track */
+  background-color: #f1f1f1;
 }
 
 .scrollContainer::-webkit-scrollbar-button {
-  display: none; /* Hide the scrollbar buttons (arrows) */
+  display: none; /* Hide the scrollbar arrows */
 }
 </style>

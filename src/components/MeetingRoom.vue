@@ -190,16 +190,12 @@ export default {
 
 .video-container iframe {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
   position: absolute;
   top: -60px;
   left: 0;
   width: 100%;
-  height: calc(100% + 120px);
+  height: calc(100% + 130px);
 }
 .video-foreground {
   pointer-events: none;
@@ -209,6 +205,9 @@ export default {
   top: 20px;
   right: 20px;
   position: absolute;
+  background-color: #dcdcdc;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .item {
