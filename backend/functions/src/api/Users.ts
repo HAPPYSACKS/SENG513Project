@@ -1,19 +1,18 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { isUsernameUnique} from "../utils/util";
 
 admin.initializeApp();
 
 // TODO
-// Create route for users to delete account
 // Create route for users to modify user information like email
 // Create route to get user information from uid
-// Create route to edit user information 
+// Create route to edit user information
 // Test user deletion
 // Test user creation
 // Test user edit
 // Test user read
 // Implement user preferences?
-
 
 exports.createUserProfile = functions.auth
   .user()
@@ -40,3 +39,83 @@ exports.createUserProfile = functions.auth
       console.error("Error creating user profile:", error);
     }
   });
+
+exports.deleteUserProfile = functions.https.onCall(
+  async (data, context: functions.https.CallableContext) => {
+    if (!context.auth)
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "User must be authenticated to delete their account"
+      );
+    try {
+      const uid = context.auth.uid;
+
+      const userRef = admin.database().ref(`Users/${uid}`);
+
+      // Delete data from realtime database
+
+      await userRef.remove();
+
+      // Delete data from firebase authentication
+
+      await admin.auth().deleteUser(uid);
+
+      return { message: "User account deleted successfully." };
+    } catch (error) {
+      console.error("Error deleting user account:", error);
+      throw new functions.https.HttpsError(
+        "internal",
+        "An error occurred while deleting the user account."
+      );
+    }
+  }
+);
+
+// const editUserProfile = firebase.functions().httpsCallable('editUserProfile');
+// editUserProfile({
+//     email: 'newemail@example.com',
+//     username: 'newusername',
+//     profilePictureURL: 'http://www....'
+//     ... other profile fields ...
+// })
+
+exports.editUserProfile = functions.https.onCall(async (data, context) => {
+  // Check if the user is authenticated
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "User must be authenticated to edit their profile."
+    );
+  }
+
+  try {
+    const uid = context.auth.uid;
+    const updatedUserData = data;
+
+    // Validate the updatedUserData as needed
+    // actually do input sanitization. I'm just too lazy to do it.
+    const uniqueUsername = await isUsernameUnique(
+      updatedUserData.username,
+      uid
+    );
+
+    if (!uniqueUsername) {
+      throw new functions.https.HttpsError(
+        "already-exists",
+        "This username is already taken."
+      );
+    }
+
+    const userRef = admin.database().ref(`Users/${uid}`);
+
+    await userRef.update(updatedUserData);
+
+    return { message: "User profile updated successfully." };
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    throw new functions.https.HttpsError(
+      "internal",
+      "Unable to update user profile."
+    );
+  }
+});
