@@ -16,10 +16,10 @@
 export default {
   props: ["imgID", "top", "left", "onTogglePopup"],
   methods: {
-    chooseType(type){
-      this.onTogglePopup(this.imgID)
-      this.$emit('getType', type)
-    }
+    chooseType(type) {
+      this.onTogglePopup(this.imgID);
+      this.$emit("getType", type);
+    },
   },
 };
 </script>
@@ -63,7 +63,7 @@ export default {
 }
 
 .slide-in-top {
-	animation: slide-in-top 0.3s ease;
+  animation: slide-in-top 0.3s ease;
 }
 
 @keyframes slide-in-top {

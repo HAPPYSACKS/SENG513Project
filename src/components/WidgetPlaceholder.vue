@@ -45,15 +45,6 @@ export default {
             document.removeEventListener("mousemove", this.handleDrag);
             document.removeEventListener("mouseup", this.stopDrag);
         },
-        startOrStopTimer() {
-            this.isCountingDown = !this.isCountingDown;
-            if (this.isCountingDown) {
-                this.updateTimer();
-                this.message = "Stop";
-            } else {
-                this.message = "Start";
-            }
-        },
     }
 };
 </script>

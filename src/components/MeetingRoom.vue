@@ -14,7 +14,7 @@
     </div>
     <WidgetPlaceholder v-show="showTimerWidget" :widgetName="'Timer'" :widgetType="widgetType" :widgetContent="'TimerWidget'" :width="300" :height="170"/>
     <WidgetPlaceholder v-show="showMusicWidget" :widgetName="'Sound'" :widgetContent="'MusicWidget'" :width="300" :height="300"/>
-
+    <!-- <ChangeBackground/> -->
     <WidgetBar @show="togglePopupPLS"/>
 </template>
 
@@ -29,6 +29,10 @@ export default {
     components: { WidgetBar, WidgetPopup, FullWidget},
 =======
 import WidgetPlaceholder from './WidgetPlaceholder.vue'
+// import ChangeBackground from './ChangeBackground.vue'
+
+// PASS IN TYPE(timer,whatever), ISGROUP, NAME
+// MAKE WIDGETPOPUP AND WIDGETBAR TOGETHER
 
 export default {
     components: {WidgetBar, WidgetPopup, WidgetPlaceholder},
