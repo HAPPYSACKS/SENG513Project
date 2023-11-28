@@ -41,7 +41,7 @@
 
 <script>
 import WidgetDefault from './widgets/Default.vue';
-import TimerWidget from './TimerWidget.vue';
+import TimerWidget from './widgets/TimerWidget.vue';
 export default {
     name: 'FullWidget',
     data() {
@@ -51,6 +51,22 @@ export default {
             isDragging: false,
             offsetX: 0,
             offsetY: 0,
+            widgets: [
+            'RoomMemberWidget',
+            'ChatWidget',
+            'CallWidget',
+            'MusicWidget',
+            'YoutubeWidget',
+            'TimerWidget',
+            'CalendarWidget',
+            'ToDoListWidget',
+            'StickyNotesWidget',
+            'StickerWidget',
+            'DrawWidget'
+            ],
+            compactWidgets: [
+                
+            ]
         }
     },
     props: {
@@ -68,7 +84,7 @@ export default {
         },
         getWidgetStyle(id) {
             let toReturn = ''
-            if([4].includes(id)) {
+            if(this.compactWidgets.includes(id)) {
                 toReturn = 'compact';
             } else {
                 toReturn = 'full';
@@ -78,8 +94,38 @@ export default {
         getWidget(id) {
             let toReturn = '';
             switch(id) {
-                case 1:
+                case 'RoomMemberWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'ChatWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'CallWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'MusicWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'YoutubeWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'TimerWidget':
                     toReturn = TimerWidget;
+                    break;
+                case 'CalendarWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'ToDoListWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'StickyNotesWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'StickerWidget':
+                    toReturn = WidgetDefault;
+                    break;
+                case 'DrawWidget':
+                    toReturn = WidgetDefault;
                     break;
                 default:
                     toReturn = WidgetDefault;
@@ -138,6 +184,10 @@ export default {
         border-radius: 20px 0 0 20px;
         background-color: #cecece;
         border: 1px solid black;
+    }
+    .widget-wrapper-compact {
+        max-width: fit-content;
+        position: absolute;
     }
     .content-compact {
         position: relative;

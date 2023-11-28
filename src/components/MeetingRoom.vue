@@ -1,46 +1,24 @@
 <template>
-<<<<<<< HEAD
-    <!--<FullWidget :widData="testData" @delete="(id)=>deleteWidget(id)"/>-->
-    <div v-for="wid in widgets" :key="wid.id">
-        <FullWidget :widData="wid" @delete="(id)=>deleteWidget(id)"/>
-    </div>
-    <WidgetPopup v-show="showPopup" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
-=======
-    <WidgetPopup v-show="showPopup" @getType="getTypeForWidget" :onTogglePopup="togglePopupPLS" :imgID="imgID" :top="top" :left="left" ref="innerPopup"/>
->>>>>>> carlos
+    <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid" @delete="(id)=>deleteWidget(id)"/>
     <div class="item leaveRoom">
         <!-- @ alias for src -->
         <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
     </div>
-    <WidgetPlaceholder v-show="showTimerWidget" :widgetName="'Timer'" :widgetType="widgetType" :widgetContent="'TimerWidget'" :width="300" :height="170"/>
-    <WidgetPlaceholder v-show="showMusicWidget" :widgetName="'Sound'" :widgetContent="'MusicWidget'" :width="300" :height="300"/>
     <!-- <ChangeBackground/> -->
-    <WidgetBar @show="togglePopupPLS"/>
+    <WidgetBar @create="(data) => createWidget(data)"/>
 </template>
 
 
 <script>
-import WidgetBar from './WidgetBar.vue'
-import WidgetPopup from './WidgetPopup.vue'
-<<<<<<< HEAD
+import WidgetBar from './WidgetBarProcessing.vue'
 import FullWidget from './Widget.vue'
-
+/*
 export default {
     components: { WidgetBar, WidgetPopup, FullWidget},
-=======
-import WidgetPlaceholder from './WidgetPlaceholder.vue'
-// import ChangeBackground from './ChangeBackground.vue'
-
-// PASS IN TYPE(timer,whatever), ISGROUP, NAME
-// MAKE WIDGETPOPUP AND WIDGETBAR TOGETHER
-
-export default {
-    components: {WidgetBar, WidgetPopup, WidgetPlaceholder},
->>>>>>> carlos
 
     data(){
         return {
-            widgetType: '',
+            /*widgetType: '',
             showTimerWidget: false,
             showMusicWidget: false,
             showPopup: false,
@@ -91,21 +69,22 @@ export default {
             this.left = icon.left + icon.width/2 - popup.offsetWidth / 2
         }
     }
-}
+}*/
 </script>
 
 <script setup>
-import { ref, toRaw } from 'vue'
+import { ref, toRaw, isProxy } from 'vue'
+let counter = 2;
 let widgets = ref([
 {
     id: 0,
-    type: 0,
-    isGroup: true,
+    type: "Default",
+    isGroup: false,
     name: 'test'
 },
 {
     id: 1,
-    type: 1,
+    type: "TimerWidget",
     isGroup: true,
     name: 'Timer'
 },
@@ -113,11 +92,18 @@ let widgets = ref([
 
 function deleteWidget(id) {
     const wids = toRaw(widgets.value);
-    console.log(wids);
     const wids2 = wids.filter((wid) => {return wid.id != id});
-    console.log(wids2);
     widgets.value.splice(0, wids.length, ...wids2);
-    console.log(widgets.value);
+}
+
+function createWidget(data) {
+    const newData = (isProxy(data) ? toRaw(data) : data);
+    newData.id = counter;
+    counter++;
+    const wids = toRaw(widgets.value);
+    const wids2 = JSON.parse(JSON.stringify(wids));
+    wids2.push(newData);
+    widgets.value.splice(0, wids.length, ...wids2);
 }
 </script>
 

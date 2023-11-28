@@ -1,44 +1,52 @@
 <template>
+  <div v-show="isPopupShown" class="rectangle-container slide-in-top" id="popup" :style="{ top: top + 'px', left: left + 'px' }">
+    <div class="rectangle">
+      <div @click="chooseType('self')" class="half for-myself">For Myself</div>
+      <div @click="chooseType('room')" class="half for-room">For Room</div>
+    </div>
+    <!-- <div class="triangle"></div> -->
+  </div>
+
     <div class="menu">
             <ClockWidget/>
             <div class="widget">
               <div class="left">
                 <div class="item">
-                  <img @click="showPopup('roomMember')" id="roomMember" src='@/assets/icons/roomMember.png' alt="Room Member List">
+                  <img @click="showPopup('Room-Member')" id="Room-Member" src='@/assets/icons/roomMember.png' alt="Room Member List">
                 </div>
                 <div class="item">
-                  <img  @click="showPopup('chat')" id="chat" src='@/assets/icons/chat.png' alt="Chat">
+                  <img  @click="showPopup('Chat')" id="Chat" src='@/assets/icons/chat.png' alt="Chat">
                 </div>
                 <div class="item">
-                  <img src='@/assets/icons/call.png' alt="Call">
+                  <img @click="showPopup('Call')" id="Call" src='@/assets/icons/call.png' alt="Call">
                 </div>
                 <div class="item">
-                  <img @click="showPopup('sound')" id="speaker" src='@/assets/icons/speaker.png' alt="Sound">
+                  <img @click="showPopup('Sound')" id="Sound" src='@/assets/icons/speaker.png' alt="Sound">
                 </div>
                 <div v-show="!iconsActive" @click="toggleMoreWidgets" class="item" id="moreWidget" ref="moreWidgetIcon">
                   <img src="@/assets/icons/widgets.png" alt="More Widgets">
                 </div>
                 <div class="groupedWidgets" :class="{active: iconsActive }" ref="widgetIcons">
                   <div class="item">
-                    <img id="youtube" src='@/assets/icons/youtube.png' alt="YouTube">
+                    <img @click="showPopup('Youtube')" id="Youtube" src='@/assets/icons/youtube.png' alt="YouTube">
                   </div>
                   <div class="item">
-                    <img @click="showPopup('timer')" id="timer" src='@/assets/icons/timer.png' alt="Timer">
+                    <img @click="showPopup('Timer')" id="Timer" src='@/assets/icons/timer.png' alt="Timer">
                   </div>
                   <div class="item">
-                    <img id="calendar" src='@/assets/icons/calendar.png' alt="Calendar">
+                    <img @click="showPopup('Calendar')" id="Calendar" src='@/assets/icons/calendar.png' alt="Calendar">
                   </div>
                   <div class="item">
-                    <img id="toDoList" src='@/assets/icons/toDoList.png' alt="To Do List">
+                    <img @click="showPopup('To-Do-List')" id="To-Do-List" src='@/assets/icons/toDoList.png' alt="To Do List">
                   </div>
                   <div class="item">
-                    <img id="stickynotes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
+                    <img @click="showPopup('Sticky-Notes')" id="Sticky-Notes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
                   </div>
                   <div class="item">
-                    <img id="sticker" src='@/assets/icons/sticker.png' alt="Sticker">
+                    <img @click="showPopup('Sticker')" id="Sticker" src='@/assets/icons/sticker.png' alt="Sticker">
                   </div>
                   <div class="item">
-                    <img id="draw" src='@/assets/icons/draw.png' alt="Draw">
+                    <img @click="showPopup('Draw')" id="Draw" src='@/assets/icons/draw.png' alt="Draw">
                   </div>
                 </div>
               </div>
@@ -62,17 +70,54 @@ import ClockWidget from './ClockWidget.vue'
 export default {
     data(){
       return{
-        iconsActive: false
+        iconsActive: false,
+        isGroup: false,
+        isPopupShown: false,
+        widgetName: '',
+        top: 0,
+        left: 0
       }
     },
     components: {ClockWidget},
+    emits: ['returnPopupInfo', 'showNoPopupWidget'],
     methods: {
-      showPopup(imgID){
-        this.$emit('show', imgID)
+      chooseType(type) {
+        if(type ==="room"){
+          this.isGroup = true
+        }else{
+          this.isGroup = false
+        }
+        this.$emit("returnPopupInfo", this.isGroup, this.widgetName);
+        this.isPopupShown = !this.isPopupShown
       },
+
+      showPopup(widgetName){
+        this.widgetName = widgetName
+        if(this.widgetName === "Sound"){
+          this.$emit("showNoPopupWidget", this.widgetName)
+        }else{
+          this.isPopupShown = !this.isPopupShown
+
+          // Wait for the next DOM update before calling calc so offset is correct
+          this.$nextTick(() => {
+              this.calc()
+          });
+        }
+      },
+
+      calc(){
+            const popup = document.getElementById('popup');
+            const icon = document.getElementById(this.widgetName).getBoundingClientRect();
+            this.top = icon.top - popup.offsetHeight - 10
+            this.left = icon.left + icon.width/2 - popup.offsetWidth / 2
+      },
+
       toggleMoreWidgets(){
         this.iconsActive = !this.iconsActive
-        document.addEventListener('click', this.collapseIconsOnClickOutside);
+          this.$nextTick(() => {
+              document.addEventListener('click', this.collapseIconsOnClickOutside);
+          });
+        
       },
       collapseIconsOnClickOutside(event) {
         // TO DO:  check for potential bug
@@ -87,6 +132,58 @@ export default {
 </script>
 
 <style scoped>
+
+.rectangle-container {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid #000;
+  /* display: none; */
+  position: absolute;
+  width: 250px;
+  height: 50px;
+  border-radius: 15px;
+  overflow: hidden;
+  z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+.rectangle {
+  width: 100%;
+  height: 100%;
+  background-color: #ececec;
+  transition: background-color 0.3s;
+  display: flex;
+}
+
+.half {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.for-myself:hover,
+.for-room:hover {
+  background-color: #000;
+  color: #ececec;
+}
+
+.slide-in-top {
+  animation: slide-in-top 0.3s ease;
+}
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
     .menu{
         position: absolute;
         bottom: 22px;

@@ -16,5 +16,6 @@ export default {
         color: white;
         font-size: 1.5em;
         padding: 10px;
+        width: fit-content;
     }
 </style>
