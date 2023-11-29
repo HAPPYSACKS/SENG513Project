@@ -1,14 +1,6 @@
 <template>
-  <MeetingRoom/>
+  <router-view />
 </template>
-
-<script>
-import MeetingRoom from './components/MeetingRoom.vue'
-
-export default {
-    components: {MeetingRoom}
-}
-</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');

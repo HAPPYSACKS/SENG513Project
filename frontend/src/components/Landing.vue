@@ -16,7 +16,7 @@
             <h1>Join a room</h1>
             <p>Invite code:</p>
             <input type="text" id="inv-code" name="inv-code" placeholder="Enter Code Here">
-            <button id="inv-code-enter">JOIN</button>
+            <button id="inv-code-enter" @click="$router.push('Room')">JOIN</button>
             <p class="centered-red">Invalid Room ID</p>
         </div>
         <div class="room-host">
