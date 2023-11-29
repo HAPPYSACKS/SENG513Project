@@ -28,13 +28,14 @@ function deleteWidget(id) {
 }
 
 function createWidget(data) {
-    const newData = (isProxy(data) ? toRaw(data) : data);
+    const newData = JSON.parse(JSON.stringify(data));
     newData.id = counter;
     counter++;
-    const wids = toRaw(widgets.value);
+    const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
     const wids2 = JSON.parse(JSON.stringify(wids));
     wids2.push(newData);
     widgets.value.splice(0, wids.length, ...wids2);
+    console.log(toRaw(widgets.value))
 }
 </script>
 

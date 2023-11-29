@@ -1,6 +1,6 @@
 <template>
     <div class="default">
-        PLACEHOLDER WIDGET<br>CHANGE ME<br>LOREM IPSUM
+        PLACEHOLDER WIDGET<br>IF YOU SEE THIS<br>SOMETHING IS<br>WRONG LOL
     </div>
 </template>
 

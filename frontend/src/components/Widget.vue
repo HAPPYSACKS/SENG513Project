@@ -1,40 +1,68 @@
 <template>
     <div class="widget-wrapper-full widget-wrapper" v-if="getWidgetStyle(widData.type) == 'full'"
-    :style="{ width: dimension.width + 'px', height: dimension.height + 'px', left: containerPosition.left + 'px', top: containerPosition.top + 'px' }">
+    :style="{
+        width: dimension.width + 'px',
+        height: dimension.height + 'px',
+        left: containerPosition.left + 'px',
+        top: containerPosition.top + 'px',
+    }">
         <div class="top-bar-full">
             <div>
                 <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
                 @mousedown="startDrag"></i>
             </div>
+            &nbsp;
+            &nbsp;
             <div>
-                <i v-if="widData.isGroup == true" class="fa-solid fa-users fa-lg"></i>
-                &nbsp;
+                <span v-if="widData.isGroup == true">
+                    &nbsp;
+                    <i class="fa-solid fa-users fa-lg"></i>
+                    &nbsp;
+                </span>
                 <span>{{widData.name}}</span>
             </div>
+            &nbsp;
+            &nbsp;
             <div>
-                <i class="fa-solid fa-minus fa-lg"></i>
+                <i class="fa-solid fa-lg" :class="{'fa-minus': !minimized, 'fa-plus': minimized}"
+                @click="minimize()"></i>
                 &nbsp;
                 <i class="fa-solid fa-xmark fa-lg"
                 @click="$emit('delete', widData.id)"></i>
             </div>
         </div>
-        <div class="content content-full">
+        <div class="content content-full"
+        :style=" {display: displayed ? 'block' : 'none'} ">
             <component :is="getWidget(widData.type)"></component>
         </div>
     </div>
     <div class="widget-wrapper-compact widget-wrapper" v-if="getWidgetStyle(widData.type) == 'compact'"
-    :style="{ width: dimension.width + 'px', height: dimension.height + 'px', left: containerPosition.left + 'px', top: containerPosition.top + 'px' }">
-        <div class="content content-compact">
+    :style="{
+        width: dimension.width + 'px',
+        height: dimension.height + 'px',
+        left: containerPosition.left + 'px',
+        top: containerPosition.top + 'px',
+    }">
+        <div class="content content-compact"
+        :style=" {visibility: displayed ? 'visible' : 'hidden'} "
+        @mouseover="displayedCompact = true"
+        @mouseleave="displayedCompact = keepDisplayedCompact">
             <component :is="getWidget(widData.type)"></component>
-            <div class="bar-compact">
-                <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
-                @mousedown="startDrag"></i>
-                &nbsp;
-                <i class="fa-solid fa-minus fa-lg"></i>
-                &nbsp;
-                <i class="fa-solid fa-xmark fa-lg"
-                @click="$emit('delete', widData.id)"></i>
-            </div>
+        </div>
+        <div class="bar-compact"
+        :style="{display: displayedCompact ? 'block' : 'none'}"
+        @mouseover="displayedCompact = true"
+        @mouseleave="displayedCompact = keepDisplayedCompact">
+            <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
+            @mousedown="startDrag"></i>
+            &nbsp;
+            <i v-if="widData.isGroup == true" class="fa-solid fa-users fa-lg"></i>
+            &nbsp;
+            <i class="fa-solid fa-lg" :class="{'fa-minus': !minimized, 'fa-plus': minimized}"
+            @click="minimize()"></i>
+            &nbsp;
+            <i class="fa-solid fa-xmark fa-lg"
+            @click="$emit('delete', widData.id)"></i>
         </div>
     </div>
 </template>
@@ -52,6 +80,10 @@ export default {
             isDragging: false,
             offsetX: 0,
             offsetY: 0,
+            displayed: true,
+            displayedCompact: false,
+            keepDisplayedCompact: false,
+            minimized: false,
             widgets: [
             'RoomMemberWidget',
             'ChatWidget',
@@ -66,7 +98,7 @@ export default {
             'DrawWidget'
             ],
             compactWidgets: [
-                
+                'Default'
             ]
         }
     },
@@ -81,8 +113,10 @@ export default {
     },
     emits: ['delete'],
     methods: {
-        test() {
-            console.log('widget');
+        minimize() {
+            this.displayed = !this.displayed;
+            this.minimized = !this.minimized;
+            this.keepDisplayedCompact = !this.keepDisplayedCompact
         },
         getWidgetStyle(id) {
             let toReturn = ''
@@ -138,6 +172,7 @@ export default {
             this.isDragging = true;
             this.offsetX = event.clientX - this.containerPosition.left;
             this.offsetY = event.clientY - this.containerPosition.top;
+            this.keepDisplayedCompact = true;
 
             document.addEventListener("mousemove", this.handleDrag);
             document.addEventListener("mouseup", this.stopDrag);
@@ -152,6 +187,7 @@ export default {
         },
         stopDrag() {
             this.isDragging = false;
+            this.keepDisplayedCompact = false;
             document.removeEventListener("mousemove", this.handleDrag);
             document.removeEventListener("mouseup", this.stopDrag);
         },
@@ -163,10 +199,10 @@ export default {
 <style>
     @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
     .widget-wrapper {
-        background-color: #cecece;
+        position: absolute;
     }
     .widget-wrapper-full {
-        position: absolute;
+        background-color: #cecece;
         border: 2px solid #757575;
         border-radius: 20px;
     }
@@ -189,7 +225,6 @@ export default {
     }
     .widget-wrapper-compact {
         max-width: fit-content;
-        position: absolute;
     }
     .content-compact {
         position: relative;
