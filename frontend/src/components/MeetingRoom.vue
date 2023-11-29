@@ -34,8 +34,7 @@ function createWidget(data) {
     const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
     const wids2 = JSON.parse(JSON.stringify(wids));
     wids2.push(newData);
-    widgets.value.splice(0, wids.length, ...wids2);
-    console.log(toRaw(widgets.value))
+    widgets.value.splice(0, wids.length, ...wids2); 
 }
 </script>
 
