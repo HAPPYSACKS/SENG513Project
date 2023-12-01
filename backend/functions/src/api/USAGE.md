@@ -14,6 +14,11 @@ This document provides an overview and usage details of the Firebase Cloud Funct
   - [addRoom](#addroom)
   - [getAllRooms](#getallrooms)
   - [deleteRoom](#deleteroom)
+  - [addParticipantToRoom](#addParticipantToRoom)
+
+---
+
+## User Management
 
 ---
 
@@ -65,6 +70,8 @@ deleteUserProfile()
   });
 ```
 
+---
+
 ### editUserProfile
 
 **Description:**  
@@ -95,6 +102,8 @@ editUserProfile({
   });
 ```
 
+---
+
 ### getUserProfile
 
 **Description:**  
@@ -119,6 +128,12 @@ getUserProfile({ uid: "user-uid" })
     console.error("Error:", error);
   });
 ```
+
+---
+
+## Room Management
+
+---
 
 ### getRoom
 
@@ -199,4 +214,55 @@ getUserProfile({ uid: "user-uid" })
 - `400 Bad Request`: Room ID is missing.
 - `403 Forbidden`: User is not authorized to delete the room.
 - `404 Not Found`: Room not found.
+- `500 Internal Server Error`: Server error occurred.
+
+---
+
+### addParticipantToRoom
+
+**Description:**  
+Allows a user to join a specific room by adding themselves as a participant. The user can only add their own user ID to the room.
+
+**Function Signature:**  
+`functions.https.onRequest(async (req: Request, res: Response) => {...})`
+
+**Method:** POST  
+**Authentication:** Required. Users can only add themselves.
+
+**Request Body:**
+
+- `roomID`: String, the unique identifier of the room.
+- `userID`: String, the unique identifier of the user.
+- `role`: String, (optional) the role of the participant in the room. Defaults to "participant" if not specified.
+- `permissions`: Object, (optional) specific permissions for the participant.
+
+**Example Usage:**
+
+```javascript
+// Example using fetch to call the function from a client application
+fetch("/addParticipantToRoom", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer <user-id-token>", // User ID token obtained from Firebase Authentication
+  },
+  body: JSON.stringify({
+    roomID: "room123",
+    userID: "<authenticated-user-id>",
+    role: "member",
+    permissions: { canEdit: true, canView: true },
+  }),
+})
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.error("Error:", error));
+```
+
+**Responses:**
+
+- `200 OK`: Participant added successfully.
+- `400 Bad Request`: Missing required field (roomID).
+- `401 Unauthorized`: User not authenticated.
+- `403 Forbidden`: User tried to add a different userID.
+- `405 Method Not Allowed`: Incorrect HTTP method used.
 - `500 Internal Server Error`: Server error occurred.

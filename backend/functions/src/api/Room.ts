@@ -4,9 +4,8 @@ import { Request, Response } from "express";
 import { verifyToken } from "../auth/verify";
 
 // TODO
-// Implement CRUD operations for rooms
 // Update Room on new participant
-// Update room on last activity
+// Update room on last activity (update last activity timestamp)
 // Test room deletion
 // Test room creation
 // Test room edit
@@ -137,6 +136,49 @@ exports.deleteRoom = functions.https.onRequest(
       res.status(200).send(`Room ${roomID} deleted successfully`);
     } catch (error) {
       console.error("Error deleting room:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
+
+// check this
+
+exports.addParticipantToRoom = functions.https.onRequest(
+  async (req: Request, res: Response) => {
+    if (req.method !== "POST") {
+      res.status(405).send("Method Not Allowed");
+      return;
+    }
+
+    const { roomID, userID, role, permissions } = req.body;
+
+    const decodedToken = await verifyToken(req);
+    if (!decodedToken) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+
+    if (decodedToken.uid !== userID) {
+      res.status(403).send("Forbidden: You can only add yourself to a room");
+      return;
+    }
+
+    if (!roomID) {
+      res.status(400).send("Room ID is required");
+      return;
+    }
+
+    try {
+      const roomParticipantsRef = admin
+        .database()
+        .ref(`Room/${roomID}/Participants/${userID}`);
+      await roomParticipantsRef.set({ Role: role || "participant", Status: "active" });
+
+      // update AccessControls if you manage permissions separately if they are used or managed by backend (idk tho)
+
+      res.status(200).send("Participant added successfully");
+    } catch (error) {
+      console.error("Error adding participant:", error);
       res.status(500).send("Internal Server Error");
     }
   }
