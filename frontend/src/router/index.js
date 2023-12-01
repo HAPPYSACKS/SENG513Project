@@ -1,18 +1,30 @@
+import LandingPage from '../components/LandingPage.vue'
+import LoginPage from '../components/LoginPage.vue'
+import SignUpPage from '../components/SignUpPage.vue'
 import MeetingRoom from '../components/MeetingRoom.vue';
-import LandingPage from '../components/Landing.vue';
-import PlaceholderPage from '../components/PlaceholderPage.vue'
+import HomePage from '../components/HomePage.vue';
 import { createWebHistory, createRouter } from 'vue-router';
 
 const routes = [
     {
         path: '/',
-        name: 'Default',
-        component: PlaceholderPage
+        name: 'Landing',
+        component: LandingPage
+    },
+    {
+        path: '/Login',
+        name: 'Login',
+        component: LoginPage
+    },
+    {
+        path: '/SignUp',
+        name: 'SignUp',
+        component: SignUpPage
     },
     {
         path: '/Home',
         name: 'Home',
-        component: LandingPage
+        component: HomePage
     },
     {
         path: '/Room',

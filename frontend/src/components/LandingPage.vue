@@ -4,8 +4,8 @@
         <div class="centerpiece">
             <span class="circle">
                 <img src="@/assets/icon_wreath.png" alt="Wreath of icons" id="icon-wreath">
-                <button class="button" id="login-button">LOGIN</button>
-                <button class="button" id="signup-button">SIGN UP</button>
+                <button class="button" id="login-button" @click="$router.push('Login')">LOGIN</button>
+                <button class="button" id="signup-button" @click="$router.push('SignUp')">SIGN UP</button>
             </span>
         </div>
     </div>

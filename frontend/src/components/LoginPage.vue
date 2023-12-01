@@ -6,7 +6,7 @@
                 <img src="@/assets/icon_wreath.png" alt="Wreath of icons" id="icon-wreath">
                 <input type="text" id="username-input" placeholder="Username">
                 <input type="text" id="password-input" placeholder="Password">
-                <button class="button" id="login-button">LOGIN</button>
+                <button class="button" id="login-button" @click="$router.push('Home')">LOGIN</button>
             </span>
         </div>
     </div>

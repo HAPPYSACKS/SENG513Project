@@ -8,7 +8,7 @@
                 <input type="text" id="username-input" placeholder="Username">
                 <input type="text" id="password-input" placeholder="Password">
                 <input type="text" id="re-enter-input" placeholder="Re-Enter Password">
-                <button class="button" id="signup-button">SIGN UP</button>
+                <button class="button" id="signup-button" @click="$router.push('Home')">SIGN UP</button>
             </span>
         </div>
     </div>
