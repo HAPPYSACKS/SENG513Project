@@ -1,13 +1,19 @@
 # Firebase Cloud Functions Documentation
 
-This document provides an overview and usage details of the Firebase Cloud Functions implemented in this project. These functions handle various aspects of user management and authentication.
+This document provides an overview and usage details of the Firebase Cloud Functions implemented in this project. These functions handle various aspects of user management and room management.
 
 ## Table of Contents
 
-- [createUserProfile](#createuserprofile)
-- [deleteUserProfile](#deleteuserprofile)
-- [editUserProfile](#edituserprofile)
-- [getUserProfile](#getuserprofile)
+- [User Management](#user-management)
+  - [createUserProfile](#createuserprofile)
+  - [deleteUserProfile](#deleteuserprofile)
+  - [editUserProfile](#edituserprofile)
+  - [getUserProfile](#getuserprofile)
+- [Room Management](#room-management)
+  - [getRoom](#getroom)
+  - [addRoom](#addroom)
+  - [getAllRooms](#getallrooms)
+  - [deleteRoom](#deleteroom)
 
 ---
 
@@ -113,3 +119,84 @@ getUserProfile({ uid: "user-uid" })
     console.error("Error:", error);
   });
 ```
+
+### getRoom
+
+**Endpoint:** `getRoom`  
+**Method:** GET  
+**Description:** Fetches details of a specific room by its ID.
+
+**Query Parameters:**
+
+- `roomID`: The unique identifier of the room.
+
+**Example Usage:**  
+`GET /getRoom?roomID=<room-id>`
+
+**Responses:**
+
+- `200 OK`: Successfully retrieved the room data.
+- `400 Bad Request`: Room ID is missing.
+- `404 Not Found`: Room not found.
+- `500 Internal Server Error`: Server error occurred.
+
+---
+
+### addRoom
+
+**Endpoint:** `addRoom`  
+**Method:** POST  
+**Description:** Adds a new room to the database.
+
+**Request Body:**
+
+- The request should contain data relevant to the new room.
+
+**Example Usage:**  
+`POST /addRoom` with the new room data in the request body.
+
+**Responses:**
+
+- `200 OK`: Successfully added the new room, returns new room ID.
+- `405 Method Not Allowed`: Incorrect HTTP method used.
+- `500 Internal Server Error`: Server error occurred.
+
+---
+
+### getAllRooms
+
+**Endpoint:** `getAllRooms`  
+**Method:** GET  
+**Description:** Retrieves data of all rooms.
+
+**Example Usage:**  
+`GET /getAllRooms`
+
+**Responses:**
+
+- `200 OK`: Successfully retrieved all rooms data.
+- `405 Method Not Allowed`: Incorrect HTTP method used.
+- `500 Internal Server Error`: Server error occurred.
+
+---
+
+### deleteRoom
+
+**Endpoint:** `deleteRoom`  
+**Method:** DELETE  
+**Description:** Deletes a specific room from the database.
+
+**Query Parameters:**
+
+- `roomID`: The unique identifier of the room to be deleted.
+
+**Example Usage:**  
+`DELETE /deleteRoom?roomID=<room-id>`
+
+**Responses:**
+
+- `200 OK`: Successfully deleted the room.
+- `400 Bad Request`: Room ID is missing.
+- `403 Forbidden`: User is not authorized to delete the room.
+- `404 Not Found`: Room not found.
+- `500 Internal Server Error`: Server error occurred.
