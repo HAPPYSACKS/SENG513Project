@@ -1,21 +1,13 @@
 <template>
-  <LandingPage/>
+  <router-view />
 </template>
 
-<script>
-import LandingPage from './components/LandingPage.vue'
-
-export default {
-  name: 'App',
-  components: {LandingPage}
-}
-</script>
-
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 #app {
-  box-sizing: border-box;
-  margin: 0;
-  background-color: white;
-  font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    background-color: white;
+    font-family: 'Inter', sans-serif;
 }
 </style>
