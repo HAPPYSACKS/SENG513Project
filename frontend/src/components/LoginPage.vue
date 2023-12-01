@@ -4,16 +4,31 @@
         <div class="centerpiece">
             <span class="circle">
                 <img src="@/assets/icon_wreath.png" alt="Wreath of icons" id="icon-wreath">
-                <input type="text" id="username-input" placeholder="Username">
-                <input type="text" id="password-input" placeholder="Password">
-                <button class="button" id="login-button" @click="$router.push('Home')">LOGIN</button>
+                <input v-model="username" type="text" id="username-input" placeholder="Username">
+                <input v-model="password" type="password" id="password-input" placeholder="Password">
+                <button class="button" id="login-button" @click="login">LOGIN</button>
             </span>
         </div>
     </div>
 </template>
 
 <script>
-
+export default {
+    data() {
+        return {
+            username: '',
+            password: ''
+        };
+    },
+    methods: {
+        login() {
+            // Now we can handle login logic here using this.username and this.password
+            console.log('Username:', this.username);
+            console.log('Password:', this.password);
+            this.$router.push('Home');
+        }
+    }
+};
 </script>
 
 <style scoped>

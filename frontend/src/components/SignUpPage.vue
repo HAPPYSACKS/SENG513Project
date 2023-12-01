@@ -4,18 +4,37 @@
         <div class="centerpiece">
             <span class="circle">
                 <img src="@/assets/icon_wreath.png" alt="Wreath of icons" id="icon-wreath">
-                <input type="text" id="name-input" placeholder="Full Name">
-                <input type="text" id="username-input" placeholder="Username">
-                <input type="text" id="password-input" placeholder="Password">
-                <input type="text" id="re-enter-input" placeholder="Re-Enter Password">
-                <button class="button" id="signup-button" @click="$router.push('Home')">SIGN UP</button>
+                <input v-model="name" type="text" id="name-input" placeholder="Full Name">
+                <input v-model="username" type="text" id="username-input" placeholder="Username">
+                <input v-model="password" type="password" id="password-input" placeholder="Password">
+                <input v-model="re_password" type="password" id="re-enter-input" placeholder="Re-Enter Password">
+                <button class="button" id="signup-button" @click="signup">SIGN UP</button>
             </span>
         </div>
     </div>
 </template>
 
 <script>
-
+export default {
+    data() {
+        return {
+            name: '',
+            username: '',
+            password: '',
+            re_password: ''
+        };
+    },
+    methods: {
+        signup() {
+            // Now we can handle sign up logic here with the following variables
+            console.log('Name:', this.name);
+            console.log('Username:', this.username);
+            console.log('Password:', this.password);
+            console.log('Re-Entered:', this.re_password);
+            this.$router.push('Home');
+        }
+    }
+};
 </script>
 
 <style scoped>
