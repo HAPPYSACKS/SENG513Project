@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import { isUsernameUnique} from "../utils/util";
+import { isUsernameUnique } from "../utils/util";
 
 admin.initializeApp();
 
@@ -13,6 +13,9 @@ admin.initializeApp();
 // Test user edit
 // Test user read
 // Implement user preferences?
+
+
+
 
 exports.createUserProfile = functions.auth
   .user()
@@ -116,6 +119,38 @@ exports.editUserProfile = functions.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError(
       "internal",
       "Unable to update user profile."
+    );
+  }
+});
+
+exports.getUserProfile = functions.https.onCall(async (data, context) => {
+  // Optional: Check if the user is authenticated
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "User must be authenticated to get their profile."
+    );
+  }
+
+  try {
+    const uid = data.uid; // Assuming the UID is passed in the data
+    const userRef = admin.database().ref(`Users/${uid}`);
+    const snapshot = await userRef.once("value");
+    const userProfile = snapshot.val();
+
+    if (!userProfile) {
+      throw new functions.https.HttpsError(
+        "not-found",
+        "User profile not found."
+      );
+    }
+
+    return userProfile;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    throw new functions.https.HttpsError(
+      "internal",
+      "Unable to fetch user profile."
     );
   }
 });
