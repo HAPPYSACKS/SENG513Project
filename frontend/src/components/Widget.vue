@@ -33,7 +33,7 @@
         </div>
         <div class="content content-full"
         :style=" {display: displayed ? 'block' : 'none'} ">
-            <component :is="getWidget(widData.type)"></component>
+            <component :is="getWidget(widData.type)" :data="widData.data" @update="(data)=>{$emit('update', widData.id, data)}"></component>
         </div>
     </div>
     <div class="widget-wrapper-compact widget-wrapper" v-if="getWidgetStyle(widData.type) == 'compact'"
@@ -47,7 +47,7 @@
         :style=" {visibility: displayed ? 'visible' : 'hidden'} "
         @mouseover="displayedCompact = true"
         @mouseleave="displayedCompact = keepDisplayedCompact">
-            <component :is="getWidget(widData.type)"></component>
+            <component :is="getWidget(widData.type)" :data="widData.data" @update="(data)=>{$emit('update', widData.id, data)}"></component>
         </div>
         <div class="bar-compact"
         :style="{display: displayedCompact ? 'block' : 'none'}"
@@ -111,7 +111,7 @@ export default {
         TimerWidget,
         MusicWidget
     },
-    emits: ['delete'],
+    emits: ['delete', 'update'],
     methods: {
         minimize() {
             this.displayed = !this.displayed;
