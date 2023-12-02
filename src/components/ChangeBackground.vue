@@ -90,9 +90,7 @@ export default {
           this.title="[4K] Oxford Tour, England | City Centre - Virtual Oxford Walking Tour"
           this.$emit("onChangeBG", this.videoSrc, this.videoTitle)
           break
-        // Look for another video
         case 5:
-          console.log('hi')
           this.videoSrc = "https://www.youtube.com/embed/WKFMKV05OVU?autoplay=1&amp;mute=1&amp;controls=0&amp;showinfo=0&amp;rel=0&amp;loop=1&amp;playlist=WKFMKV05OVU"
           this.title="Orient Train Ambience  -  A Journey from Colorado to New Mexico 1970"
           this.$emit("onChangeBG", this.videoSrc, this.videoTitle)
