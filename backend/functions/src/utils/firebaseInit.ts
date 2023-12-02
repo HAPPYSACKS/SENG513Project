@@ -1,6 +1,7 @@
 // firebaseInit.ts
 
 import * as admin from "firebase-admin";
+require('dotenv').config();
 
 const firebaseConfig = {
   apiKey: "AIzaSyBAHAWBLyC6sKnffYHzk8e1MMC4AzpP0lA",
