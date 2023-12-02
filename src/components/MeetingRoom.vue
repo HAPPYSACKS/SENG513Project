@@ -86,8 +86,8 @@ export default {
           show: false,
           isGroup: false,
           content: "YoutubeWidget",
-          width: 300,
-          height: 170,
+          width: "auto",
+          height: "auto",
         },
         {
           name: "Timer",
