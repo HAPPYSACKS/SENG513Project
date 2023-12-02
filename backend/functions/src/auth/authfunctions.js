@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import admin from "../utils/firebaseInit";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -11,7 +11,5 @@ const firebaseConfig = {
   appId: process.env.APP_ID,
   measurementId: process.env.MEASUREMENT_ID,
 };
-
-const firebaseApp = initializeApp(firebaseConfig);
 
 const auth = getAuth(firebaseApp);

@@ -1,5 +1,5 @@
 const functions = require("firebase-functions");
-const admin = require("firebase-admin");
+import admin from "../utils/firebaseInit";
 import { Request, Response } from "express";
 import { verifyToken } from "../auth/verify";
 
@@ -11,7 +11,7 @@ import { verifyToken } from "../auth/verify";
 // Test room edit
 // Test room read
 
-admin.initializeApp();
+
 
 exports.getRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
@@ -30,7 +30,7 @@ exports.getRoom = functions.https.onRequest(
     try {
       const roomRef = admin.database().ref(`Room/${roomID}`);
       const snapshot = await roomRef.once("value");
-      const roomData = snapshot.value();
+      const roomData = snapshot.val();
 
       if (roomData) {
         res.status(200).json(roomData);
@@ -150,7 +150,7 @@ exports.addParticipantToRoom = functions.https.onRequest(
       return;
     }
 
-    const { roomID, userID, role, permissions } = req.body;
+    const { roomID, userID, role } = req.body; // also include permissions?
 
     const decodedToken = await verifyToken(req);
     if (!decodedToken) {
@@ -172,7 +172,10 @@ exports.addParticipantToRoom = functions.https.onRequest(
       const roomParticipantsRef = admin
         .database()
         .ref(`Room/${roomID}/Participants/${userID}`);
-      await roomParticipantsRef.set({ Role: role || "participant", Status: "active" });
+      await roomParticipantsRef.set({
+        Role: role || "participant",
+        Status: "active",
+      });
 
       // update AccessControls if you manage permissions separately if they are used or managed by backend (idk tho)
 

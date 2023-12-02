@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
+
 import { isUsernameUnique } from "../utils/util";
 
-admin.initializeApp();
+import admin from "../utils/firebaseInit";
 
 // TODO
 // Test user deletion
@@ -10,9 +10,6 @@ admin.initializeApp();
 // Test user edit
 // Test user read
 // Implement user preferences?
-
-
-
 
 exports.createUserProfile = functions.auth
   .user()
@@ -37,6 +34,7 @@ exports.createUserProfile = functions.auth
       return;
     } catch (error) {
       console.error("Error creating user profile:", error);
+      return;
     }
   });
 

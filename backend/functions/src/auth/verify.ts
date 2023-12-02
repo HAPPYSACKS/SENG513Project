@@ -1,7 +1,5 @@
-import * as admin from "firebase-admin";
+import admin from "../utils/firebaseInit";
 import { Request } from "express";
-
-admin.initializeApp();
 
 export async function verifyToken(
   req: Request

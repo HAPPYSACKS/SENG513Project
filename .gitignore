@@ -111,3 +111,4 @@ dist/
 
 # Serverless directories
 .serverless/
+backend/functions/study-buddy-51a85-d6a815364a38.json
