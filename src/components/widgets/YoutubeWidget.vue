@@ -32,7 +32,7 @@
                         if (data.items.length > 0) {
                             var item = data.items[0];
                             var video = document.createElement('iframe');
-                            video.width = "420";
+                            video.width = "400";
                             video.height = "225";
                             video.src = `http://www.youtube.com/embed/${item.id.videoId}`;
                             video.frameBorder = "0";
