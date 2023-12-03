@@ -1,21 +1,25 @@
 <template>
-    <div class="roomid">
-        <p>Room code: {{ roomID }}</p>
+    <LoadingScreen Msg="Loading" v-if="!ready"/>
+    <div v-else>
+        <div class="roomid">
+            <p>Room code: {{ roomID }}</p>
+        </div>
+        <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid"
+        @delete="(id)=>deleteDirector(id)"
+        @update="(id, data)=>updateDirector(id, data)"/>
+        <div class="item leaveRoom">
+        <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
+        </div>
+        <!-- <ChangeBackground/> -->
+        <WidgetBar @create="(data) => createDirector(data)" :isHost="networkData.isHost"/>
     </div>
-    <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid"
-    @delete="(id)=>deleteDirector(id)"
-    @update="(id, data)=>updateDirector(id, data)"/>
-    <div class="item leaveRoom">
-      <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
-    </div>
-    <!-- <ChangeBackground/> -->
-    <WidgetBar @create="(data) => createDirector(data)"/>
 </template>
 
 
 <script>
 import WidgetBar from './WidgetBarProcessing.vue'
 import FullWidget from './Widget.vue'
+import LoadingScreen from './loading.vue';
 </script>
 
 <script setup>
@@ -29,6 +33,7 @@ let counter = 1;
 const widgets = ref([]); //widget tracking list
 //let user = route.query.username; //reference to user name
 let roomID = ref(''); //reference to current room number
+const ready = ref(false); //
 
 const networkData = { //room tracker for data persistent from an individual widget
     members: [], //list of members
@@ -52,12 +57,12 @@ function deleteWidget(id) {
 
 function createWidget(data) {
     const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
-    const newData = JSON.parse(JSON.stringify(data));
+    const newData = structuredClone(data);
     newData.id = counter;
     counter++;
-    newData.data = JSON.parse(JSON.stringify(newData.default));
+    newData.data = structuredClone(newData.default);
     delete newData.default
-    const wids2 = JSON.parse(JSON.stringify(wids));
+    const wids2 = structuredClone(wids);
     wids2.push(newData);
     widgets.value.splice(0, wids.length, ...wids2); 
 }
@@ -65,25 +70,35 @@ function createWidget(data) {
 function updateWidget(id, data) {
     const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
     const index = wids.findIndex((wid) => {return wid.id == id})
-    const newWid = JSON.parse(JSON.stringify(wids[index]))
+    const newWid = structuredClone(wids[index])
     Object.assign(newWid, {data: data});
     widgets.value[index] = newWid;
-    console.log(toRaw(widgets.value))
 }
 
 
 //networking handlers
 function handleNetwork(dataConnection) {
+    if(networkData.isHost) {
+        networkData.dataConnections.push(dataConnection);
+        dataConnection.on('data', (data)=>{
+            receiveUpdateHost(data);
+        })
+    } else {
+        networkData.thisConnection = dataConnection;
+        dataConnection.on('data', (data)=>{
+            receiveUpdateClient(data);
+        })
+    }
     /*
     if(networkData.isHost) {
         networkData.dataConnections.push(dataConnection);
         networkData.dataStatuses[dataConnection] = {joinHandshake: 0, leaveHandshake: 0, username: 'User'}
         dataConnection.on("data", (data)=>{
-            /*if(Object.keys(data).includes('NETWORKCODE')) {
+            if(Object.keys(data).includes('NETWORKCODE')) {
                 respondHostNetworkProtocol(data.NETWORKCODE, data.data, dataConnection);
             } else {
                 receiveUpdateHost(data);
-            }/*
+            }
             receiveUpdateHost(data);
         });
         dataConnection.on('close', ()=>{
@@ -92,26 +107,25 @@ function handleNetwork(dataConnection) {
     }
     else {
         networkData.thisConnection = dataConnection;
-        /*dataConnection.on('open', ()=>{
+        dataConnection.on('open', ()=>{
             
             dataConnection.send( {
                 NETWORKCODE: 'C',
                 user: user
             });
-        });    /* 
+        });    
         dataConnection.on("data", (data)=>{
-            /*if(Object.keys(data).includes('NETWORKCODE')) {
+            if(Object.keys(data).includes('NETWORKCODE')) {
                 respondClientNetworkProtocol(data.NETWORKCODE, data.data);
             } else {
                 receiveUpdateClient(data);
-            }/* 
+            }
             receiveUpdateClient(data);
         });
-    }
-    */
-    dataConnection.on('open', ()=> {
+    }*/
+    dataConnection.on('open', ()=>{
         console.log('CONNECTED');
-    })
+    });
     dataConnection.on('error', (e)=>{
         window.alert(`A fatal error has occured:\n${e.type}\n\nClick 'Ok' to return to homepage`);
         router.push('Home');
@@ -174,25 +188,11 @@ function respondClientNetworkProtocol(code, data) {
     }
 }
 */
-/*
+
 function receiveUpdateHost(data) {
     switch(data.code) {
-        case 'C':
-            createDirector(data.dataToUpdate.data);
-            break;
-        case 'U':
-            updateDirector(data.dataToUpdate.id, data.dataToUpdate.data)
-            break;
-        case 'D':
-            deleteDirector(data.dataToUpdate.id)
-            break;
-    }
-}
-
-function receiveUpdateClient(data) {
-    switch(data.code) {
         case 'C': {
-            createWidget(data.dataToUpdate);
+            createDirector(data.dataToUpdate.data);
             break;
         }
         case 'U': {
@@ -201,7 +201,40 @@ function receiveUpdateClient(data) {
                 console.log(`ERROR - ATTEMPTED TO UPDATE WIDGET WITH sharedID ${data.dataToUpdate.id}`)
                 console.log(isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value);
             } else {
-                updateWidget(widU.id);
+                updateDirector(data.dataToUpdate.id, data.dataToUpdate.data);
+            }
+            break;
+        }
+        case 'D': {
+            const widD = widgets.value.find((w)=>{return w.sharedID == data.dataToUpdate.id});
+            if(widD === undefined) {
+                console.log(`ERROR - ATTEMPTED TO DELETE WIDGET WITH sharedID ${data.dataToUpdate.id}`)
+                console.log(isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value);
+            } else {
+                deleteDirector(data.dataToUpdate.id);
+            }
+            break;
+        }
+        default: {
+            console.log(`ERROR - RECEIVED NETWORK INSTRUCTION WITHOUT PROPER CODE - ${data.code}`)
+        }
+    }
+}
+
+function receiveUpdateClient(data) {
+    console.log(data);
+    switch(data.code) {
+        case 'C': {
+            createWidget(data.dataToUpdate.data);
+            break;
+        }
+        case 'U': {
+            const widU = widgets.value.find((w)=>{return w.sharedID == data.dataToUpdate.id});
+            if(widU === undefined) {
+                console.log(`ERROR - ATTEMPTED TO UPDATE WIDGET WITH sharedID ${data.dataToUpdate.id}`)
+                console.log(isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value);
+            } else {
+                updateWidget(widU.id, data.dataToUpdate.data);
             }
             break;
         }
@@ -220,16 +253,14 @@ function receiveUpdateClient(data) {
         }
     }
 }
-*/
+
 function deleteDirector(id) {
     const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
     const wid = wids.find((w)=>{return w.id == id});
     if(wid.isGroup) {
         const data = {id: wid.sharedID}
         if(networkData.isHost) {
-            for(const conn of networkData.dataConnections) {
-                SendUpdateHost(data, 'D');
-            }
+            SendUpdateHost(data, 'D');
             deleteWidget(wid.id);
         } else {
             sendUpdateClient(data, 'D');
@@ -240,18 +271,17 @@ function deleteDirector(id) {
 }
 
 function createDirector(data) {
-    const newData = JSON.parse(JSON.stringify(data));
-    console.log(newData);
+    const newData = data
     if(data.isGroup) {
         if(networkData.isHost) {
             newData.sharedID = networkData.sharedCounter;
             networkData.sharedCounter++;
-            for(const conn of networkData.dataConnections) {
-                SendUpdateHost(newData, 'C');
-            }
+            const toSend = {data: newData};
+            SendUpdateHost(toSend, 'C');
             createWidget(data);
         } else {
-            sendUpdateClient(newData, 'C');
+            const toSend = {data: newData};
+            sendUpdateClient(toSend, 'C');
         }
     } else {
         newData.sharedID = -1;
@@ -264,12 +294,10 @@ function updateDirector(id, data) {
     if(wid.isGroup) {
         const newData = {id: wid.sharedID, data: data}
         if(networkData.isHost) {
-            for(const conn of networkData.dataConnections) {
-                SendUpdateHost(newData, 'U');
-            }
+            SendUpdateHost(newData, 'U');
             updateWidget(id, data);
         } else {
-            sendUpdateClient(data, 'U');
+            sendUpdateClient(newData, 'U');
         }
     } else {
         updateWidget(id, data);
@@ -277,11 +305,12 @@ function updateDirector(id, data) {
 }
 //network creation
 
-const peer = new Peer({debug: 3});
+const peer = new Peer();
 onMounted(()=>{
     if(networkData.isHost) {
         console.log('HOSTING');
         peer.on('open', ()=>{
+            ready.value = !ready.value;
             roomID.value = peer.id;
             peer.on('connection', (dataConnection)=>{
                 console.log('CONNECTION RECEIVED');
@@ -292,6 +321,7 @@ onMounted(()=>{
         console.log('JOINING');
         roomID.value = route.query.roomID;
         peer.on('open', ()=>{
+            ready.value = !ready.value;
             const conn = peer.connect(roomID.value);
             handleNetwork(conn);
         });

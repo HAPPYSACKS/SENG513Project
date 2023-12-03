@@ -1,5 +1,5 @@
 <template>
-    <WidgetBar @returnPopupInfo="getPopupInfo" @showNoPopupWidget="handleShowNoPopupWidget"/>
+    <WidgetBar @returnPopupInfo="getPopupInfo" @showNoPopupWidget="handleShowNoPopupWidget" :isHost="isHost"/>
 </template>
 
 <script>
@@ -25,6 +25,9 @@ export default {
         { name: 'Draw', isGroup: false, type: 'DrawWidget', default: {} },
       ],
     };
+  },
+  props: {
+    isHost: Boolean
   },
   methods: {
     handleShowNoPopupWidget(widgetName) {

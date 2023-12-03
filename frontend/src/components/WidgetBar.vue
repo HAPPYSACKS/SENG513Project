@@ -52,7 +52,7 @@
               </div>
             </div>
             
-              <div class="right">
+              <div class="right" v-if="isHost">
                 <div class="divider"></div>
                 <div class="item">
                   <img src='@/assets/icons/changeBackground.png' alt="Change Background">
@@ -77,6 +77,9 @@ export default {
         top: 0,
         left: 0
       }
+    },
+    props: {
+      isHost: Boolean
     },
     components: {ClockWidget},
     emits: ['returnPopupInfo', 'showNoPopupWidget'],

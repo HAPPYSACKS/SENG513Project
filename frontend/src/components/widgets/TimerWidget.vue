@@ -30,6 +30,10 @@ export default {
     data: Object
   },
   methods: {
+    stopTimer() {
+      this.isCountingDown = false;
+      this.message = "Start";
+    },
     startOrStopTimer() {
       this.isCountingDown = !this.isCountingDown;
       if (this.isCountingDown) {
@@ -84,7 +88,7 @@ export default {
       return String(intValue).padStart(2, '0');
     },
     emitUpdateEvent(data) {
-      const newData = JSON.parse(JSON.stringify(this.data));
+      const newData = structuredClone(this.data);
       Object.assign(newData, data);//newData.assign(data);  
       this.$emit('update', newData);
     }
@@ -96,6 +100,9 @@ export default {
         if(oldData.s != newData.s || oldData.m != newData.m) {
           this.resetMinutes = newData.m;
           this.resetSeconds = newData.s;
+          this.minutes = this.resetMinutes;
+          this.seconds = this.resetSeconds;
+          this.stopTimer();
         }
         if(newData.shouldCount != this.isCountingDown) {
           this.startOrStopTimer();
