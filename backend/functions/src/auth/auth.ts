@@ -1,7 +1,7 @@
-import * as admin from 'firebase-admin';
+// import * as admin from 'firebase-admin';
 // import { Request } from 'express';
 
-admin.initializeApp();
+// admin.initializeApp();
 
 // async function verifyToken(req: Request): Promise<admin.auth.DecodedIdToken> {
 //     const authHeader = req.headers.authorization;
