@@ -1,4 +1,7 @@
 <template>
+    <div class="roomid">
+        <p>Room code: {{ roomID }}</p>
+    </div>
     <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid"
     @delete="(id)=>deleteDirector(id)"
     @update="(id, data)=>updateDirector(id, data)"/>
@@ -16,15 +19,16 @@ import FullWidget from './Widget.vue'
 </script>
 
 <script setup>
-import { ref, toRaw, isProxy } from 'vue'; //TODO: Import onMounted
+import { ref, toRaw, isProxy, onMounted } from 'vue'; //TODO: Import onMounted
 import { Peer } from 'peerjs';
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router'
 const route = useRoute();
+const router = useRouter();
 
 let counter = 1;
 const widgets = ref([]); //widget tracking list
-let user = route.query.username; //reference to user name
-let roomID = route.query.roomID; //reference to current room number
+//let user = route.query.username; //reference to user name
+let roomID = ref(''); //reference to current room number
 
 const networkData = { //room tracker for data persistent from an individual widget
     members: [], //list of members
@@ -37,7 +41,7 @@ const networkData = { //room tracker for data persistent from an individual widg
     dataConnections: [], //for host - stores all connections
     dataStatuses: {} //for host - stores data used in establishing/de-establishing connections cleanly
 }
-const keyPrepend = "CA-UCALGARY-SENG513-F23-G12"; //prepend used for every peer key (to avoid any key clashes)
+
 /**/
 //Widget event handlers
 function deleteWidget(id) {
@@ -105,14 +109,17 @@ function handleNetwork(dataConnection) {
         });
     }
     */
-    console.log('PEER CONNECTED');
+    console.log(dataConnection);
     dataConnection.on('open', ()=> {
         console.log('CONNECTED');
     })
     dataConnection.on('error', (e)=>{
-        const router = useRouter()
         window.alert(`A fatal error has occured:\n${e.type}\n\nClick 'Ok' to return to homepage`);
-        router.push('Home')
+        router.push('Home');
+    });
+    dataConnection.on('close', ()=>{
+        window.alert(`The host has disconnected or closed the room. Click 'Ok' to return to homepage`);
+        router.push('Home');
     });
 }
 
@@ -159,7 +166,7 @@ function respondHostNetworkProtocol(code, data, dataConnection) {
 function respondClientNetworkProtocol(code, data) {
     const innerData = code == 'UPD' ? data.data : {};
     if(code == 'AKD') {
-        networkData.thisPeer.disconnect();
+        peer.disconnect();
         $router.push('Home');
     } else {
         if(Object.keys(innerData).includes('users')) {
@@ -273,38 +280,32 @@ function updateDirector(id, data) {
 }
 //network creation
 
-console.log(networkData);
-const key =
-    networkData.isHost ?
-    `${keyPrepend}-${roomID}` :
-    `${keyPrepend}-${user}` ;
-console.log(key);
-console.log(typeof networkData.isHost);
-networkData.thisPeer = new Peer(key);
-if(networkData.isHost == true) {
-    console.log('HOSTING');
-    networkData.thisPeer.on('open', ()=>{
-        console.log('IT OPENED')
-        networkData.thisPeer.on('connection', (dataConnection)=>{
-            console.log('CONNECTION RECEIVED');
-            handleNetwork(dataConnection);
-        }) ;
-    });
-} else {
-    console.log('JOINING');
-    const conn = networkData.thisPeer.connect(`${keyPrepend}-${roomID}`) //TODO: Replace with key passed from landing
-    handleNetwork(conn);
-}
-
-window.addEventListener("beforeunload", ()=>{
-    networkData.thisPeer.destroy();
+const peer = new Peer();
+onMounted(()=>{
+    if(networkData.isHost) {
+        console.log('HOSTING');
+        peer.on('open', ()=>{
+            roomID.value = peer.id;
+            peer.on('connection', (dataConnection)=>{
+                console.log('CONNECTION RECEIVED');
+                handleNetwork(dataConnection);
+            }) ;
+        });
+    } else {
+        console.log('JOINING');
+        roomID.value = route.query.roomID;
+        const conn = peer.connect(roomID.value);
+        handleNetwork(conn);
+    }
 })
 
+window.addEventListener("beforeunload", ()=>{
+    peer.destroy();
+})
 
 onBeforeRouteLeave((to, from)=>{
-    console.log('B')
-    if(networkData.thisPeer != '') {
-        networkData.thisPeer.destroy();
+    if(peer != '') {
+        peer.destroy();
     }
 });
 /* */

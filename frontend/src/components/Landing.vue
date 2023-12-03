@@ -15,7 +15,7 @@
         <div id="room-join">
             <h1>Join a room</h1>
             <p>Invite code:</p>
-            <input type="text" id="inv-code" name="inv-code" placeholder="Enter Code Here">
+            <input type="text" id="inv-code" name="inv-code" placeholder="Enter Code Here" @input="id=$event.target.value">
             <button id="inv-code-enter" @click="join()">JOIN</button>
             <p class="centered-red">Invalid Room ID</p>
         </div>
@@ -50,6 +50,11 @@ import ClockWidget from './ClockWidget.vue';
 export default {
     name: "LandingPage",
     components: { ClockWidget },
+    data() {
+        return {
+            id: '',
+        }
+    },
     methods: {
         formatDate() {
             const monthInWords = [
@@ -84,7 +89,7 @@ export default {
                 query: {
                     isHost: false,
                     username: 'PLACEHOLDER-JOIN-USER',
-                    roomID: 'ABCD'
+                    roomID: this.id
                 }
             }
             this.$router.push(pushObj);
@@ -95,7 +100,6 @@ export default {
                 query: {
                     isHost: true,
                     username: 'PLACEHOLDER-HOST-USER',
-                    roomID: 'ABCD'
                 }
             }
             this.$router.push(pushObj);
