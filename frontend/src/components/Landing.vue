@@ -16,7 +16,7 @@
             <h1>Join a room</h1>
             <p>Invite code:</p>
             <input type="text" id="inv-code" name="inv-code" placeholder="Enter Code Here">
-            <button id="inv-code-enter" @click="$router.push('Room')">JOIN</button>
+            <button id="inv-code-enter" @click="join()">JOIN</button>
             <p class="centered-red">Invalid Room ID</p>
         </div>
         <div class="room-host">
@@ -36,7 +36,7 @@
             <div id="room-make">
                 <h1>Create a room</h1>
                 <div class="select-border select-sm">
-                    <div class="select-square plus">
+                    <div class="select-square plus" @click="host()">
                         <p>+</p>
                     </div>
                 </div>
@@ -77,6 +77,28 @@ export default {
             ]
             const date = new Date();
             return `${dayOfWeek[date.getDay()]} ${monthInWords[date.getMonth()]} ${date.getDate()}`;
+        },
+        join() {
+            const pushObj = {
+                name: 'Room',
+                query: {
+                    isHost: false,
+                    username: 'PLACEHOLDER-JOIN-USER',
+                    roomID: 'ABCD'
+                }
+            }
+            this.$router.push(pushObj);
+        },
+        host() {
+            const pushObj = {
+                name: 'Room',
+                query: {
+                    isHost: true,
+                    username: 'PLACEHOLDER-HOST-USER',
+                    roomID: 'ABCD'
+                }
+            }
+            this.$router.push(pushObj);
         }
     }
 }
