@@ -109,7 +109,6 @@ function handleNetwork(dataConnection) {
         });
     }
     */
-    console.log(dataConnection);
     dataConnection.on('open', ()=> {
         console.log('CONNECTED');
     })
@@ -117,10 +116,7 @@ function handleNetwork(dataConnection) {
         window.alert(`A fatal error has occured:\n${e.type}\n\nClick 'Ok' to return to homepage`);
         router.push('Home');
     });
-    dataConnection.on('close', ()=>{
-        window.alert(`The host has disconnected or closed the room. Click 'Ok' to return to homepage`);
-        router.push('Home');
-    });
+    
 }
 
 function sendUpdateClient(data, code) {
@@ -245,6 +241,7 @@ function deleteDirector(id) {
 
 function createDirector(data) {
     const newData = JSON.parse(JSON.stringify(data));
+    console.log(newData);
     if(data.isGroup) {
         if(networkData.isHost) {
             newData.sharedID = networkData.sharedCounter;
@@ -280,7 +277,7 @@ function updateDirector(id, data) {
 }
 //network creation
 
-const peer = new Peer();
+const peer = new Peer({debug: 3});
 onMounted(()=>{
     if(networkData.isHost) {
         console.log('HOSTING');
@@ -294,8 +291,10 @@ onMounted(()=>{
     } else {
         console.log('JOINING');
         roomID.value = route.query.roomID;
-        const conn = peer.connect(roomID.value);
-        handleNetwork(conn);
+        peer.on('open', ()=>{
+            const conn = peer.connect(roomID.value);
+            handleNetwork(conn);
+        });
     }
 })
 
