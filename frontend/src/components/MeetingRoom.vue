@@ -1,18 +1,24 @@
 <template>
-    <div id="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA LOOK HERE FOR WIDGETS">
-    <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid" @delete="(id)=>deleteWidget(id)"/>
+    <div>
+        <div id="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA LOOK HERE FOR WIDGETS">
+        <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid" @delete="(id)=>deleteWidget(id)"/>
+        </div>
+        <div class="item leaveRoom">
+        <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
+        </div>
+        <!-- <ChangeBackground/> -->
+        <WidgetBar @create="(data) => createWidget(data)"/>
     </div>
-    <div class="item leaveRoom">
-      <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
-    </div>
-    <!-- <ChangeBackground/> -->
-    <WidgetBar @create="(data) => createWidget(data)"/>
 </template>
 
 
 <script>
 import WidgetBar from './WidgetBarProcessing.vue'
 import FullWidget from './Widget.vue'
+
+export default {
+    components: { WidgetBar, FullWidget },
+}
 </script>
 
 <script setup>

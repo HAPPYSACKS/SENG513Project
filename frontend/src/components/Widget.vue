@@ -1,68 +1,70 @@
 <template>
-    <div class="widget-wrapper-full widget-wrapper" v-if="getWidgetStyle(widData.type) == 'full'"
-    :style="{
-        width: dimension.width + 'px',
-        height: dimension.height + 'px',
-        left: containerPosition.left + 'px',
-        top: containerPosition.top + 'px',
-    }">
-        <div class="top-bar-full">
-            <div>
+    <div>
+        <div class="widget-wrapper-full widget-wrapper" v-if="getWidgetStyle(widData.type) == 'full'"
+        :style="{
+            width: dimension.width + 'px',
+            height: dimension.height + 'px',
+            left: containerPosition.left + 'px',
+            top: containerPosition.top + 'px',
+        }">
+            <div class="top-bar-full">
+                <div>
+                    <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
+                    @mousedown="startDrag"></i>
+                </div>
+                &nbsp;
+                &nbsp;
+                <div>
+                    <span v-if="widData.isGroup == true">
+                        &nbsp;
+                        <i class="fa-solid fa-users fa-lg"></i>
+                        &nbsp;
+                    </span>
+                    <span>{{widData.name}}</span>
+                </div>
+                &nbsp;
+                &nbsp;
+                <div>
+                    <i class="fa-solid fa-lg" :class="{'fa-minus': !minimized, 'fa-plus': minimized}"
+                    @click="minimize()"></i>
+                    &nbsp;
+                    <i class="fa-solid fa-xmark fa-lg"
+                    @click="$emit('delete', widData.id)"></i>
+                </div>
+            </div>
+            <div class="content content-full"
+            :style=" {display: displayed ? 'block' : 'none'} ">
+                <component :is="getWidget(widData.type)"></component>
+            </div>
+        </div>
+        <div class="widget-wrapper-compact widget-wrapper" v-if="getWidgetStyle(widData.type) == 'compact'"
+        :style="{
+            width: dimension.width + 'px',
+            height: dimension.height + 'px',
+            left: containerPosition.left + 'px',
+            top: containerPosition.top + 'px',
+        }">
+            <div class="content content-compact"
+            :style=" {visibility: displayed ? 'visible' : 'hidden'} "
+            @mouseover="displayedCompact = true"
+            @mouseleave="displayedCompact = keepDisplayedCompact">
+                <component :is="getWidget(widData.type)"></component>
+            </div>
+            <div class="bar-compact"
+            :style="{display: displayedCompact ? 'block' : 'none'}"
+            @mouseover="displayedCompact = true"
+            @mouseleave="displayedCompact = keepDisplayedCompact">
                 <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
                 @mousedown="startDrag"></i>
-            </div>
-            &nbsp;
-            &nbsp;
-            <div>
-                <span v-if="widData.isGroup == true">
-                    &nbsp;
-                    <i class="fa-solid fa-users fa-lg"></i>
-                    &nbsp;
-                </span>
-                <span>{{widData.name}}</span>
-            </div>
-            &nbsp;
-            &nbsp;
-            <div>
+                &nbsp;
+                <i v-if="widData.isGroup == true" class="fa-solid fa-users fa-lg"></i>
+                &nbsp;
                 <i class="fa-solid fa-lg" :class="{'fa-minus': !minimized, 'fa-plus': minimized}"
                 @click="minimize()"></i>
                 &nbsp;
                 <i class="fa-solid fa-xmark fa-lg"
                 @click="$emit('delete', widData.id)"></i>
             </div>
-        </div>
-        <div class="content content-full"
-        :style=" {display: displayed ? 'block' : 'none'} ">
-            <component :is="getWidget(widData.type)"></component>
-        </div>
-    </div>
-    <div class="widget-wrapper-compact widget-wrapper" v-if="getWidgetStyle(widData.type) == 'compact'"
-    :style="{
-        width: dimension.width + 'px',
-        height: dimension.height + 'px',
-        left: containerPosition.left + 'px',
-        top: containerPosition.top + 'px',
-    }">
-        <div class="content content-compact"
-        :style=" {visibility: displayed ? 'visible' : 'hidden'} "
-        @mouseover="displayedCompact = true"
-        @mouseleave="displayedCompact = keepDisplayedCompact">
-            <component :is="getWidget(widData.type)"></component>
-        </div>
-        <div class="bar-compact"
-        :style="{display: displayedCompact ? 'block' : 'none'}"
-        @mouseover="displayedCompact = true"
-        @mouseleave="displayedCompact = keepDisplayedCompact">
-            <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
-            @mousedown="startDrag"></i>
-            &nbsp;
-            <i v-if="widData.isGroup == true" class="fa-solid fa-users fa-lg"></i>
-            &nbsp;
-            <i class="fa-solid fa-lg" :class="{'fa-minus': !minimized, 'fa-plus': minimized}"
-            @click="minimize()"></i>
-            &nbsp;
-            <i class="fa-solid fa-xmark fa-lg"
-            @click="$emit('delete', widData.id)"></i>
         </div>
     </div>
 </template>

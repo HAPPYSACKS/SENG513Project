@@ -1,7 +1,7 @@
 <template>
   <div>
     <MeetingRoom/>
-    <router-view />
+    <!-- <router-view /> -->
   </div>
 </template>
 
@@ -14,7 +14,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 #app {
     box-sizing: border-box;
     margin: 0;
