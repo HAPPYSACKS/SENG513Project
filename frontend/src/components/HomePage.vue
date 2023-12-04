@@ -79,6 +79,15 @@ export default {
         // Handle error appropriately, idk how to so I'll just log it
       }
     },
+    // async fetchRoom(roomID) {
+    //   try {
+    //     const functions = getFunctions(firebaseApp);
+    //     const getRoom = httpsCallable(functions, "getRoom");
+    //     const result = await getRoom({ roomID });
+    //   } catch (error) {
+    //     console.error("Error fetching room:", error);
+    //   }
+    // },
     checkAuthState() {
       const router = useRouter();
       const auth = getAuth();
