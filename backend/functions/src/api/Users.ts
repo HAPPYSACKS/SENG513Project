@@ -134,6 +134,8 @@ export const getUserProfile = functions.https.onCall(async (data, context) => {
     const snapshot = await userRef.once("value");
     const userProfile = snapshot.val();
 
+    
+
     if (!userProfile) {
       throw new functions.https.HttpsError(
         "not-found",

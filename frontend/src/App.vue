@@ -1,23 +1,22 @@
 <template>
   <div>
-    <MeetingRoom/>
-    <!-- <router-view /> -->
+    <router-view />
   </div>
 </template>
 
 <script>
-import MeetingRoom from './components/MeetingRoom.vue'
+// import MeetingRoom from "./components/MeetingRoom.vue";
 
 export default {
-    components: {MeetingRoom}
-}
+  components: {},
+};
 </script>
 
 <style>
 #app {
-    box-sizing: border-box;
-    margin: 0;
-    background-color: white;
-    font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  background-color: white;
+  font-family: "Inter", sans-serif;
 }
 </style>
