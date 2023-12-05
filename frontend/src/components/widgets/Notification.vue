@@ -20,17 +20,26 @@ export default {
     emits: ['destroy'],
     methods: {
         updateTimer() {
-            if (this.counter >= this.Timeout) {
-                counter++;
+            if (this.counter < this.Timeout) {
+                this.counter++;
                 setTimeout(this.updateTimer, 1000);
             } else {
                 this.$emit('destroy', this.Self)
             }
         }
+    },
+    mounted() {
+        this.updateTimer();
     }
 }
 </script>
 
 <style>
-
+.card {
+    width: 330px;
+    background-color: #cecece;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 12px;
+}
 </style>

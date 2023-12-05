@@ -2,7 +2,7 @@
     <LoadingScreen Msg="Connecting" v-if="!ready"/>
     <div v-else>
         <div class="roomid">
-            <p>Room code: {{ roomID }}</p>
+            <NotificationCard v-for="a in alerts" :key="a.id" @destroy="endAlert" :Msg="a.msg" :Timeout="a.timeout" :Self="a.id"/>
         </div>
         <FullWidget v-for="wid in widgets" :key="wid.id" :widData="wid"
         @delete="(id)=>deleteDirector(id)"
@@ -11,7 +11,7 @@
         <i class="fa-solid fa-door-open fa-xl" @click="Leave()"></i>
         </div>
         <!-- <ChangeBackground/> -->
-        <WidgetBar @create="(data) => createDirector(data)" :isHost="networkData.isHost"/>
+        <WidgetBar @create="(data) => createDirector(data)" :isHost="networkData.isHost" :roomid="roomID"/>
     </div>
 </template>
 
@@ -20,6 +20,7 @@
 import WidgetBar from './WidgetBarProcessing.vue'
 import FullWidget from './Widget.vue'
 import LoadingScreen from './loading.vue';
+import NotificationCard from './widgets/Notification.vue';
 </script>
 
 <script setup>
@@ -34,6 +35,8 @@ const widgets = ref([]); //widget tracking list
 //let user = route.query.username; //reference to user name
 let roomID = ref(''); //reference to current room number
 const ready = ref(false); //
+const alerts = ref([]);
+let alertCounter = 1;
 
 const networkData = { //room tracker for data persistent from an individual widget
     members: [], //list of members
@@ -313,6 +316,7 @@ onMounted(()=>{
         peer.on('open', ()=>{
             ready.value = !ready.value;
             roomID.value = peer.id;
+            startAlert(`Room opened with ID ${roomID.value}. To view this again, click on the envelope icon`, 5);
             peer.on('connection', (dataConnection)=>{
                 console.log('CONNECTION RECEIVED');
                 handleNetwork(dataConnection);
@@ -348,6 +352,26 @@ function Leave() {
         router.push('Home');
     }
 }
+
+//alert functions
+function startAlert(msg, timeout) {
+    const as = isProxy(alerts.value) ? toRaw(alerts.value) : alerts.value;
+    const newData = {
+        msg: msg,
+        timeout: timeout,
+        id: alertCounter
+    }
+    alertCounter++;
+    const as2 = structuredClone(as);
+    as2.push(newData);
+    alerts.value.splice(0, as.length, ...as2); 
+}
+
+function endAlert(id) {
+    const as = isProxy(alerts.value) ? toRaw(alerts.value) : alerts.value;
+    const as2 = as.filter((a) => {return a.id != id});
+    alerts.value.splice(0, as.length, ...as2);
+}
 </script>
 
 <style scoped>
@@ -369,6 +393,12 @@ function Leave() {
     .item:hover{
         background-color: grey;
         border-radius: 5px;
+    }
+
+    .roomid {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
     }
 </style>
 

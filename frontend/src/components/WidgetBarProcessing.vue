@@ -14,20 +14,18 @@ export default {
       widgets: [
         { name: 'Room-Member', isGroup: false, type: 'RoomMemberWidget', default: {}},
         { name: 'Chat', isGroup: false, type: 'ChatWidget', default: {} },
-        { name: 'Call', isGroup: false, type: 'CallWidget', default: {} },
         { name: 'Sound', isGroup: false, type: 'MusicWidget', default: {}},
         { name: 'Youtube', isGroup: false, type: 'YoutubeWidget', default: {} },
         { name: 'Timer', isGroup: false, type: 'TimerWidget', default: {s: "00", m: "10", shouldCount: false, reset: 0} },
         { name: 'Calendar', isGroup: false, type: 'CalendarWidget', default: {} },
-        { name: 'To-Do-List', isGroup: false, type: 'ToDoListWidget', default: {} },
         { name: 'Sticky-Notes', isGroup: false, type: 'StickyNotesWidget', default: {} },
-        { name: 'Sticker', isGroup: false, type: 'StickerWidget', default: {} },
-        { name: 'Draw', isGroup: false, type: 'DrawWidget', default: {} },
+        { name: 'Invite', isGroup: false, type: 'InviteWidget', default: {id: this.roomid} },
       ],
     };
   },
   props: {
-    isHost: Boolean
+    isHost: Boolean,
+    roomid: String,
   },
   methods: {
     handleShowNoPopupWidget(widgetName) {

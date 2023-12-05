@@ -71,6 +71,7 @@
 import WidgetDefault from './widgets/Default.vue';
 import TimerWidget from './widgets/TimerWidget.vue';
 import MusicWidget from './widgets/MusicWidget.vue';
+import InviteWidget from './widgets/Invite.vue';
 export default {
     name: 'FullWidget',
     data() {
@@ -109,7 +110,8 @@ export default {
         // eslint-disable vue/no-unused-components
         WidgetDefault,
         TimerWidget,
-        MusicWidget
+        MusicWidget,
+        InviteWidget
     },
     emits: ['delete', 'update'],
     methods: {
@@ -136,9 +138,6 @@ export default {
                 case 'ChatWidget':
                     toReturn = WidgetDefault;
                     break;
-                case 'CallWidget':
-                    toReturn = WidgetDefault;
-                    break;
                 case 'MusicWidget':
                     toReturn = MusicWidget;
                     break;
@@ -151,17 +150,11 @@ export default {
                 case 'CalendarWidget':
                     toReturn = WidgetDefault;
                     break;
-                case 'ToDoListWidget':
-                    toReturn = WidgetDefault;
-                    break;
                 case 'StickyNotesWidget':
                     toReturn = WidgetDefault;
                     break;
-                case 'StickerWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case 'DrawWidget':
-                    toReturn = WidgetDefault;
+                case 'InviteWidget':
+                    toReturn = InviteWidget;
                     break;
                 default:
                     toReturn = WidgetDefault;

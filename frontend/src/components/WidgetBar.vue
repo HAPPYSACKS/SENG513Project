@@ -48,6 +48,9 @@
                   <i class="fa-regular fa-image fa-xl icon"></i>
                 </div>
                 <div class="item">
+                  <i class="fa-solid fa-envelope fa-xl icon" @click="showPopup('Invite')" id="Invite"></i>
+                </div>
+                <div class="item">
                   <i class="fa-solid fa-gear fa-xl icon"></i>
                 </div>
               </div>
@@ -65,7 +68,11 @@ export default {
         isPopupShown: false,
         widgetName: '',
         top: 0,
-        left: 0
+        left: 0,
+        noPopup: [
+          "Sound",
+          "Invite"
+        ]
       }
     },
     props: {
@@ -86,7 +93,7 @@ export default {
 
       showPopup(widgetName){
         this.widgetName = widgetName
-        if(this.widgetName === "Sound"){
+        if(this.noPopup.includes(this.widgetName)){
           this.$emit("showNoPopupWidget", this.widgetName)
         }else{
           this.isPopupShown = !this.isPopupShown
