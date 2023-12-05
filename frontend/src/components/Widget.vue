@@ -73,6 +73,7 @@
 import WidgetDefault from './widgets/Default.vue';
 import TimerWidget from './widgets/TimerWidget.vue';
 import MusicWidget from './widgets/MusicWidget.vue';
+import YoutubeWidget from './widgets/YoutubeWidget.vue'
 export default {
     name: 'FullWidget',
     data() {
@@ -111,7 +112,8 @@ export default {
         // eslint-disable vue/no-unused-components
         WidgetDefault,
         TimerWidget,
-        MusicWidget
+        MusicWidget,
+        YoutubeWidget,
     },
     emits: ['delete'],
     methods: {
@@ -145,7 +147,7 @@ export default {
                     toReturn = MusicWidget;
                     break;
                 case 'YoutubeWidget':
-                    toReturn = WidgetDefault;
+                    toReturn = YoutubeWidget;
                     break;
                 case 'TimerWidget':
                     toReturn = TimerWidget;

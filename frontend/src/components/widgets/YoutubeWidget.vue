@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-    <form id="form">
-      <input type="text" id="search" required />
+    <!-- form submitted usually refresh the page, this prevents that, then run videoSearch -->
+    <form @submit.prevent="videoSearch">
+      <input type="text" id="search" v-model="searchInput" required />
       <button type="submit" value="Search">Search</button>
     </form>
 
@@ -10,42 +11,49 @@
 </template>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const API_KEY = "AIzaSyAOY5ZqU1LZ4-lwR0GBSArcDIUx6ZnfW5E";
+export default {
+  data() {
+    return {
+      searchInput: "", // bind input value w v-model
+    };
+  },
+  methods: {
+    videoSearch() {
+      const API_KEY = "AIzaSyAOY5ZqU1LZ4-lwR0GBSArcDIUx6ZnfW5E";
 
-            const form = document.getElementById('form');
-            const searchInput = document.getElementById('search');
-            const videosContainer = document.getElementById('videos');
+      const search = this.searchInput;
 
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                const search = searchInput.value;
-                videoSearch(API_KEY, search);
-            });
+      if (!search) {
+        console.error("Type something first big boy");
+        return;
+      }
 
-            function videoSearch(key, search) {
-                videosContainer.innerHTML = '';
+      const videosContainer = document.getElementById("videos");
+      videosContainer.innerHTML = "";
 
-                fetch(`https://www.googleapis.com/youtube/v3/search?key=${key}&type=video&part=snippet&maxResults=1&q=${search}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.items.length > 0) {
-                            var item = data.items[0];
-                            var video = document.createElement('iframe');
-                            video.width = "400";
-                            video.height = "225";
-                            video.src = `http://www.youtube.com/embed/${item.id.videoId}`;
-                            video.frameBorder = "0";
-                            video.allowFullscreen = false;
+      fetch(
+        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&type=video&part=snippet&maxResults=1&q=${search}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.items.length > 0) {
+            var item = data.items[0];
+            var video = document.createElement("iframe");
+            video.width = "400";
+            video.height = "225";
+            video.src = `http://www.youtube.com/embed/${item.id.videoId}`;
+            video.frameBorder = "0";
+            video.allowFullscreen = false;
 
-                            videosContainer.appendChild(video);
-                        } else {
-                            console.error('No videos found.');
-                        }
-                    })
-                    .catch(error => console.error('Error fetching data:', error));
-            }
-        });
+            videosContainer.appendChild(video);
+          } else {
+            console.error("No videos found.");
+          }
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -57,13 +65,13 @@
   align-items: center;
 }
 
-input{
-    border-radius: 5px 0 0 5px;
-    border: 1px black solid;
+input {
+  border-radius: 5px 0 0 5px;
+  border: 1px black solid;
 }
 
-#videos{
-    margin-top: 10px;
+#videos {
+  margin-top: 10px;
 }
 
 button {
@@ -73,9 +81,9 @@ button {
   background-color: #b6b5b5;
 }
 
-button:hover{
-    background-color: black;
-    color: white;
-    cursor: pointer;
+button:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
 }
 </style>
