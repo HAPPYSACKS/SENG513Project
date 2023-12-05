@@ -5,7 +5,7 @@
       <div class="topbar-wrapper-r">
         <p>{{ formatDate() }}</p>
         <p>|</p>
-        <div class="item">
+        <div class="item" @click="signOutUser">
           <i class="fa-solid fa-arrow-right-from-bracket logout"></i>
         </div>
       </div>
