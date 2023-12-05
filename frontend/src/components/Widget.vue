@@ -12,11 +12,34 @@
     >
       <div class="top-bar-full">
         <div>
-          <i
-            class="fa-solid fa-arrows-up-down-left-right fa-lg"
+          <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
             @mousedown="startDrag"
           ></i>
         </div>
+        &nbsp;
+        &nbsp;
+        <div>
+            <span v-if="widData.isGroup == true">
+                &nbsp;
+                <i class="fa-solid fa-users fa-lg"></i>
+                &nbsp;
+            </span>
+            <span>{{widData.name}}</span>
+        </div>
+        &nbsp; &nbsp;
+        <div>
+          <i class="fa-solid fa-lg"
+            :class="{ 'fa-minus': !minimized, 'fa-plus': minimized }"
+            @click="minimize()"
+          ></i>
+          &nbsp;
+          <i
+            class="fa-solid fa-xmark fa-lg"
+            @click="$emit('delete', widData.id)"
+          ></i>
+        </div>
+      </div>
+      
         <div
           class="content content-full"
           :style="{ display: displayed ? 'block' : 'none' }"
@@ -31,20 +54,7 @@
             "
           ></component>
         </div>
-        &nbsp; &nbsp;
-        <div>
-          <i
-            class="fa-solid fa-lg"
-            :class="{ 'fa-minus': !minimized, 'fa-plus': minimized }"
-            @click="minimize()"
-          ></i>
-          &nbsp;
-          <i
-            class="fa-solid fa-xmark fa-lg"
-            @click="$emit('delete', widData.id)"
-          ></i>
-        </div>
-      </div>
+
       <div
         class="content content-full"
         :style="{ display: displayed ? 'block' : 'none' }"

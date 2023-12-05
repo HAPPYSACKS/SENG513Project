@@ -91,7 +91,7 @@ this.$parent.$off('peer-message-received');
 } */
 };
 </script>
-<style>
+<style scoped>
 * {
   box-sizing: border-box;
 }
@@ -110,8 +110,6 @@ input {
   padding: 1rem;
   background: rgba(0, 0, 0, 0.1);
 }
-</style>
-<style scoped>
 .chat {
   height: 50vh;
   width: 25vw;

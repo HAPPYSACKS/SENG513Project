@@ -182,6 +182,7 @@ export default {
       });
     },
 
+    // POTENTIAL BUG
     collapseIconsOnClickOutside(event) {
       if (
         !this.$refs.moreWidgetIcon.contains(event.target) &&

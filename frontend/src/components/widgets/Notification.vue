@@ -34,7 +34,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card {
     width: 330px;
     background-color: #cecece;
