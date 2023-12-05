@@ -32,3 +32,4 @@ export const addRoom = roomFunctions.addRoom;
 export const getAllRooms = roomFunctions.getAllRooms;
 export const deleteRoom = roomFunctions.deleteRoom;
 export const addParticipantToRoom = roomFunctions.addParticipantToRoom;
+export const updateRoomRefID = roomFunctions.updateRoomRefID;

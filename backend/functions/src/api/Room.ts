@@ -193,43 +193,44 @@ export const addParticipantToRoom = functions.https.onRequest(
   }
 );
 
-// API route to update roomRefID
 export const updateRoomRefID = functions.https.onRequest(
-  async (req: Request, res: Response) => {
-    // Check for POST method
-    if (req.method !== "POST") {
-      res.status(405).send("Method Not Allowed");
-      return;
-    }
+  (req: Request, res: Response) => {
+    corsHandler(req, res, async () => {
+      // Check for POST method
+      if (req.method !== "POST") {
+        res.status(405).send("Method Not Allowed");
+        return;
+      }
 
-    const decodedToken = await verifyToken(req);
-    if (!decodedToken) {
-      res.status(401).send("Unauthorized");
-      return;
-    }
+      try {
+        const decodedToken = await verifyToken(req);
+        if (!decodedToken) {
+          res.status(401).send("Unauthorized");
+          return;
+        }
 
-    // Extract roomID and roomRefID from the request body
-    const { roomID, roomRefID } = req.body;
+        // Extract roomID and roomRefID from the request body
+        const { roomID, roomRefID } = req.body;
 
-    // Validate the input
-    if (!roomID || !roomRefID) {
-      res.status(400).send("Room ID and Room Ref ID are required");
-      return;
-    }
+        // Validate the input
+        if (!roomID || !roomRefID) {
+          res.status(400).send("Room ID and Room Ref ID are required");
+          return;
+        }
 
-    try {
-      // Get a reference to the specific room
-      const roomRef = admin.database().ref(`Room/${roomID}`);
+        // Get a reference to the specific room
+        const roomRef = admin.database().ref(`Room/${roomID}`);
 
-      // Update the roomRefID field
-      await roomRef.update({ roomRefID });
+        // Update the roomRefID field
+        await roomRef.update({ roomRefID });
 
-      res
-        .status(200)
-        .send(`Room Ref ID updated successfully for room ${roomID}`);
-    } catch (error) {
-      console.error("Error updating Room Ref ID:", error);
-      res.status(500).send("Internal Server Error");
-    }
+        res
+          .status(200)
+          .send(`Room Ref ID updated successfully for room ${roomID}`);
+      } catch (error) {
+        console.error("Error updating Room Ref ID:", error);
+        res.status(500).send("Internal Server Error");
+      }
+    });
   }
 );

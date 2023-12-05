@@ -42,8 +42,11 @@ import axios from "axios";
 import { ref, toRaw, isProxy, onMounted } from "vue"; //TODO: Import onMounted
 import { Peer } from "peerjs";
 import { useRouter, useRoute, onBeforeRouteLeave } from "vue-router";
+import { getAuth } from "firebase/auth";
+
 const route = useRoute();
 const router = useRouter();
+const API_ADDRESS = "https://us-central1-study-buddy-51a85.cloudfunctions.net/";
 
 let counter = 1;
 const widgets = ref([]); //widget tracking list
@@ -65,6 +68,45 @@ const networkData = {
   dataConnections: [], //for host - stores all connections
   dataStatuses: {}, //for host - stores data used in establishing/de-establishing connections cleanly
 };
+
+async function getAuthToken() {
+  return new Promise((resolve, reject) => {
+    const auth = getAuth();
+    auth.currentUser
+      .getIdToken()
+      .then((token) => {
+        resolve(token);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+async function updateRoomReferenceID() {
+  try {
+    const authToken = await getAuthToken();
+    console.log(route.query);
+    console.log(peer.id);
+    await axios.post(
+      `${API_ADDRESS}/updateRoomRefID`,
+      {
+        roomID: route.query.roomRefID, // Existing room ID from the database
+        roomRefID: peer.id, // New ID from Peer.js
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+    console.log("Room Ref ID updated successfully");
+    // Additional logic after successful update
+  } catch (error) {
+    console.error("Error updating Room Ref ID:", error);
+    // Error handling logic
+  }
+}
 
 /**/
 //Widget event handlers
@@ -130,12 +172,12 @@ function handleNetwork(dataConnection) {
     else {
         networkData.thisConnection = dataConnection;
         dataConnection.on('open', ()=>{
-            
+
             dataConnection.send( {
                 NETWORKCODE: 'C',
                 user: user
             });
-        });    
+        });
         dataConnection.on("data", (data)=>{
             if(Object.keys(data).includes('NETWORKCODE')) {
                 respondClientNetworkProtocol(data.NETWORKCODE, data.data);
@@ -362,27 +404,14 @@ function updateDirector(id, data) {
 //network creation
 
 const peer = new Peer();
-onMounted(() => {
+onMounted(async () => {
   if (networkData.isHost) {
     console.log("HOSTING");
-    peer.on("open", () => {
+    peer.on("open", async () => {
       ready.value = !ready.value;
       roomID.value = peer.id;
+      await updateRoomReferenceID();
 
-      // Make a POST request to update roomRefID
-      axios
-        .post("your-api-endpoint/updateRoomRefID", {
-          roomID: roomID.value, // The existing room ID from the database
-          roomRefID: peer.id, // The newly generated ID from Peer.js
-        })
-        .then((response) => {
-          console.log("Room Ref ID updated successfully:", response.data);
-          // Additional logic after successful update, idk what to put
-        })
-        .catch((error) => {
-          console.error("Error updating Room Ref ID:", error);
-          // Error handling logic, idk what to put
-        });
       startAlert(
         `Room opened with ID ${roomID.value}. To view this again, click on the envelope icon`,
         5
