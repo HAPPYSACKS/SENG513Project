@@ -5,7 +5,9 @@
             <div class="topbar-wrapper-r">
                 <p>{{ formatDate() }}</p>
                 <p>|</p>
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <div class="item">
+                    <i class="fa-solid fa-arrow-right-from-bracket logout"></i>
+                </div>
             </div>
         </div>
         <div id="greeting">
@@ -115,6 +117,17 @@ export default {
 }
 
 /*Component Positioning, Sizing*/
+.item{
+    width: 1em;
+    height: 1em;
+    cursor: pointer;
+    text-align: center;
+}
+
+.item:hover{
+    background-color: grey;
+    border-radius: 5px;   
+}
 
 #topbar {
     width: 95%;

@@ -1,5 +1,5 @@
 import MeetingRoom from '../components/MeetingRoom.vue';
-import LandingPage from '../components/Landing.vue';
+import LandingPage from '../components/HomePage.vue';
 import PlaceholderPage from '../components/PlaceholderPage.vue'
 import { createWebHistory, createRouter } from 'vue-router';
 
