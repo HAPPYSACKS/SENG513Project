@@ -64,7 +64,7 @@ export const addRoom = functions.https.onRequest(
           CreationTimestamp: new Date().toISOString(), // Set current time as creation timestamp
           LastActivityTimestamp: new Date().toISOString(), // Set current time as last activity timestamp
           OwnerID: ownerID,
-          Participants: {},
+          Participants: { ownerID },
           Status: "active", // UNUSED
           Widgets: [], // UNUSED
         };
