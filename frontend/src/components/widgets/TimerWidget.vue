@@ -7,8 +7,8 @@
     </div>
 
     <div id="buttons">
-      <button @click="emitUpdateEvent({shouldCount: !this.isCountingDown})">{{ message }}</button>
-      <button @click="emitUpdateEvent({reset: !data.reset, shouldCount: false})" class="reset">Reset</button>
+      <button @click="emitUpdateEvent({cs: this.seconds, cm: this.minutes, shouldCount: !this.isCountingDown})">{{ message }}</button>
+      <button @click="emitUpdateEvent({cs: this.seconds, cm: this.minutes, reset: !data.reset, shouldCount: false})" class="reset">Reset</button>
     </div>
   </div>
 </template>
@@ -19,8 +19,8 @@ export default {
     return {
         resetMinutes: "10",
         resetSeconds: "00",
-        minutes: "10", // Set default minutes to 10
-        seconds: "00", // Set default seconds to 00
+        minutes: this.data.cm, // Set default minutes to 10
+        seconds: this.data.cs, // Set default seconds to 00
         isCountingDown: false,
         message: 'Start',
         isFlashing: false,
@@ -46,7 +46,7 @@ export default {
     updateTimer() {
       let totalSeconds = parseInt(this.minutes) * 60 + parseInt(this.seconds);
       let timerID;
-
+      this.emitUpdateEvent({cs: this.seconds, cm: this.minutes});
       if (totalSeconds > 0 && this.isCountingDown) {
         totalSeconds--;
         this.minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
@@ -76,7 +76,7 @@ export default {
       // Ensure minutes and seconds are in the valid range
       this.minutes = this.validateNumberInput(this.minutes, 0, 59);
       this.seconds = this.validateNumberInput(this.seconds, 0, 59);
-      this.emitUpdateEvent({m: this.minutes, s:this.seconds});
+      this.emitUpdateEvent({cs: this.seconds, cm: this.minutes, m: this.minutes, s:this.seconds});
     },
     validateNumberInput(value, min, max) {
       const intValue = parseInt(value);
@@ -112,6 +112,9 @@ export default {
         }
       }
     }
+  },
+  mounted() {
+    if(this.data.shouldCount) this.startOrStopTimer();
   }
 };
 </script>
