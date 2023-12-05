@@ -7,8 +7,8 @@
     </div>
 
     <div id="buttons">
-      <button @click="startOrStopTimer">{{ message }}</button>
-      <button @click="resetTimer" class="reset">Reset</button>
+      <button @click="emitUpdateEvent({shouldCount: !this.isCountingDown})">{{ message }}</button>
+      <button @click="emitUpdateEvent({reset: !data.reset, shouldCount: false})" class="reset">Reset</button>
     </div>
   </div>
 </template>
@@ -17,6 +17,8 @@
 export default {
     data() {
     return {
+        resetMinutes: "10",
+        resetSeconds: "00",
         minutes: "10", // Set default minutes to 10
         seconds: "00", // Set default seconds to 00
         isCountingDown: false,
@@ -24,7 +26,14 @@ export default {
         isFlashing: false,
     };
   },
+  props: {
+    data: Object
+  },
   methods: {
+    stopTimer() {
+      this.isCountingDown = false;
+      this.message = "Start";
+    },
     startOrStopTimer() {
       this.isCountingDown = !this.isCountingDown;
       if (this.isCountingDown) {
@@ -59,14 +68,15 @@ export default {
     },
     resetTimer() {
       this.isCountingDown = false;
-      this.minutes = "00";
-      this.seconds = "00";
+      this.minutes = this.resetMinutes;
+      this.seconds = this.resetSeconds;
       this.message = "Start";
     },
     validateInput() {
       // Ensure minutes and seconds are in the valid range
       this.minutes = this.validateNumberInput(this.minutes, 0, 59);
       this.seconds = this.validateNumberInput(this.seconds, 0, 59);
+      this.emitUpdateEvent({m: this.minutes, s:this.seconds});
     },
     validateNumberInput(value, min, max) {
       const intValue = parseInt(value);
@@ -77,7 +87,32 @@ export default {
       }
       return String(intValue).padStart(2, '0');
     },
+    emitUpdateEvent(data) {
+      const newData = structuredClone(this.data);
+      Object.assign(newData, data);//newData.assign(data);  
+      this.$emit('update', newData);
+    }
   },
+  emits: ['update'],
+  watch: {
+    data: {
+      handler(newData, oldData) {
+        if(oldData.s != newData.s || oldData.m != newData.m) {
+          this.resetMinutes = newData.m;
+          this.resetSeconds = newData.s;
+          this.minutes = this.resetMinutes;
+          this.seconds = this.resetSeconds;
+          this.stopTimer();
+        }
+        if(newData.shouldCount != this.isCountingDown) {
+          this.startOrStopTimer();
+        }
+        if(newData.reset != oldData.reset) {
+          this.resetTimer();
+        }
+      }
+    }
+  }
 };
 </script>
 

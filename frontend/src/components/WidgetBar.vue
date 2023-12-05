@@ -7,7 +7,9 @@
       :style="{ top: top + 'px', left: left + 'px' }"
     >
       <div class="rectangle">
-        <div @click="chooseType('self')" class="half for-myself">For Myself</div>
+        <div @click="chooseType('self')" class="half for-myself">
+          For Myself
+        </div>
         <div @click="chooseType('room')" class="half for-room">For Room</div>
       </div>
       <!-- <div class="triangle"></div> -->
@@ -18,36 +20,25 @@
       <div class="widget">
         <div class="left">
           <div class="item">
-            <img
+            <i
+              class="fa-solid fa-users fa-xl icon"
               @click="showPopup('Room-Member')"
               id="Room-Member"
-              src="@/assets/icons/roomMember.png"
-              alt="Room Member List"
-            />
+            ></i>
           </div>
           <div class="item">
-            <img
+            <i
+              class="fa-regular fa-comment-dots fa-xl icon"
               @click="showPopup('Chat')"
               id="Chat"
-              src="@/assets/icons/chat.png"
-              alt="Chat"
-            />
+            ></i>
           </div>
           <div class="item">
-            <img
-              @click="showPopup('Call')"
-              id="Call"
-              src="@/assets/icons/call.png"
-              alt="Call"
-            />
-          </div>
-          <div class="item">
-            <img
+            <i
+              class="fa-solid fa-music fa-xl icon"
               @click="showPopup('Sound')"
               id="Sound"
-              src="@/assets/icons/speaker.png"
-              alt="Sound"
-            />
+            ></i>
           </div>
           <div
             v-show="!iconsActive"
@@ -56,7 +47,9 @@
             id="moreWidget"
             ref="moreWidgetIcon"
           >
-            <img src="@/assets/icons/widgets.png" alt="More Widgets" />
+            <div class="item">
+              <i class="fa-regular fa-square-plus fa-xl icon"></i>
+            </div>
           </div>
           <div
             class="groupedWidgets"
@@ -64,60 +57,48 @@
             ref="widgetIcons"
           >
             <div class="item">
-              <img
+              <i
+                class="fa-brands fa-youtube fa-xl icon"
                 @click="showPopup('Youtube')"
                 id="Youtube"
-                src="@/assets/icons/youtube.png"
-                alt="YouTube"
-              />
+              ></i>
             </div>
             <div class="item">
-              <img
+              <i
+                class="fa-solid fa-stopwatch fa-xl icon"
                 @click="showPopup('Timer')"
                 id="Timer"
-                src="@/assets/icons/timer.png"
-                alt="Timer"
-              />
+              ></i>
             </div>
             <div class="item">
-              <img
+              <i
+                class="fa-solid fa-calendar-days fa-xl icon"
                 @click="showPopup('Calendar')"
                 id="Calendar"
-                src="@/assets/icons/calendar.png"
-                alt="Calendar"
-              />
+              ></i>
             </div>
             <div class="item">
-              <img
-                @click="showPopup('To-Do-List')"
-                id="To-Do-List"
-                src="@/assets/icons/toDoList.png"
-                alt="To Do List"
-              />
-            </div>
-            <div class="item">
-              <img
+              <i
+                class="fa-regular fa-note-sticky fa-xl icon"
                 @click="showPopup('Sticky-Notes')"
                 id="Sticky-Notes"
-                src="@/assets/icons/stickynotes.png"
-                alt="Sticky Notes"
-              />
+              ></i>
+            </div>
+          </div>
+          <div class="right" v-if="isHost">
+            <div class="divider"></div>
+            <div class="item">
+              <i class="fa-regular fa-image fa-xl icon"></i>
             </div>
             <div class="item">
-              <img
-                @click="showPopup('Sticker')"
-                id="Sticker"
-                src="@/assets/icons/sticker.png"
-                alt="Sticker"
-              />
+              <i
+                class="fa-solid fa-envelope fa-xl icon"
+                @click="showPopup('Invite')"
+                id="Invite"
+              ></i>
             </div>
             <div class="item">
-              <img
-                @click="showPopup('Draw')"
-                id="Draw"
-                src="@/assets/icons/draw.png"
-                alt="Draw"
-              />
+              <i class="fa-solid fa-gear fa-xl icon"></i>
             </div>
           </div>
         </div>
@@ -152,7 +133,11 @@ export default {
       widgetName: "",
       top: 0,
       left: 0,
+      noPopup: ["Sound", "Invite"],
     };
+  },
+  props: {
+    isHost: Boolean,
   },
   components: { ClockWidget },
   emits: ["returnPopupInfo", "showNoPopupWidget"],
@@ -169,7 +154,7 @@ export default {
 
     showPopup(widgetName) {
       this.widgetName = widgetName;
-      if (this.widgetName === "Sound"  || this.widgetName === "ChangeBG" || this.widgetName === "Youtube") {
+      if (this.noPopup.includes(this.widgetName)) {
         this.$emit("showNoPopupWidget", this.widgetName);
       } else {
         this.isPopupShown = !this.isPopupShown;
@@ -196,8 +181,8 @@ export default {
         document.addEventListener("click", this.collapseIconsOnClickOutside);
       });
     },
+
     collapseIconsOnClickOutside(event) {
-      // TO DO:  check for potential bug
       if (
         !this.$refs.moreWidgetIcon.contains(event.target) &&
         this.iconsActive &&
@@ -327,10 +312,15 @@ export default {
   background-color: black;
 }
 
+.icon {
+  margin-top: 15px;
+}
+
 .item {
   width: 30px;
   height: 30px;
   cursor: pointer;
+  text-align: center;
 }
 .item img {
   width: 100%;

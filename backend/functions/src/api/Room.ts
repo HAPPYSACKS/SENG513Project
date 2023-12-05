@@ -1,7 +1,9 @@
 const functions = require("firebase-functions");
+import * as cors from "cors";
 import admin from "../utils/firebaseInit";
 import { Request, Response } from "express";
 import { verifyToken } from "../auth/verify";
+import * as logger from "firebase-functions/logger";
 
 // TODO
 // Update Room on new participant
@@ -11,9 +13,9 @@ import { verifyToken } from "../auth/verify";
 // Test room edit
 // Test room read
 
+const corsHandler = cors({ origin: true }); // change later
 
-
-exports.getRoom = functions.https.onRequest(
+export const getRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
     if (req.method !== "GET") {
       res.status(405).send("Method Not Allowed");
@@ -39,45 +41,49 @@ exports.getRoom = functions.https.onRequest(
       }
     } catch (error) {
       console.error("Error fetching room:", error);
+
       res.status(500).send("Internal Server Error");
     }
   }
 );
 
-exports.addRoom = functions.https.onRequest(
-  async (req: Request, res: Response) => {
-    // Assumes the request method to be POST
-    if (req.method !== "POST") {
-      res.status(405).send("Method Not Allowed");
-      return;
-    }
+export const addRoom = functions.https.onRequest(
+  (req: Request, res: Response) => {
+    corsHandler(req, res, async () => {
+      // Assumes the request method to be POST
+      if (req.method !== "POST") {
+        res.status(405).send("Method Not Allowed");
+        return;
+      }
 
-    try {
-      const decodedToken = await verifyToken(req);
-      const ownerID = decodedToken.uid;
+      try {
+        const decodedToken = await verifyToken(req);
+        const ownerID = decodedToken.uid;
 
-      const newRoomData = {
-        CreationTimestamp: new Date().toISOString(), // Set current time as creation timestamp
-        LastActivityTimestamp: new Date().toISOString(), // Set current time as last activity timestamp
-        Owner: ownerID,
-        Participants: {},
-        Status: "active", // UNUSED
-        Widgets: [], // UNUSED
-      };
+        const newRoomData = {
+          CreationTimestamp: new Date().toISOString(), // Set current time as creation timestamp
+          LastActivityTimestamp: new Date().toISOString(), // Set current time as last activity timestamp
+          OwnerID: ownerID,
+          Participants: { ownerID },
+          Status: "active", // UNUSED
+          Widgets: [], // UNUSED
+        };
 
-      // Adds a new room to the 'Room' node
-      const roomRef = admin.database().ref("Room");
-      const newRoomRef = await roomRef.push(newRoomData);
+        // Adds a new room to the 'Room' node
+        const roomRef = admin.database().ref("Room");
+        const newRoomRef = await roomRef.push(newRoomData);
 
-      res.status(200).send({ newRoomId: newRoomRef.key });
-    } catch (error) {
-      console.error("Error adding new room:", error);
-      res.status(500).send("Internal Server Error");
-    }
+        res.status(200).send({ newRoomId: newRoomRef.key });
+      } catch (error) {
+        console.error("Error adding new room:", error);
+        logger.error("Error adding new room:", error);
+        res.status(500).send("Internal Server Error");
+      }
+    });
   }
 );
 
-exports.getAllRooms = functions.https.onRequest(
+export const getAllRooms = functions.https.onRequest(
   async (req: Request, res: Response) => {
     // Assumes the request method to be GET
     if (req.method !== "GET") {
@@ -98,7 +104,7 @@ exports.getAllRooms = functions.https.onRequest(
   }
 );
 
-exports.deleteRoom = functions.https.onRequest(
+export const deleteRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
     // Assumes the request method to be DELETE
     if (req.method !== "DELETE") {
@@ -143,7 +149,7 @@ exports.deleteRoom = functions.https.onRequest(
 
 // check this
 
-exports.addParticipantToRoom = functions.https.onRequest(
+export const addParticipantToRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
     if (req.method !== "POST") {
       res.status(405).send("Method Not Allowed");
@@ -184,5 +190,47 @@ exports.addParticipantToRoom = functions.https.onRequest(
       console.error("Error adding participant:", error);
       res.status(500).send("Internal Server Error");
     }
+  }
+);
+
+export const updateRoomRefID = functions.https.onRequest(
+  (req: Request, res: Response) => {
+    corsHandler(req, res, async () => {
+      // Check for POST method
+      if (req.method !== "POST") {
+        res.status(405).send("Method Not Allowed");
+        return;
+      }
+
+      try {
+        const decodedToken = await verifyToken(req);
+        if (!decodedToken) {
+          res.status(401).send("Unauthorized");
+          return;
+        }
+
+        // Extract roomID and roomRefID from the request body
+        const { roomID, roomRefID } = req.body;
+
+        // Validate the input
+        if (!roomID || !roomRefID) {
+          res.status(400).send("Room ID and Room Ref ID are required");
+          return;
+        }
+
+        // Get a reference to the specific room
+        const roomRef = admin.database().ref(`Room/${roomID}`);
+
+        // Update the roomRefID field
+        await roomRef.update({ roomRefID });
+
+        res
+          .status(200)
+          .send(`Room Ref ID updated successfully for room ${roomID}`);
+      } catch (error) {
+        console.error("Error updating Room Ref ID:", error);
+        res.status(500).send("Internal Server Error");
+      }
+    });
   }
 );

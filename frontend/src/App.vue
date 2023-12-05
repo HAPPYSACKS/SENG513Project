@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+  <router-view :key="$route.fullPath"/>
 </template>
 
 
 
 <style>
 #app {
-    box-sizing: border-box;
-    margin: 0;
-    background-color: white;
-    font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  background-color: white;
+  font-family: "Inter", sans-serif;
 }
 </style>
