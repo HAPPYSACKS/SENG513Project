@@ -16,15 +16,14 @@
             @mousedown="startDrag"
           ></i>
         </div>
-        &nbsp;
-        &nbsp;
+        &nbsp; &nbsp;
         <div>
-            <span v-if="widData.isGroup == true">
-                &nbsp;
-                <i class="fa-solid fa-users fa-lg"></i>
-                &nbsp;
-            </span>
-            <span>{{widData.name}}</span>
+          <span v-if="widData.isGroup == true">
+            &nbsp;
+            <i class="fa-solid fa-users fa-lg"></i>
+            &nbsp;
+          </span>
+          <span>{{ widData.name }}</span>
         </div>
         &nbsp; &nbsp;
         <div>
@@ -39,26 +38,26 @@
           ></i>
         </div>
       </div>
-      
-        <div
-          class="content content-full"
-          :style="{ display: displayed ? 'block' : 'none' }"
-        >
-          <component
-            :is="getWidget(widData.type)"
-            :data="widData.data"
-            @update="
-              (data) => {
-                $emit('update', widData.id, data);
-              }
-            "
-          ></component>
-        </div>
 
       <div
         class="content content-full"
         :style="{ display: displayed ? 'block' : 'none' }"
-      ></div>
+      >
+        <component
+          :is="getWidget(widData.type)"
+          :data="widData.data"
+          @update="
+            (data) => {
+              $emit('update', widData.id, data);
+            }
+          "
+        ></component>
+      </div>
+
+      <!-- <div
+        class="content content-full"
+        :style="{ display: displayed ? 'block' : 'none' }"
+      ></div> -->
     </div>
     <div
       class="widget-wrapper-compact widget-wrapper"
@@ -120,136 +119,133 @@ import WidgetDefault from "./widgets/Default.vue";
 import TimerWidget from "./widgets/TimerWidget.vue";
 import MusicWidget from "./widgets/MusicWidget.vue";
 import ChatWidget from "./widgets/ChatWidget.vue";
-import YoutubeWidget from './widgets/YoutubeWidget.vue';
+import YoutubeWidget from "./widgets/YoutubeWidget.vue";
 export default {
-    name: 'FullWidget',
-    data() {
-        return {
-            containerPosition: { left: 30, top: 20 },
-            dimension: {width: this.width, height: this.height},
-            isDragging: false,
-            offsetX: 0,
-            offsetY: 0,
-            displayed: true,
-            displayedCompact: false,
-            keepDisplayedCompact: false,
-            minimized: false,
-            widgets: [
-            'RoomMemberWidget',
-            'ChatWidget',
-            'CallWidget',
-            'MusicWidget',
-            'YoutubeWidget',
-            'TimerWidget',
-            'CalendarWidget',
-            'ToDoListWidget',
-            'StickyNotesWidget',
-            'StickerWidget',
-            'DrawWidget'
-            ],
-            compactWidgets: [
-                'Default'
-            ]
-        }
+  name: "FullWidget",
+  data() {
+    return {
+      containerPosition: { left: 30, top: 20 },
+      dimension: { width: this.width, height: this.height },
+      isDragging: false,
+      offsetX: 0,
+      offsetY: 0,
+      displayed: true,
+      displayedCompact: false,
+      keepDisplayedCompact: false,
+      minimized: false,
+      widgets: [
+        "RoomMemberWidget",
+        "ChatWidget",
+        "CallWidget",
+        "MusicWidget",
+        "YoutubeWidget",
+        "TimerWidget",
+        "CalendarWidget",
+        "ToDoListWidget",
+        "StickyNotesWidget",
+        "StickerWidget",
+        "DrawWidget",
+      ],
+      compactWidgets: ["Default"],
+    };
+  },
+  props: {
+    widData: Object,
+  },
+  components: {
+    // eslint-disable vue/no-unused-components
+    WidgetDefault,
+    TimerWidget,
+    MusicWidget,
+    YoutubeWidget,
+    InviteWidget,
+    ChatWidget,
+  },
+  emits: ["delete", "update"],
+  methods: {
+    minimize() {
+      this.displayed = !this.displayed;
+      this.minimized = !this.minimized;
+      this.keepDisplayedCompact = !this.keepDisplayedCompact;
     },
-    props: {
-        widData: Object
+    getWidgetStyle(id) {
+      let toReturn = "";
+      if (this.compactWidgets.includes(id)) {
+        toReturn = "compact";
+      } else {
+        toReturn = "full";
+      }
+      return toReturn;
     },
-    components: {
-        // eslint-disable vue/no-unused-components
-        WidgetDefault,
-        TimerWidget,
-        MusicWidget,
-        YoutubeWidget,
-        InviteWidget,
-        ChatWidget,
+    getWidget(id) {
+      let toReturn = "";
+      switch (id) {
+        case "RoomMemberWidget":
+          toReturn = WidgetDefault;
+          break;
+        case "ChatWidget":
+          toReturn = WidgetDefault;
+          break;
+        // case 'CallWidget':
+        //     toReturn = WidgetDefault;
+        //     break;
+        case "MusicWidget":
+          toReturn = MusicWidget;
+          break;
+        case "YoutubeWidget":
+          toReturn = YoutubeWidget;
+          break;
+        case "TimerWidget":
+          toReturn = TimerWidget;
+          break;
+        case "CalendarWidget":
+          toReturn = WidgetDefault;
+          break;
+        case "ToDoListWidget":
+          toReturn = WidgetDefault;
+          break;
+        case "StickyNotesWidget":
+          toReturn = WidgetDefault;
+          break;
+        case "StickerWidget":
+          toReturn = WidgetDefault;
+          break;
+        case "DrawWidget":
+          toReturn = WidgetDefault;
+          break;
+        case "InviteWidget":
+          toReturn = InviteWidget;
+          break;
+        default:
+          toReturn = WidgetDefault;
+      }
+      return toReturn;
     },
-    emits: ["delete", "update"],
-    methods: {
-        minimize() {
-            this.displayed = !this.displayed;
-            this.minimized = !this.minimized;
-            this.keepDisplayedCompact = !this.keepDisplayedCompact
-        },
-        getWidgetStyle(id) {
-            let toReturn = ''
-            if(this.compactWidgets.includes(id)) {
-                toReturn = 'compact';
-            } else {
-                toReturn = 'full';
-            }
-            return toReturn;
-        },
-        getWidget(id) {
-            let toReturn = '';
-            switch(id) {
-                case 'RoomMemberWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case 'ChatWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                // case 'CallWidget':
-                //     toReturn = WidgetDefault;
-                //     break;
-                case 'MusicWidget':
-                    toReturn = MusicWidget;
-                    break;
-                case 'YoutubeWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case 'TimerWidget':
-                    toReturn = TimerWidget;
-                    break;
-                case 'CalendarWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case 'ToDoListWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case 'StickyNotesWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case 'StickerWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case 'DrawWidget':
-                    toReturn = WidgetDefault;
-                    break;
-                case "InviteWidget":
-                    toReturn = InviteWidget;
-                    break;
-                default:
-                    toReturn = WidgetDefault;
-            }
-            return toReturn;
-        },
-        startDrag(event) {
-            this.isDragging = true;
-            this.offsetX = event.clientX - this.containerPosition.left;
-            this.offsetY = event.clientY - this.containerPosition.top;
-            this.keepDisplayedCompact = true;
+    startDrag(event) {
+      this.isDragging = true;
+      this.offsetX = event.clientX - this.containerPosition.left;
+      this.offsetY = event.clientY - this.containerPosition.top;
+      this.keepDisplayedCompact = true;
 
-            document.addEventListener("mousemove", this.handleDrag);
-            document.addEventListener("mouseup", this.stopDrag);
-        },
-        handleDrag(event) {
-            if (this.isDragging) {
-                const x = event.clientX - this.offsetX;
-                const y = event.clientY - this.offsetY;
-
-                this.containerPosition = { left: x, top: y };
-            }
-        },
-        stopDrag() {
-            this.isDragging = false;
-            this.keepDisplayedCompact = false;
-            document.removeEventListener("mousemove", this.handleDrag);
-            document.removeEventListener("mouseup", this.stopDrag);
-        },
+      document.addEventListener("mousemove", this.handleDrag);
+      document.addEventListener("mouseup", this.stopDrag);
     },
-    
-}
+    handleDrag(event) {
+      if (this.isDragging) {
+        const x = event.clientX - this.offsetX;
+        const y = event.clientY - this.offsetY;
+
+        this.containerPosition = { left: x, top: y };
+      }
+    },
+    stopDrag() {
+      this.isDragging = false;
+      this.keepDisplayedCompact = false;
+      document.removeEventListener("mousemove", this.handleDrag);
+      document.removeEventListener("mouseup", this.stopDrag);
+    },
+  },
+};
 </script>
 
 <style scoped>
