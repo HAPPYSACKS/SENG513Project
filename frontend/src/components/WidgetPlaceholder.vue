@@ -19,6 +19,7 @@ import StickyNotesWidget from './widgets/StickyNotesWidget.vue'
 import StickerWidget from './widgets/StickerWidget.vue'
 import DrawWidget from './widgets/DrawWidget.vue'
 import TopOfWidget from './TopOfWidget.vue'
+import SettingsWidget from './widgets/SettingsWidget.vue'
 
 export default {
   components: {
@@ -33,7 +34,8 @@ export default {
     StickyNotesWidget,
     StickerWidget,
     DrawWidget,
-    TopOfWidget},
+    TopOfWidget,
+    SettingsWidget},
   props: ["widgetName", "widgetContent","isGroup", "width", "height"],
     data() {
         return {

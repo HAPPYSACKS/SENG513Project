@@ -133,7 +133,11 @@
           />
         </div>
         <div class="item">
-          <img src="@/assets/icons/settings.png" alt="Settings" />
+          <img 
+            @click="showPopup('Settings')"
+            src="@/assets/icons/settings.png" 
+            alt="Settings" 
+          />
         </div>
       </div>
     </div>
@@ -169,7 +173,7 @@ export default {
 
     showPopup(widgetName) {
       this.widgetName = widgetName;
-      if (this.widgetName === "Sound"  || this.widgetName === "ChangeBG" || this.widgetName === "Youtube") {
+      if (this.widgetName === "Sound"  || this.widgetName === "ChangeBG" || this.widgetName === "Youtube" || this.widgetName === "Settings") {
         this.$emit("showNoPopupWidget", this.widgetName);
       } else {
         this.isPopupShown = !this.isPopupShown;

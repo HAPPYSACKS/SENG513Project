@@ -23,6 +23,7 @@ export default {
         { name: 'Sticky-Notes', isGroup: false, type: 'StickyNotesWidget' },
         { name: 'Sticker', isGroup: false, type: 'StickerWidget' },
         { name: 'Draw', isGroup: false, type: 'DrawWidget' },
+        { name: 'Settings', isGroup: false, type: 'SettingsWidget'}
       ],
     };
   },

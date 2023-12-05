@@ -73,6 +73,8 @@
 import WidgetDefault from './widgets/Default.vue';
 import TimerWidget from './widgets/TimerWidget.vue';
 import MusicWidget from './widgets/MusicWidget.vue';
+import StickyNotesWidget from './widgets/StickyNotesWidget.vue';
+import SettingsWidget from './widgets/SettingsWidget.vue';
 export default {
     name: 'FullWidget',
     data() {
@@ -97,7 +99,8 @@ export default {
             'ToDoListWidget',
             'StickyNotesWidget',
             'StickerWidget',
-            'DrawWidget'
+            'DrawWidget',
+            'SettingsWidget'
             ],
             compactWidgets: [
                 'Default'
@@ -157,13 +160,16 @@ export default {
                     toReturn = WidgetDefault;
                     break;
                 case 'StickyNotesWidget':
-                    toReturn = WidgetDefault;
+                    toReturn = StickyNotesWidget;
                     break;
                 case 'StickerWidget':
                     toReturn = WidgetDefault;
                     break;
                 case 'DrawWidget':
                     toReturn = WidgetDefault;
+                    break;
+                case 'SettingsWidget':
+                    toReturn = SettingsWidget;
                     break;
                 default:
                     toReturn = WidgetDefault;
