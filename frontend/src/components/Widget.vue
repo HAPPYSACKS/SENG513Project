@@ -15,6 +15,7 @@
           <i
             class="fa-solid fa-arrows-up-down-left-right fa-lg"
             @mousedown="startDrag"
+            @touchstart="startDrag"
           ></i>
         </div>
         &nbsp; &nbsp;
@@ -74,6 +75,7 @@
         <i
           class="fa-solid fa-arrows-up-down-left-right fa-lg"
           @mousedown="startDrag"
+          @touchstart="startDrag"
         ></i>
         &nbsp;
         <i v-if="widData.isGroup == true" class="fa-solid fa-users fa-lg"></i>
@@ -195,17 +197,21 @@ export default {
     },
     startDrag(event) {
       this.isDragging = true;
-      this.offsetX = event.clientX - this.containerPosition.left;
-      this.offsetY = event.clientY - this.containerPosition.top;
+      const clientX = event.clientX || event.touches[0].clientX;
+      const clientY = event.clientY || event.touches[0].clientY;
+      this.offsetX = clientX - this.containerPosition.left;
+      this.offsetY = clientY - this.containerPosition.top;
       this.keepDisplayedCompact = true;
 
       document.addEventListener("mousemove", this.handleDrag);
       document.addEventListener("mouseup", this.stopDrag);
+      document.addEventListener("touchmove", this.handleDrag);
+      document.addEventListener("touchend", this.stopDrag);
     },
     handleDrag(event) {
       if (this.isDragging) {
-        const x = event.clientX - this.offsetX;
-        const y = event.clientY - this.offsetY;
+        const x = (event.clientX || event.touches[0].clientX) - this.offsetX;
+        const y = (event.clientY || event.touches[0].clientY) - this.offsetY;
 
         this.containerPosition = { left: x, top: y };
       }
