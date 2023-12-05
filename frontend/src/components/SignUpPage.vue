@@ -18,7 +18,7 @@
           v-model="username"
           type="text"
           id="username-input"
-          placeholder="Username"
+          placeholder="Email"
         />
         <input
           v-model="password"
@@ -32,6 +32,7 @@
           id="re-enter-input"
           placeholder="Re-Enter Password"
         />
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
         <button class="button" id="signup-button" @click="signup">
           SIGN UP
         </button>
@@ -52,12 +53,13 @@ export default {
       username: "",
       password: "",
       re_password: "",
+      errorMessage: "",
     };
   },
   methods: {
     async signup() {
       if (this.password !== this.re_password) {
-        alert("Passwords do not match");
+        this.errorMessage = "Passwords do not match";
         return;
       }
 
@@ -71,7 +73,16 @@ export default {
         this.$router.push("Home");
       } catch (error) {
         console.error("Error creating account:", error);
-        // Handle account creation errors here (e.g., user already exists), idk what to do so I just print oout error
+        if (error.code === "auth/email-already-in-use") {
+          this.errorMessage = "Email already in use";
+        } else if (error.code === "auth/invalid-email") {
+          this.errorMessage = "Invalid email or email format";
+        } else if (error.code === "auth/weak-password") {
+          this.errorMessage =
+            "The password must be a string with at least 6 characters.";
+        } else {
+          this.errorMessage = "An error occurred while creating your account";
+        }
       }
     },
   },
@@ -177,5 +188,10 @@ input::placeholder {
   left: -20%;
   width: 145%;
   height: 120%;
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 290px; /* 40vh */
 }
 </style>

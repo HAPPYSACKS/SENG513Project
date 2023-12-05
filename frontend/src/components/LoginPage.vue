@@ -12,7 +12,7 @@
           v-model="username"
           type="text"
           id="username-input"
-          placeholder="Username"
+          placeholder="Email"
         />
         <input
           v-model="password"
@@ -66,7 +66,7 @@ export default {
         // Navigation after login is handled by the auth state observer
       } catch (error) {
         console.error("Authentication failed:", error);
-        this.errorMessage = "Incorrect username or password";
+        this.errorMessage = "Incorrect email or password";
       }
     },
   },
