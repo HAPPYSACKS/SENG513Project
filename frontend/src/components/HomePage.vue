@@ -48,6 +48,20 @@ import axios from "axios";
 
 const API_ADDRESS = "https://us-central1-study-buddy-51a85.cloudfunctions.net/";
 
+async function getAuthToken() {
+  return new Promise((resolve, reject) => {
+    const auth = getAuth();
+    auth.currentUser
+      .getIdToken()
+      .then((token) => {
+        resolve(token);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export default {
   name: "LandingPage",
   components: { ClockWidget },
@@ -101,15 +115,35 @@ export default {
       };
       this.$router.push(pushObj);
     },
-    host() {
-      const pushObj = {
+    async host() {
+      let pushObj = {
         name: "Room",
         query: {
           isHost: true,
-          username: "PLACEHOLDER-HOST-USER",
+          username: this.userProfile.Username,
+          roomRefID: 0,
         },
       };
-      this.$router.push(pushObj);
+
+      try {
+        // Get the user's auth token
+        const authToken = await getAuthToken();
+
+        const response = await axios.post(
+          `${API_ADDRESS}/addRoom`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        pushObj.query.roomRefID = response.data.newRoomId;
+        this.$router.push(pushObj);
+      } catch (error) {
+        console.error("Error creating room:", error);
+      }
     },
     async fetchUserProfile(uid) {
       try {

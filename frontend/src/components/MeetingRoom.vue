@@ -35,6 +35,7 @@ import WidgetBar from "./WidgetBarProcessing.vue";
 import FullWidget from "./Widget.vue";
 import LoadingScreen from "./loading.vue";
 import NotificationCard from "./widgets/Notification.vue";
+import axios from "axios";
 </script>
 
 <script setup>
@@ -367,6 +368,21 @@ onMounted(() => {
     peer.on("open", () => {
       ready.value = !ready.value;
       roomID.value = peer.id;
+
+      // Make a POST request to update roomRefID
+      axios
+        .post("your-api-endpoint/updateRoomRefID", {
+          roomID: roomID.value, // The existing room ID from the database
+          roomRefID: peer.id, // The newly generated ID from Peer.js
+        })
+        .then((response) => {
+          console.log("Room Ref ID updated successfully:", response.data);
+          // Additional logic after successful update, idk what to put
+        })
+        .catch((error) => {
+          console.error("Error updating Room Ref ID:", error);
+          // Error handling logic, idk what to put
+        });
       startAlert(
         `Room opened with ID ${roomID.value}. To view this again, click on the envelope icon`,
         5
