@@ -11,7 +11,7 @@ import admin from "../utils/firebaseInit";
 // Test user read
 // Implement user preferences?
 
-exports.createUserProfile = functions.auth
+export const createUserProfile = functions.auth
   .user()
   .onCreate(async (user: admin.auth.UserRecord) => {
     const username = user.displayName || user.email?.split("@")[0];
@@ -30,6 +30,7 @@ exports.createUserProfile = functions.auth
 
       // Return is used here to ensure the Cloud Function waits for the database write to finish.
       // return value of userRef.set(userData) is not actually used for anything.
+      console.log(userData);
       await userRef.set(userData);
       return;
     } catch (error) {
@@ -38,7 +39,7 @@ exports.createUserProfile = functions.auth
     }
   });
 
-exports.deleteUserProfile = functions.https.onCall(
+export const deleteUserProfile = functions.https.onCall(
   async (data, context: functions.https.CallableContext) => {
     if (!context.auth)
       throw new functions.https.HttpsError(
@@ -77,7 +78,7 @@ exports.deleteUserProfile = functions.https.onCall(
 //     ... other profile fields ...
 // })
 
-exports.editUserProfile = functions.https.onCall(async (data, context) => {
+export const editUserProfile = functions.https.onCall(async (data, context) => {
   // Check if the user is authenticated
   if (!context.auth) {
     throw new functions.https.HttpsError(
@@ -118,7 +119,7 @@ exports.editUserProfile = functions.https.onCall(async (data, context) => {
   }
 });
 
-exports.getUserProfile = functions.https.onCall(async (data, context) => {
+export const getUserProfile = functions.https.onCall(async (data, context) => {
   // Optional: Check if the user is authenticated
   if (!context.auth) {
     throw new functions.https.HttpsError(
@@ -132,6 +133,8 @@ exports.getUserProfile = functions.https.onCall(async (data, context) => {
     const userRef = admin.database().ref(`Users/${uid}`);
     const snapshot = await userRef.once("value");
     const userProfile = snapshot.val();
+
+    
 
     if (!userProfile) {
       throw new functions.https.HttpsError(

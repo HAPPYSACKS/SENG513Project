@@ -11,9 +11,7 @@ import { verifyToken } from "../auth/verify";
 // Test room edit
 // Test room read
 
-
-
-exports.getRoom = functions.https.onRequest(
+export const getRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
     if (req.method !== "GET") {
       res.status(405).send("Method Not Allowed");
@@ -44,7 +42,7 @@ exports.getRoom = functions.https.onRequest(
   }
 );
 
-exports.addRoom = functions.https.onRequest(
+export const addRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
     // Assumes the request method to be POST
     if (req.method !== "POST") {
@@ -77,7 +75,7 @@ exports.addRoom = functions.https.onRequest(
   }
 );
 
-exports.getAllRooms = functions.https.onRequest(
+export const getAllRooms = functions.https.onRequest(
   async (req: Request, res: Response) => {
     // Assumes the request method to be GET
     if (req.method !== "GET") {
@@ -98,7 +96,7 @@ exports.getAllRooms = functions.https.onRequest(
   }
 );
 
-exports.deleteRoom = functions.https.onRequest(
+export const deleteRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
     // Assumes the request method to be DELETE
     if (req.method !== "DELETE") {
@@ -143,7 +141,7 @@ exports.deleteRoom = functions.https.onRequest(
 
 // check this
 
-exports.addParticipantToRoom = functions.https.onRequest(
+export const addParticipantToRoom = functions.https.onRequest(
   async (req: Request, res: Response) => {
     if (req.method !== "POST") {
       res.status(405).send("Method Not Allowed");
