@@ -73,7 +73,7 @@
 import WidgetDefault from './widgets/Default.vue';
 import TimerWidget from './widgets/TimerWidget.vue';
 import MusicWidget from './widgets/MusicWidget.vue';
-import YoutubeWidget from './widgets/YoutubeWidget.vue'
+import YoutubeWidget from './widgets/YoutubeWidget.vue';
 export default {
     name: 'FullWidget',
     data() {

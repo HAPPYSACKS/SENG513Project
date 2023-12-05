@@ -1,17 +1,10 @@
 <template>
   <div>
-    <MeetingRoom/>
-    <!-- <router-view /> -->
+    <router-view />
   </div>
 </template>
 
-<script>
-import MeetingRoom from './components/MeetingRoom.vue'
 
-export default {
-    components: {MeetingRoom}
-}
-</script>
 
 <style>
 #app {
