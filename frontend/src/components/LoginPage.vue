@@ -12,7 +12,7 @@
           v-model="username"
           type="text"
           id="username-input"
-          placeholder="Username"
+          placeholder="Email"
         />
         <input
           v-model="password"
@@ -20,6 +20,7 @@
           id="password-input"
           placeholder="Password"
         />
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
         <button class="button" id="login-button" @click="login">LOGIN</button>
       </span>
     </div>
@@ -40,6 +41,7 @@ export default {
     return {
       username: "",
       password: "",
+      errorMessage: "",
     };
   },
   created() {
@@ -48,7 +50,7 @@ export default {
       if (user) {
         // User is signed in so navigate to the home page
         this.$router.push("Home");
-      } 
+      }
       // No user is signed in so stay on the login page
     });
   },
@@ -64,7 +66,7 @@ export default {
         // Navigation after login is handled by the auth state observer
       } catch (error) {
         console.error("Authentication failed:", error);
-        // Handle errors here, idk what to do for this so I'll just print out the error
+        this.errorMessage = "Incorrect email or password";
       }
     },
   },
@@ -157,5 +159,11 @@ input::placeholder {
   left: -20%;
   width: 145%;
   height: 120%;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 260px; /* 40vh */
 }
 </style>
