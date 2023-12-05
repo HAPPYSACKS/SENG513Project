@@ -72,6 +72,7 @@ export default {
     return {
       id: "",
       userProfile: {},
+      rooms: [],
     };
   },
   methods: {
@@ -173,6 +174,15 @@ export default {
         // maybe redirect to new room too.
       } catch (error) {
         console.error("Error adding new room:", error);
+      }
+    },
+    async fetchAllRooms() {
+      try {
+        const response = await axios.get(`${API_ADDRESS}/getAllRooms`);
+        this.rooms = response.data; // Store the fetched rooms in your component's data
+        console.log("Fetched rooms:", this.rooms);
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
       }
     },
     async addParticipantToRoom(roomID, userID) {
