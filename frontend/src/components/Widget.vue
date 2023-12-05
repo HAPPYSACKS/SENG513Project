@@ -48,9 +48,7 @@
       <div
         class="content content-full"
         :style="{ display: displayed ? 'block' : 'none' }"
-      >
-        <component :is="getWidget(widData.type)"></component>
-      </div>
+      ></div>
     </div>
     <div
       class="widget-wrapper-compact widget-wrapper"
