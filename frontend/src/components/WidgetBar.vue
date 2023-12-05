@@ -12,41 +12,31 @@
             <div class="widget">
               <div class="left">
                 <div class="item">
-                  <img @click="showPopup('Room-Member')" id="Room-Member" src='@/assets/icons/roomMember.png' alt="Room Member List">
+                  <i class="fa-solid fa-users fa-xl icon" @click="showPopup('Room-Member')" id="Room-Member"></i>
                 </div>
                 <div class="item">
-                  <img  @click="showPopup('Chat')" id="Chat" src='@/assets/icons/chat.png' alt="Chat">
+                  <i class="fa-regular fa-comment-dots fa-xl icon" @click="showPopup('Chat')" id="Chat"></i>
                 </div>
                 <div class="item">
-                  <img @click="showPopup('Call')" id="Call" src='@/assets/icons/call.png' alt="Call">
-                </div>
-                <div class="item">
-                  <img @click="showPopup('Sound')" id="Sound" src='@/assets/icons/speaker.png' alt="Sound">
+                  <i class="fa-solid fa-music fa-xl icon" @click="showPopup('Sound')" id="Sound"></i>
                 </div>
                 <div v-show="!iconsActive" @click="toggleMoreWidgets" class="item" id="moreWidget" ref="moreWidgetIcon">
-                  <img src="@/assets/icons/widgets.png" alt="More Widgets">
+                  <div class="item">
+                    <i class="fa-regular fa-square-plus fa-xl icon"></i>
+                  </div>
                 </div>
                 <div class="groupedWidgets" :class="{active: iconsActive }" ref="widgetIcons">
                   <div class="item">
-                    <img @click="showPopup('Youtube')" id="Youtube" src='@/assets/icons/youtube.png' alt="YouTube">
+                    <i class="fa-brands fa-youtube fa-xl icon" @click="showPopup('Youtube')" id="Youtube"></i>
                   </div>
                   <div class="item">
-                    <img @click="showPopup('Timer')" id="Timer" src='@/assets/icons/timer.png' alt="Timer">
+                    <i class="fa-solid fa-stopwatch fa-xl icon" @click="showPopup('Timer')" id="Timer"></i>
                   </div>
                   <div class="item">
-                    <img @click="showPopup('Calendar')" id="Calendar" src='@/assets/icons/calendar.png' alt="Calendar">
+                    <i class="fa-solid fa-calendar-days fa-xl icon" @click="showPopup('Calendar')" id="Calendar"></i>
                   </div>
                   <div class="item">
-                    <img @click="showPopup('To-Do-List')" id="To-Do-List" src='@/assets/icons/toDoList.png' alt="To Do List">
-                  </div>
-                  <div class="item">
-                    <img @click="showPopup('Sticky-Notes')" id="Sticky-Notes" src='@/assets/icons/stickynotes.png' alt="Sticky Notes">
-                  </div>
-                  <div class="item">
-                    <img @click="showPopup('Sticker')" id="Sticker" src='@/assets/icons/sticker.png' alt="Sticker">
-                  </div>
-                  <div class="item">
-                    <img @click="showPopup('Draw')" id="Draw" src='@/assets/icons/draw.png' alt="Draw">
+                    <i class="fa-regular fa-note-sticky fa-xl icon" @click="showPopup('Sticky-Notes')" id="Sticky-Notes"></i>
                   </div>
                 </div>
               </div>
@@ -55,10 +45,10 @@
               <div class="right" v-if="isHost">
                 <div class="divider"></div>
                 <div class="item">
-                  <img src='@/assets/icons/changeBackground.png' alt="Change Background">
+                  <i class="fa-regular fa-image fa-xl icon"></i>
                 </div>
                 <div class="item">
-                  <img src='@/assets/icons/settings.png' alt="Settings">
+                  <i class="fa-solid fa-gear fa-xl icon"></i>
                 </div>
               </div>
         </div>
@@ -252,11 +242,15 @@ export default {
         background-color: black;
     }
 
+    .icon {
+      margin-top: 15px;
+    }
 
     .item{
         width: 30px;
         height: 30px;
         cursor: pointer;
+        text-align: center;
     }
     .item img{
         width: 100%;

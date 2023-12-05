@@ -5,8 +5,7 @@
             <div class="topbar-wrapper-r">
                 <p>{{ formatDate() }}</p>
                 <p>|</p>
-                <i id='i-user' class="fa-solid fa-circle-user "></i>
-                <i id='i-settings' class="fa-solid fa-gear "></i>
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
             </div>
         </div>
         <div id="greeting">
@@ -17,22 +16,8 @@
             <p>Invite code:</p>
             <input type="text" id="inv-code" name="inv-code" placeholder="Enter Code Here" @input="id=$event.target.value">
             <button id="inv-code-enter" @click="join()">JOIN</button>
-            <p class="centered-red">Invalid Room ID</p>
         </div>
         <div class="room-host">
-            <div id="room-open">
-                <h1>My rooms</h1>
-                <div class="select-border select-lg">
-                    <div class="select-inner-scroller">
-                        <div class="select-square"></div>
-                        <div class="select-square"></div>
-                        <div class="select-square"></div>
-                        <div class="select-square"></div>
-                        <div class="select-square"></div>
-                        <div class="select-square"></div>
-                    </div>
-                </div>
-            </div>
             <div id="room-make">
                 <h1>Create a room</h1>
                 <div class="select-border select-sm">
@@ -178,12 +163,6 @@ export default {
     border-radius: 34px;
     font-weight: 600;
     cursor: pointer;
-}
-
-.centered-red {
-    text-align: center;
-    font-size: 1rem;
-    color: red;
 }
 
 .room-host {

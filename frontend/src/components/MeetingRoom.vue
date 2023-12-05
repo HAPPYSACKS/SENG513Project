@@ -1,5 +1,5 @@
 <template>
-    <LoadingScreen Msg="Loading" v-if="!ready"/>
+    <LoadingScreen Msg="Connecting" v-if="!ready"/>
     <div v-else>
         <div class="roomid">
             <p>Room code: {{ roomID }}</p>
@@ -8,7 +8,7 @@
         @delete="(id)=>deleteDirector(id)"
         @update="(id, data)=>updateDirector(id, data)"/>
         <div class="item leaveRoom">
-        <img src="@/assets/icons/leaveRoom.png" alt="Leave Room">
+        <i class="fa-solid fa-door-open fa-xl" @click="Leave()"></i>
         </div>
         <!-- <ChangeBackground/> -->
         <WidgetBar @create="(data) => createDirector(data)" :isHost="networkData.isHost"/>
@@ -177,7 +177,7 @@ function respondClientNetworkProtocol(code, data) {
     const innerData = code == 'UPD' ? data.data : {};
     if(code == 'AKD') {
         peer.disconnect();
-        $router.push('Home');
+        router.push('Home');
     } else {
         if(Object.keys(innerData).includes('users')) {
             networkData.messages = innerData.users;
@@ -303,6 +303,7 @@ function updateDirector(id, data) {
         updateWidget(id, data);
     }
 }
+
 //network creation
 
 const peer = new Peer();
@@ -337,7 +338,16 @@ onBeforeRouteLeave((to, from)=>{
         peer.destroy();
     }
 });
-/* */
+//Leave button function
+function Leave() {
+    let message = 'Are you sure you want to leave?';
+    if(networkData.isHost) {
+        message = 'Are you sure you want to leave? As host you will close the room.';
+    }
+    if(window.confirm(message)) {
+        router.push('Home');
+    }
+}
 </script>
 
 <style scoped>
@@ -351,11 +361,10 @@ onBeforeRouteLeave((to, from)=>{
         width: 30px;
         height: 30px;
         cursor: pointer;
+        text-align: center;
     }
-    .item img{
-        width: 100%;
-        height: 100%; 
-        object-fit: contain;
+    .item > i{
+        margin-top: 15px;
     }
     .item:hover{
         background-color: grey;
