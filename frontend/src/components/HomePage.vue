@@ -23,6 +23,7 @@
       />
       <button id="inv-code-enter" @click="$router.push('Room')">JOIN</button>
       <p class="centered-red">Invalid Room ID</p>
+      <!-- <button @click="signOutUser">Sign Out</button> -->
     </div>
     <div class="room-host">
       <div id="room-open">
@@ -53,9 +54,13 @@
 <script>
 import ClockWidget from "./ClockWidget.vue";
 import { getFunctions, httpsCallable } from "firebase/functions";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import firebaseApp from "../firebaseConfig";
 import { useRouter } from "vue-router";
+import axios from "axios";
+
+const API_ADDRESS = "https://us-central1-study-buddy-51a85.cloudfunctions.net/";
+
 export default {
   name: "LandingPage",
   components: { ClockWidget },
@@ -79,6 +84,42 @@ export default {
         // Handle error appropriately, idk how to so I'll just log it
       }
     },
+    async signOutUser() {
+      const auth = getAuth();
+      try {
+        await signOut(auth);
+        console.log("User signed out successfully");
+        this.$router.push("/"); // Redirect to login page after sign out
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    },
+    async addRoom() {
+      try {
+        const response = await axios.post(`${API_ADDRESS}/addRoom`);
+        console.log("New room added:", response.data);
+        // maybe redirect to new room too.
+      } catch (error) {
+        console.error("Error adding new room:", error);
+      }
+    },
+    async addParticipantToRoom(roomID, userID) {
+      try {
+        const response = await axios.post(
+          `${API_ADDRESS}/addParticipantToRoom`,
+          {
+            roomID,
+            userID,
+          }
+        );
+        console.log("Participant added:", response.data);
+        // handle the response (ex. update the UI or navigate to the new room)
+      } catch (error) {
+        console.error("Error adding participant to room:", error);
+        // handle error appropriately, idk what to do so i log
+      }
+    },
+
     // async fetchRoom(roomID) {
     //   try {
     //     const functions = getFunctions(firebaseApp);
@@ -88,6 +129,7 @@ export default {
     //     console.error("Error fetching room:", error);
     //   }
     // },
+
     checkAuthState() {
       const router = useRouter();
       const auth = getAuth();
@@ -97,7 +139,7 @@ export default {
           this.fetchUserProfile(user.uid);
         } else {
           console.error("No user is currently logged in");
-          router.push("/login");
+          router.push("/");
         }
       });
     },

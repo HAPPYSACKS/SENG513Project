@@ -71,7 +71,7 @@ export default {
         this.$router.push("Home");
       } catch (error) {
         console.error("Error creating account:", error);
-        // Handle account creation errors here (e.g., user already exists)
+        // Handle account creation errors here (e.g., user already exists), idk what to do so I just print oout error
       }
     },
   },

@@ -46,11 +46,10 @@ export default {
     const auth = getAuth(firebase);
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, navigate to the home page
+        // User is signed in so navigate to the home page
         this.$router.push("Home");
-      } else {
-        // No user is signed in, stay on the login page
-      }
+      } 
+      // No user is signed in so stay on the login page
     });
   },
   setup() {
@@ -65,7 +64,7 @@ export default {
         // Navigation after login is handled by the auth state observer
       } catch (error) {
         console.error("Authentication failed:", error);
-        // Handle errors here, such as displaying a message to the user
+        // Handle errors here, idk what to do for this so I'll just print out the error
       }
     },
   },

@@ -46,13 +46,24 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const auth = getAuth();
 
-  onAuthStateChanged(auth, (user) => {
-    if (requiresAuth && !user) {
-      next("/Login"); // Redirect to login if the route requires auth and there's no user
+  if (!auth.currentUser) {
+    // User state not confirmed yet, set up the listener
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe(); // Unsubscribe once the user state is confirmed
+      if (requiresAuth && !user) {
+        next("/Login");
+      } else {
+        next();
+      }
+    });
+  } else {
+    // User state already available, proceed based on that
+    if (requiresAuth && !auth.currentUser) {
+      next("/Login");
     } else {
-      next(); // Proceed as normal if auth is not required or if the user is authenticated
+      next();
     }
-  });
+  }
 });
 
 export default router;

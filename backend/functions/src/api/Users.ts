@@ -70,13 +70,6 @@ export const deleteUserProfile = functions.https.onCall(
   }
 );
 
-// const editUserProfile = firebase.functions().httpsCallable('editUserProfile');
-// editUserProfile({
-//     email: 'newemail@example.com',
-//     username: 'newusername',
-//     profilePictureURL: 'http://www....'
-//     ... other profile fields ...
-// })
 
 export const editUserProfile = functions.https.onCall(async (data, context) => {
   // Check if the user is authenticated
