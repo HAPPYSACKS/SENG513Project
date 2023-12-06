@@ -83,17 +83,24 @@
               ></i>
             </div>
           </div>
+          <div class="item">
+          <i
+            class="fa-solid fa-envelope fa-xl icon"
+            @click="showPopup('Invite')"
+            id="Invite"
+          ></i>
+        </div>
         </div>
       </div>
 
       <div class="right" v-if="isHost">
         <div class="divider"></div>
         <div class="item">
-          <i
-            class="fa-solid fa-envelope fa-xl icon"
-            @click="showPopup('Invite')"
-            id="Invite"
-          ></i>
+          <img
+            @click="showPopup('ChangeBG')"
+            src="@/assets/icons/changeBackground.png"
+            alt="Change Background"
+          />
         </div>
         <div class="item">
           <i class="fa-solid fa-gear fa-xl icon"

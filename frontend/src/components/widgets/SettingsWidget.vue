@@ -32,7 +32,7 @@
         </button>
         </div>-->
     </div>
-  </template>
+</template>
   
   <script>
   export default {
@@ -59,8 +59,9 @@
     },
   };
   </script>
+
   
-<style>
+<style scoped>
 
   .settings-container {
     width: 320px;
