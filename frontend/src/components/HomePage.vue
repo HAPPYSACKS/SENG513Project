@@ -110,7 +110,7 @@ export default {
         name: "Room",
         query: {
           isHost: false,
-          username: "PLACEHOLDER-JOIN-USER",
+          username: this.userProfile.Username,
           roomID: this.id,
         },
       };

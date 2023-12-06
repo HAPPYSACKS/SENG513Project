@@ -11,12 +11,13 @@ export default {
   data: () => ({
     text: "",
   }),
+  emits: ["submitMsg"],
   methods: {
     // We will call this when the form is submitted
     onSubmit(event) {
       // This fires an event which we will handle
       // in the parent component
-      this.$emit("submit", event, this.text);
+      this.$emit("submitMsg", event, this.text);
       this.text = "";
     },
   },
@@ -36,5 +37,18 @@ input {
 
 button:disabled {
   opacity: 0.5;
+  color: #757575;
+}
+
+button {
+  background-color: #757575;
+  color: white;
+  margin-left: 5px;
+}
+
+form > * {
+  border: 1px solid black;
+  border-radius: 3px;
+  height: 2rem;
 }
 </style>

@@ -103,20 +103,6 @@
           </div>
         </div>
       </div>
-
-      <div class="right">
-        <div class="divider"></div>
-        <div class="item">
-          <img
-            @click="showPopup('ChangeBG')"
-            src="@/assets/icons/changeBackground.png"
-            alt="Change Background"
-          />
-        </div>
-        <div class="item">
-          <img src="@/assets/icons/settings.png" alt="Settings" />
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -133,7 +119,7 @@ export default {
       widgetName: "",
       top: 0,
       left: 0,
-      noPopup: ["Sound", "Invite", "Youtube"],
+      noPopup: ["Sound", "Invite", "Youtube", "Chat"],
     };
   },
   props: {

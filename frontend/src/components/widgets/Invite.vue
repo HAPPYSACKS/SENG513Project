@@ -10,7 +10,7 @@ export default {
     props: {
         data: Object
     },
-    emits: ['update']
+    emits: ['update', 'message']
 }
 </script>
 <style scoped>
