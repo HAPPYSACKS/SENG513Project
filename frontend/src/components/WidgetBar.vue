@@ -72,13 +72,6 @@
             </div>
             <div class="item">
               <i
-                class="fa-solid fa-calendar-days fa-xl icon"
-                @click="showPopup('Calendar')"
-                id="Calendar"
-              ></i>
-            </div>
-            <div class="item">
-              <i
                 class="fa-regular fa-note-sticky fa-xl icon"
                 @click="showPopup('Sticky-Notes')"
                 id="Sticky-Notes"
@@ -124,7 +117,7 @@ export default {
       widgetName: "",
       top: 0,
       left: 0,
-      noPopup: ["Sound", "Invite", "Youtube", "ChangeBG", "Settings"],
+      noPopup: ["Sound", "Invite", "Youtube", "ChangeBG", "Settings", "Room-Member", "Chat"],
     };
   },
   props: {

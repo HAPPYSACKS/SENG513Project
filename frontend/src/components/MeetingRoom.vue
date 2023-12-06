@@ -190,7 +190,6 @@ function updateWidget(id, data) {
 function otherHandler(code, data) {
     if(code == 'S') {
         Object.assign(networkData.settings, data);
-        console.log(networkData.settings);
     }
 }
 
@@ -321,11 +320,9 @@ function respondClientNetworkProtocol(code, data) {
         const keys = Object.keys(innerData); 
         if(keys.includes('users')) {
             networkData.members.value.splice(0, networkData.members.value.length, ...innerData.users);
-            console.log(toRaw(networkData.members.value))
         }
         if(keys.includes('messages')) {
             networkData.messages.value.splice(0, networkData.messages.value.length, ...innerData.messages);
-            console.log(toRaw(networkData.messages.value))
         }
         if(keys.includes('alert')) {
             startAlert(innerData.alert, 5)

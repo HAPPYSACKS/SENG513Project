@@ -18,7 +18,7 @@ export default {
         { name: 'Youtube', isGroup: false, type: 'YoutubeWidget', default: {} },
         { name: 'Timer', isGroup: false, type: 'TimerWidget', default: {s: "00", m: "10", cs: "00", cm: "10", shouldCount: false, reset: 0} },
         { name: 'Calendar', isGroup: false, type: 'CalendarWidget', default: {} },
-        { name: 'Sticky-Notes', isGroup: false, type: 'StickyNotesWidget', default: {} },
+        { name: 'Sticky-Notes', isGroup: false, type: 'StickyNotesWidget', default: {content: ''} },
         { name: 'Invite', isGroup: false, type: 'InviteWidget', default: {id: this.roomid} },
         { name: 'Change Background', isGroup: false, type: 'ChangeBG', default: {} },
         { name: 'Settings', isGroup: false, type: 'SettingsWidget', default: {}},
