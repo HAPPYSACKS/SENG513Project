@@ -114,7 +114,11 @@
           />
         </div>
         <div class="item">
-          <img src="@/assets/icons/settings.png" alt="Settings" />
+          <img 
+            @click="showPopup('Settings')"
+            src="@/assets/icons/settings.png" 
+            alt="Settings" 
+          />
         </div>
       </div>
     </div>
@@ -133,7 +137,7 @@ export default {
       widgetName: "",
       top: 0,
       left: 0,
-      noPopup: ["Sound", "Invite", "Youtube", "ChangeBG"],
+      noPopup: ["Sound", "Invite", "Youtube", "ChangeBG", "Settings"],
     };
   },
   props: {

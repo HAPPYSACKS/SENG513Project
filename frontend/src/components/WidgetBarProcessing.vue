@@ -21,6 +21,7 @@ export default {
         { name: 'Sticky-Notes', isGroup: false, type: 'StickyNotesWidget', default: {} },
         { name: 'Invite', isGroup: false, type: 'InviteWidget', default: {id: this.roomid} },
         { name: 'Change Background', isGroup: false, type: 'ChangeBG', default: {} },
+        { name: 'Settings', isGroup: false, type: 'SettingsWidget', default: {}},
       ],
     };
   },

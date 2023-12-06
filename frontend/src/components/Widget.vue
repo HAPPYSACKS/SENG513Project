@@ -126,6 +126,8 @@ import MusicWidget from "./widgets/MusicWidget.vue";
 import ChatWidget from "./widgets/ChatWidget.vue";
 import YoutubeWidget from "./widgets/YoutubeWidget.vue";
 import RoomMemberWidget from "./widgets/RoomMemberWidget.vue"
+import StickyNotesWidget from './widgets/StickyNotesWidget.vue';
+import SettingsWidget from './widgets/SettingsWidget.vue';
 export default {
   name: "FullWidget",
   data() {
@@ -151,6 +153,7 @@ export default {
         "StickyNotesWidget",
         "StickerWidget",
         "DrawWidget",
+        'SettingsWidget',
       ],
       compactWidgets: ["Default"],
     };
@@ -211,7 +214,7 @@ export default {
           toReturn = WidgetDefault;
           break;
         case "StickyNotesWidget":
-          toReturn = WidgetDefault;
+          toReturn = StickyNotesWidget;
           break;
         case "StickerWidget":
           toReturn = WidgetDefault;
@@ -221,6 +224,9 @@ export default {
           break;
         case "InviteWidget":
           toReturn = InviteWidget;
+          break;
+        case 'SettingsWidget':
+          toReturn = SettingsWidget;
           break;
         default:
           toReturn = WidgetDefault;
