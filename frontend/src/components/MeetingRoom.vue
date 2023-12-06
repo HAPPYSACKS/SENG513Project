@@ -158,9 +158,10 @@ function createWidget(data) {
     }
     //handle widgets needing network data
     else if(newData.name == 'Room-Member') {
-        // console.log("members:",networkData.members)
         newData.data = {
             members: networkData.members,
+            me: user,
+            isHost: networkData.isHost,
         }
     }
     const wids2 = CloneForWidgets(wids);

@@ -97,9 +97,6 @@
                 id="Invite"
               ></i>
             </div>
-            <div class="item">
-              <i class="fa-solid fa-gear fa-xl icon"></i>
-            </div>
           </div>
         </div>
       </div>
