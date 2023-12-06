@@ -117,3 +117,4 @@ backend/.DS_Store
 backend/functions/.DS_Store
 backend/functions/lib/.DS_Store
 backend/functions/src/.DS_Store
+backend/functions/key.json
