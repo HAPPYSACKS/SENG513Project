@@ -133,7 +133,7 @@ export default {
       widgetName: "",
       top: 0,
       left: 0,
-      noPopup: ["Sound", "Invite", "Youtube"],
+      noPopup: ["Sound", "Invite", "Youtube", "ChangeBG"],
     };
   },
   props: {

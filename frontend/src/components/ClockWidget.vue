@@ -34,5 +34,6 @@ export default {
         text-align: center;
         display: flex;
         flex-shrink: 0;
+        cursor: default;
     }
 </style>

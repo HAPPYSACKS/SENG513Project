@@ -36,6 +36,8 @@ export default {
 
 <style scoped>
 .card {
+    position: absolute;
+    top:0;
     width: 330px;
     background-color: #cecece;
     text-align: center;

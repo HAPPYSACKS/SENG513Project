@@ -82,7 +82,7 @@ input[type='range']::-webkit-slider-thumb {
   height: 25px;
   background: rgb(47, 47, 47);
   border-radius: 50%;
-  cursor: pointer;
+  cursor: grab;
   position: relative;
   z-index: 2;
 }

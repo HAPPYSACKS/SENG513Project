@@ -1,36 +1,55 @@
 <template>
-  <LoadingScreen Msg="Connecting" v-if="!ready" />
-  <div v-else>
-    <div class="roomid">
-      <NotificationCard
-        v-for="a in alerts"
-        :key="a.id"
-        @destroy="endAlert"
-        :Msg="a.msg"
-        :Timeout="a.timeout"
-        :Self="a.id"
-      />
+    <div>
+      <div class="video-container">
+          <div class="video-foreground">
+            <iframe
+              frameborder="0"
+              allowfullscreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              :src="videoSrc"
+              :title="videoTtl"
+              width="100%"
+              height="100%"
+            ></iframe>
+          </div>
+        </div>
+
+      <LoadingScreen Msg="Connecting" v-if="!ready" />
+      <div v-else>
+        <div class="roomid">
+          <NotificationCard
+            v-for="a in alerts"
+            :key="a.id"
+            @destroy="endAlert"
+            :Msg="a.msg"
+            :Timeout="a.timeout"
+            :Self="a.id"
+          />
+        </div>
+        <FullWidget
+          v-for="wid in widgets"
+          :key="wid.id"
+          :widData="wid"
+          @delete="(id) => deleteDirector(id)"
+          @update="(id, data) => updateDirector(id, data)"
+        />
+        <div class="item leaveRoom">
+          <i class="fa-solid fa-door-open fa-xl" @click="Leave()"></i>
+        </div>
+        <WidgetBar
+          @changebackground="toggleChangeBG"
+          @create="(data) => createDirector(data)"
+          :isHost="networkData.isHost"
+          :roomid="roomID"
+        />
+
+        <ChangeBackground  @onChangeBG="handleChangeBG" v-show="changeBackgroundShow" />
+      </div>
     </div>
-    <FullWidget
-      v-for="wid in widgets"
-      :key="wid.id"
-      :widData="wid"
-      @delete="(id) => deleteDirector(id)"
-      @update="(id, data) => updateDirector(id, data)"
-    />
-    <div class="item leaveRoom">
-      <i class="fa-solid fa-door-open fa-xl" @click="Leave()"></i>
-    </div>
-    <!-- <ChangeBackground/> -->
-    <WidgetBar
-      @create="(data) => createDirector(data)"
-      :isHost="networkData.isHost"
-      :roomid="roomID"
-    />
-  </div>
 </template>
 
 <script>
+import ChangeBackground from "./ChangeBackground.vue"
 import WidgetBar from "./WidgetBarProcessing.vue";
 import FullWidget from "./Widget.vue";
 import LoadingScreen from "./loading.vue";
@@ -44,6 +63,9 @@ import { Peer } from "peerjs";
 import { useRouter, useRoute, onBeforeRouteLeave } from "vue-router";
 import { getAuth } from "firebase/auth";
 
+const changeBackgroundShow = ref(false); // marking as a reactive data
+let videoSrc = ref("");
+let videoTtl = ref("");
 const route = useRoute();
 const router = useRouter();
 const API_ADDRESS = "https://us-central1-study-buddy-51a85.cloudfunctions.net/";
@@ -138,6 +160,16 @@ function updateWidget(id, data) {
   const newWid = structuredClone(wids[index]);
   Object.assign(newWid, { data: data });
   widgets.value[index] = newWid;
+}
+
+// change bacgkround handler
+function toggleChangeBG(){
+  changeBackgroundShow.value = !changeBackgroundShow.value
+}
+
+function handleChangeBG(videoSource, videoTitle){
+  videoSrc.value = videoSource
+  videoTtl.value = videoTitle
 }
 
 //networking handlers
@@ -502,4 +534,26 @@ function endAlert(id) {
   flex-direction: column;
   gap: 5px;
 }
+
+.video-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index:0;
+}
+
+.video-container iframe {
+  position: absolute;
+  pointer-events: none;
+  position: absolute;
+  top: -60px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 130px);
+}
+.video-foreground {
+  pointer-events: none;
+}
+
 </style>

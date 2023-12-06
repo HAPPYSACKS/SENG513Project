@@ -12,12 +12,12 @@
     >
       <div class="top-bar-full">
         <div>
-          <i class="fa-solid fa-arrows-up-down-left-right fa-lg"
+          <i style="cursor:grab" class="fa-solid fa-arrows-up-down-left-right fa-lg"
             @mousedown="startDrag"
           ></i>
         </div>
         &nbsp; &nbsp;
-        <div>
+        <div style="cursor:default">
           <span v-if="widData.isGroup == true">
             &nbsp;
             <i class="fa-solid fa-users fa-lg"></i>
@@ -26,7 +26,7 @@
           <span>{{ widData.name }}</span>
         </div>
         &nbsp; &nbsp;
-        <div>
+        <div style="cursor:pointer">
           <i class="fa-solid fa-lg"
             :class="{ 'fa-minus': !minimized, 'fa-plus': minimized }"
             @click="minimize()"

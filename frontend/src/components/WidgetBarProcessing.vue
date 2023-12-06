@@ -8,7 +8,7 @@ import WidgetBar from './WidgetBar.vue'
 export default {
   name: WidgetBar,
   components: { WidgetBar },
-  emits: ['create'],
+  emits: ['create', 'changebackground'],
   data() {
     return {
       widgets: [
@@ -20,6 +20,7 @@ export default {
         { name: 'Calendar', isGroup: false, type: 'CalendarWidget', default: {} },
         { name: 'Sticky-Notes', isGroup: false, type: 'StickyNotesWidget', default: {} },
         { name: 'Invite', isGroup: false, type: 'InviteWidget', default: {id: this.roomid} },
+        { name: 'Change Background', isGroup: false, type: 'ChangeBG', default: {} },
       ],
     };
   },
@@ -29,7 +30,11 @@ export default {
   },
   methods: {
     handleShowNoPopupWidget(widgetName) {
-      this.showWidget(widgetName);
+      if (widgetName === "ChangeBG") {
+        this.$emit('changebackground')
+      } else {
+        this.showWidget(widgetName);
+      }
     },
 
     getPopupInfo(isGroup, widgetName) {
