@@ -134,12 +134,12 @@ input {
   background: rgba(0, 0, 0, 0.1);
 }
 .chat {
-  height: 50vh;
-  width: 25vw;
+  height: 300px;
+  width: 300px;
   display: flex;
   flex-direction: column;
 }
-.messages {
+  .messages {
   flex-grow: 1;
   overflow: auto;
   padding: 1rem;
