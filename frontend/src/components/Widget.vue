@@ -51,6 +51,11 @@
               $emit('update', widData.id, data);
             }
           "
+          @message="
+            (msg)=> {
+              $emit('message', msg);
+            }
+          "
         ></component>
       </div>
 
@@ -161,7 +166,7 @@ export default {
     InviteWidget,
     ChatWidget,
   },
-  emits: ["delete", "update"],
+  emits: ["delete", "update", "message"],
   methods: {
     minimize() {
       this.displayed = !this.displayed;
@@ -184,7 +189,7 @@ export default {
           toReturn = WidgetDefault;
           break;
         case "ChatWidget":
-          toReturn = WidgetDefault;
+          toReturn = ChatWidget;
           break;
         // case 'CallWidget':
         //     toReturn = WidgetDefault;

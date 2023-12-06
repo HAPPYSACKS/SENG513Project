@@ -2,72 +2,51 @@
   <div class="chat">
     <div class="messages" ref="messages">
       <MessageBox
-        v-for="message in messages"
-        :key="message.id"
+        v-for="(message, i) in data.messages"
+        :key="i"
         :class="['message', { right: message.isMine }]"
-        :dark="message.isMine"
-        :text="message.text"
-        :author="userName"
+        :dark="checkIsMine(message.user)"
+        :text="message.message"
+        :author="message.user"
       />
     </div>
-    <ChatBox class="chat-box" @submit="submitMessage" />
+    <ChatBox class="chat-box" @submitMsg="submitMessage" />
   </div>
 </template>
 
 <script>
 import MessageBox from "@/components/widgets/MessageBox";
 import ChatBox from "@/components/widgets/ChatBox";
-import Vue from "vue";
+
 export default {
   name: "ChatWidget",
-  data() {
-    return {
-      messages: [], // Array of chat messages
-    };
-  },
   components: {
     ChatBox,
     MessageBox,
   },
   props: {
     data: Object,
-    peerId: String,
-    userName: String,
   },
   // This is going to be called
   //  when the component gets rendered
   methods: {
-    updateChat(message) {
+    /*updateChat(message) {
       this.messages.push({ message, isMine: false });
-      Vue.nextTick(() => {
-        const element = this.$refs["messages"];
-        element.scrollTo({ behavior: "smooth", top: element.scrollHeight });
-      });
-    },
-    // This method will be called when a new message is sent
-    submitMessage(event, text) {
-      event.preventDefault();
-      const newMessage = {
-        id: this._uid,
-        text: text,
-        userId: this.peerId,
-        author: this.peerId,
-        isMine: true,
-      };
-      this.messages.push(newMessage);
-      this.$emit("update", newMessage);
       this.$nextTick(() => {
         const element = this.$refs["messages"];
         element.scrollTo({ behavior: "smooth", top: element.scrollHeight });
       });
+    },*/
+    // This method will be called when a new message is sent
+    submitMessage(event, text) {
+      event.preventDefault();
+      this.$emit('message', text);
     },
+    checkIsMine(u) {
+      return u == this.data.me;
+    }
   },
-  emits: ["update"],
-  computed: {
-    chatLength() {
-      return this.messages.length;
-    },
-  },
+  emits: ["message"]
   /*
   watch: {
     messages: {
@@ -85,6 +64,50 @@ this.$parent.$on('peer-message-received', (message) => {
   this.updateChat(message);
 });
 },
+
+
+
+async function getAuthToken() {
+  return new Promise((resolve, reject) => {
+    const auth = getAuth();
+    auth.currentUser
+      .getIdToken()
+      .then((token) => {
+        resolve(token);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+async function updateRoomReferenceID() {
+  try {
+    const authToken = await getAuthToken();
+    console.log(route.query);
+    console.log(peer.id);
+    await axios.post(
+      `${API_ADDRESS}/updateRoomRefID`,
+      {
+        roomID: route.query.roomRefID, // Existing room ID from the database
+        roomRefID: peer.id, // New ID from Peer.js
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+    console.log("Room Ref ID updated successfully");
+    // Additional logic after successful update
+  } catch (error) {
+    console.error("Error updating Room Ref ID:", error);
+    // Error handling logic
+  }
+}
+
+
+
 beforeDestroy() {
 // Clean up the event listener when the component is destroyed
 this.$parent.$off('peer-message-received');
@@ -111,12 +134,12 @@ input {
   background: rgba(0, 0, 0, 0.1);
 }
 .chat {
-  height: 50vh;
-  width: 25vw;
+  height: 300px;
+  width: 300px;
   display: flex;
   flex-direction: column;
 }
-.messages {
+  .messages {
   flex-grow: 1;
   overflow: auto;
   padding: 1rem;
