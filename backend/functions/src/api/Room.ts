@@ -102,6 +102,7 @@ export const getAllRooms = functions.https.onRequest(
       res.status(500).send("Internal Server Error");
     }
   }
+  
 );
 
 export const deleteRoom = functions.https.onRequest(
