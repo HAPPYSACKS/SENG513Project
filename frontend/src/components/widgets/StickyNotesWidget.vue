@@ -23,7 +23,7 @@ export default {
     watch: {
         data: {
             handler(newData, oldData) {
-                if(newData.content == oldData.content) this.content = `${newData.content}`;
+                if(newData.content != oldData.content) this.content = `${newData.content}`;
             }
         }
     }
