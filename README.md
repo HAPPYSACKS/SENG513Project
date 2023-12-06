@@ -6,7 +6,7 @@ This project is built with Vue.js for the frontend and Java Spring for the backe
 
 - [Getting Started](#getting-started)
 - [Getting Started For Developers](#getting-started-for-developers)
-  - [Prerequisites] #prerequisites)
+  - [Prerequisites] (#prerequisites)
   - [Installation] (#installation)
 - [Running the Frontend](#running-the-frontend)
 - [Running the Backend](#running-the-backend)
