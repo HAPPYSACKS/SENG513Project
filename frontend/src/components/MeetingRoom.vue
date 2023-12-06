@@ -119,9 +119,15 @@ function createWidget(data) {
             me: user
         }
     }
-    const wids2 = structuredClone(wids);
+    const wids2 = CloneForWidgets(wids);
     wids2.push(newData);
     widgets.value.splice(0, wids.length, ...wids2); 
+}
+
+function CloneForWidgets(array) {
+    const toReturn = []
+    array.forEach(e=>{toReturn.push(e)});
+    return toReturn
 }
 
 function updateWidget(id, data) {
@@ -131,6 +137,7 @@ function updateWidget(id, data) {
     Object.assign(newWid, {data: data});
     widgets.value[index] = newWid;
 }
+
 
 
 //networking handlers
