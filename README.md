@@ -15,7 +15,7 @@ This project is built with Vue.js for the frontend and Java Spring for the backe
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-1. Goto the root directory of the project (something like `.../SENG513Project`)
+1. Goto the root directory of the project (at the `SENG513Project` directory)
 2. `docker build -t study_buddy -f frontend/Dockerfile .`
 3. `docker run -p [SOME_PORT_NUMBER]:8080 study_buddy`
 
