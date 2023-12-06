@@ -5,14 +5,21 @@ This project is built with Vue.js for the frontend and Java Spring for the backe
 ## Table of Contents
 
 - [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
+- [Getting Started For Developers](#getting-started-for-developers)
+  - [Prerequisites] #prerequisites)
+  - [Installation] (#installation)
 - [Running the Frontend](#running-the-frontend)
 - [Running the Backend](#running-the-backend)
 
 ## Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+1. Goto the root directory of the project (something like `.../SENG513Project`)
+2. `docker build -t study_buddy -f frontend/Dockerfile .`
+3. `docker run -p [SOME_PORT_NUMBER]:8080 study_buddy`
+
+## Getting Started For Developers
 
 ### Prerequisites
 
