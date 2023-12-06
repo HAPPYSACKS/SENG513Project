@@ -70,7 +70,7 @@ export default {
           this.password
         );
         console.log("Account created for:", userCredential.user);
-        this.$router.push("Home");
+        this.$router.push("Login");
       } catch (error) {
         console.error("Error creating account:", error);
         if (error.code === "auth/email-already-in-use") {
