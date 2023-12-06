@@ -125,6 +125,7 @@ import TimerWidget from "./widgets/TimerWidget.vue";
 import MusicWidget from "./widgets/MusicWidget.vue";
 import ChatWidget from "./widgets/ChatWidget.vue";
 import YoutubeWidget from "./widgets/YoutubeWidget.vue";
+import RoomMemberWidget from "./widgets/RoomMemberWidget.vue"
 export default {
   name: "FullWidget",
   data() {
@@ -186,7 +187,7 @@ export default {
       let toReturn = "";
       switch (id) {
         case "RoomMemberWidget":
-          toReturn = WidgetDefault;
+          toReturn = RoomMemberWidget;
           break;
         case "ChatWidget":
           toReturn = ChatWidget;

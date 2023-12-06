@@ -156,6 +156,12 @@ function createWidget(data) {
             me: user
         }
     }
+    //handle widgets needing network data
+    else if(newData.name == 'Room-Member') {
+        newData.data = {
+            members: networkData.members,
+        }
+    }
     const wids2 = structuredClone(wids);
     wids2.push(newData);
     widgets.value.splice(0, wids.length, ...wids2); 

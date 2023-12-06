@@ -96,9 +96,9 @@ export default {
     }
 
     .soundControl{
-        width: 95%;
-        height: 80%;
-        margin:10px auto;
+        width: 300px;
+        height: 300px;
+        margin-top:10px;
         overflow: hidden;
         display: flex;
         flex-direction: column;

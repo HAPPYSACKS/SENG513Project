@@ -150,4 +150,20 @@ input {
 .message.right {
   margin-left: auto;
 }
+
+/* Style the scrollbar */
+.messages::-webkit-scrollbar {
+  width: 9px; 
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background-color: #121212;
+  border-radius: 5px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
 </style>
