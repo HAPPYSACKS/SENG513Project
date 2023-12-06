@@ -56,6 +56,11 @@
               $emit('message', msg);
             }
           "
+          @other="
+            (code, data) => {
+                $emit('other', code, data)
+            }
+          "
         ></component>
       </div>
 
@@ -155,7 +160,7 @@ export default {
         "DrawWidget",
         'SettingsWidget',
       ],
-      compactWidgets: ["Default"],
+      compactWidgets: [],
     };
   },
   props: {
@@ -170,7 +175,7 @@ export default {
     InviteWidget,
     ChatWidget,
   },
-  emits: ["delete", "update", "message"],
+  emits: ["delete", "update", "message", "other"],
   methods: {
     minimize() {
       this.displayed = !this.displayed;

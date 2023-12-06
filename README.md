@@ -6,6 +6,8 @@ This project is built with Vue.js for the frontend and Java Spring for the backe
 
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
+- [Getting Started For Developers](#getting-started-for-developers)
+  - [Prerequisites for Devs](#prerequisites-for-devs)
   - [Installation](#installation)
 - [Running the Frontend](#running-the-frontend)
 - [Running the Backend](#running-the-backend)
@@ -15,6 +17,17 @@ This project is built with Vue.js for the frontend and Java Spring for the backe
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
+
+- [Docker](https://www.docker.com): You will need docker.
+
+1. Clone the repository: `git clone https://github.com/HAPPYSACKS/SENG513Project.git`
+2. Goto the root directory of the project (at the `SENG513Project` directory)
+3. `docker build -t study_buddy -f frontend/Dockerfile .`
+4. `docker run -p [SOME_PORT_NUMBER]:8080 study_buddy`
+
+## Getting Started For Developers
+
+### Prerequisites for Devs
 
 Before you begin, ensure you have the following tools installed and running:
 

@@ -70,6 +70,12 @@ p{
   overflow-y: scroll;
 }
 
+.list-item {
+  padding: 0.3rem 1rem;
+  margin: 5px;
+  background-color: #e7e7e7;
+  border-radius: 5px;
+}
 /* Style the scrollbar */
 .container::-webkit-scrollbar {
   width: 9px; 

@@ -32,7 +32,8 @@
           :widData="wid"
           @delete="(id) => deleteDirector(id)"
           @update="(id, data) => updateDirector(id, data)"
-          @message="(msg)=>messageNetwork(msg)"/>
+          @message="(msg)=>messageNetwork(msg)"
+          @other="(code, data)=>otherHandler(code, data)"/>
         <div class="item leaveRoom">
           <i class="fa-solid fa-door-open fa-xl" @click="Leave()"></i>
         </div>
@@ -89,7 +90,11 @@ const networkData = { //room tracker for data persistent from an individual widg
     isHost: route.query.isHost === 'true', //TODO: change to data passed by prev route //Wether or not this client is host
     sharedCounter: 1, //for host - counts unique ids for 
     dataConnections: [], //for host - stores all connections
-    dataStatuses: {} //for host - stores data used in establishing/de-establishing connections cleanly
+    dataStatuses: {}, //for host - stores data used in establishing/de-establishing connections cleanly
+    settings: {
+        newUsers: true,
+        userWidgets: true
+    }
 }
 
 async function getAuthToken() {
@@ -183,6 +188,11 @@ function updateWidget(id, data) {
     widgets.value[index] = newWid;
 }
 
+function otherHandler(code, data) {
+    if(code == 'S') {
+        Object.assign(networkData.settings, data);
+    }
+}
 
 // change bacgkround handler
 function toggleChangeBG(){
@@ -203,7 +213,11 @@ function handleNetwork(dataConnection) {
             if(Object.keys(data).includes('NETWORKCODE')) {
                 respondHostNetworkProtocol(data.NETWORKCODE, data.data, dataConnection);
             } else {
-                receiveUpdateHost(data);
+                if(!networkData.settings.userWidgets && data.code != 'U') {
+                    dataConnection.send({NETWORKCODE: 'U', data: {alert: 'Host has blocked this action. Sorry!'}})
+                } else {
+                    receiveUpdateHost(data);
+                }
             }
         });
         dataConnection.on('close', ()=>{
@@ -248,45 +262,43 @@ function handleNetwork(dataConnection) {
 
 function respondHostNetworkProtocol(code, data, dataConnection) {
     if(code == 'C') {
-        const user = data.user;
-        const mem = isProxy(networkData.members.value) ? toRaw(networkData.members.value) : networkData.members.value;
-        const mem2 = structuredClone(mem);
-        mem2.push(user);
-        networkData.members.value.splice(0, mem.length, ...mem2);
-
-        networkData.dataStatuses[dataConnection] = {username: user}
-        
-        const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
-        const wids2 = wids.filter((wid) => {
-            return wid.isGroup;
-        }).map((wid) => {
-            const wid2 = structuredClone(wid);
-            delete wid2.id;
-            return wid2;
-        });
-
-        const networkPayload = {
-            NETWORKCODE: 'U',
-            data: {
-                users: mem2,
-                alert: `${user} connected!`
+        if(networkData.settings.newUsers) {
+            const user = data.user;
+            const mem = isProxy(networkData.members.value) ? toRaw(networkData.members.value) : networkData.members.value;
+            const mem2 = structuredClone(mem);
+            mem2.push(user);
+            networkData.members.value.splice(0, mem.length, ...mem2);
+            networkData.dataStatuses[dataConnection] = {username: user}
+            const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
+            const wids2 = wids.filter((wid) => {
+                return wid.isGroup;
+            }).map((wid) => {
+                const wid2 = structuredClone(wid);
+                delete wid2.id;
+                return wid2;
+            });
+            const networkPayload = {
+                NETWORKCODE: 'U',
+                data: {
+                    users: mem2,
+                    alert: `${user} connected!`
+                }
             }
-        }
-        
-        const networkPayloadAlt = {
-            NETWORKCODE: 'U',
-            data: {
-                users: mem2,
-                messages: structuredClone(networkData.messages.value),
-                sharedWids: wids2
+            const networkPayloadAlt = {
+                NETWORKCODE: 'U',
+                data: {
+                    users: mem2,
+                    messages: structuredClone(networkData.messages.value),
+                    sharedWids: wids2
+                }
             }
+            for(const conn of networkData.dataConnections) {
+                if(conn === dataConnection) conn.send(networkPayloadAlt);
+                else conn.send(networkPayload);
+            }
+        } else {
+            dataConnection.send({NETWORKCODE: 'REJ'});
         }
-
-        for(const conn of networkData.dataConnections) {
-            if(conn === dataConnection) conn.send(networkPayloadAlt);
-            else conn.send(networkPayload);
-        }
-
         startAlert(`${user} connected!`, 5);
     } else if(code == 'U') {
         respondClientNetworkProtocol(code, data);
@@ -302,22 +314,24 @@ function respondHostNetworkProtocol(code, data, dataConnection) {
 }
 
 function respondClientNetworkProtocol(code, data) {
-    const innerData = code == 'U' ? data : {};
-    const keys = Object.keys(innerData); 
-    if(keys.includes('users')) {
-        networkData.members.value.splice(0, networkData.members.value.length, ...innerData.users);
-        console.log(toRaw(networkData.members.value))
-    }
-    if(keys.includes('messages')) {
-        networkData.messages.value.splice(0, networkData.messages.value.length, ...innerData.messages);
-        console.log(toRaw(networkData.messages.value))
-    }
-    if(keys.includes('alert')) {
-        startAlert(innerData.alert, 5)
-    }
-    if(keys.includes('sharedWids')) {
-        for(const wid of innerData.sharedWids) {
-            createWidget(wid);
+    if(code == 'REJ') {
+        networkData.thisConnection.close();
+    } else {
+        const innerData = code == 'U' ? data : {};
+        const keys = Object.keys(innerData); 
+        if(keys.includes('users')) {
+            networkData.members.value.splice(0, networkData.members.value.length, ...innerData.users);
+        }
+        if(keys.includes('messages')) {
+            networkData.messages.value.splice(0, networkData.messages.value.length, ...innerData.messages);
+        }
+        if(keys.includes('alert')) {
+            startAlert(innerData.alert, 5)
+        }
+        if(keys.includes('sharedWids')) {
+            for(const wid of innerData.sharedWids) {
+                createWidget(wid);
+            }
         }
     }
 }

@@ -136,7 +136,7 @@ export const getUserProfile = functions.https.onCall(async (data, context) => {
       );
     }
 
-    return userProfile;
+  return userProfile;
   } catch (error) {
     console.error("Error fetching user profile:", error);
     throw new functions.https.HttpsError(
