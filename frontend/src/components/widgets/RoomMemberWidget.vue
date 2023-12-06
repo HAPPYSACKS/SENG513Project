@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p>{{this.data.members}}</p>
+    <p>{{data.members}}</p>
   </div>
 </template>
 
