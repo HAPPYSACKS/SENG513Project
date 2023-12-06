@@ -12,7 +12,7 @@
         <span :class="{ 'toggle-active': isCheckedNewUsers }">Yes</span>
         <span :class="{ 'toggle-inactive': !isCheckedNewUsers }">No</span>
       </label>
-      <h1>Allow users to create widgets?</h1>
+      <h1>Allow users to create/remove widgets?</h1>
       <label for="userWidgetsToggleSwitch" class="userWidgetsToggle-label">
             <input
             type="checkbox"
@@ -24,12 +24,13 @@
         <span :class="{ 'toggle-active': isCheckedUserWidgets }">Yes</span>
         <span :class="{ 'toggle-inactive': !isCheckedUserWidgets }">No</span>
       </label>
+      <!--
       <h1>Change color theme?</h1>
       <div class="color-theme-palette">
         <button class="color-button" v-for="(color, index) in colorThemes" :key="index" @click="changeColorTheme(color)">
             <div class="color-circle" :style="{ backgroundColor: color }"></div>
         </button>
-        </div>
+        </div>-->
     </div>
   </template>
   
@@ -38,16 +39,19 @@
     data() {
       return {
         isCheckedNewUsers: true,
-        isCheckedUserWidgets: false,
+        isCheckedUserWidgets: true,
         colorThemes: ["#FFFFFF", "#373636", "#FEE6A8", "#A8C0FC", "#FEA7C6", "#05B89E", "#A637CD"],
       };
     },
+    emits: ['other'],
     methods: {
       newUsersToggleSwitch() {
-        console.log('Switch newUsersToggled. Current state:', this.isCheckedNewUsers);
+        //console.log('Switch newUsersToggled. Current state:', this.isCheckedNewUsers);
+        this.$emit('other', 'S', {newUsers: this.isCheckedNewUsers, userWidgets: this.isCheckedUserWidgets})
       },
       userWidgetsToggleSwitch() {
-        console.log('Switch userWidgetsToggled. Current state:', this.isCheckedUserWidgets);
+        //console.log('Switch userWidgetsToggled. Current state:', this.isCheckedUserWidgets);
+        this.$emit('other', 'S', {newUsers: this.isCheckedNewUsers, userWidgets: this.isCheckedUserWidgets})
       },
       changeColorTheme(color) {
         console.log('Change color theme to:', color);
