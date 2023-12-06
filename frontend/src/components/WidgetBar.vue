@@ -84,41 +84,28 @@
                 id="Sticky-Notes"
               ></i>
             </div>
-          </div>
-          <div class="right" v-if="isHost">
-            <div class="divider"></div>
             <div class="item">
-              <i class="fa-regular fa-image fa-xl icon"></i>
-            </div>
-            <div class="item">
-              <i
-                class="fa-solid fa-envelope fa-xl icon"
-                @click="showPopup('Invite')"
-                id="Invite"
+              <i class="fa-regular fa-image fa-xl icon"
+                @click="showPopup('ChangeBG')"
               ></i>
-            </div>
-            <div class="item">
-              <i class="fa-solid fa-gear fa-xl icon"></i>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="right">
+      <div class="right" v-if="isHost">
         <div class="divider"></div>
         <div class="item">
-          <img
-            @click="showPopup('ChangeBG')"
-            src="@/assets/icons/changeBackground.png"
-            alt="Change Background"
-          />
+          <i
+            class="fa-solid fa-envelope fa-xl icon"
+            @click="showPopup('Invite')"
+            id="Invite"
+          ></i>
         </div>
         <div class="item">
-          <img 
+          <i class="fa-solid fa-gear fa-xl icon"
             @click="showPopup('Settings')"
-            src="@/assets/icons/settings.png" 
-            alt="Settings" 
-          />
+          ></i>
         </div>
       </div>
     </div>
