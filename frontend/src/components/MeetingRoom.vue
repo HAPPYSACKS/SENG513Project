@@ -1,30 +1,19 @@
 <template>
     <div>
-      <div class="video-container">
-          <div class="video-foreground">
-            <iframe
-              frameborder="0"
-              allowfullscreen
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              :src="videoSrc"
-              :title="videoTtl"
-              width="100%"
-              height="100%"
-            ></iframe>
-          </div>
-        </div>
-
       <LoadingScreen Msg="Connecting" v-if="!ready" />
       <div v-else>
-        <div class="roomid">
-          <NotificationCard
-            v-for="a in alerts"
-            :key="a.id"
-            @destroy="endAlert"
-            :Msg="a.msg"
-            :Timeout="a.timeout"
-            :Self="a.id"
-          />
+        <div class="video-container">
+            <div class="video-foreground">
+                <iframe
+                frameborder="0"
+                allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                :src="videoSrc"
+                :title="videoTtl"
+                width="100%"
+                height="100%"
+                ></iframe>
+            </div>
         </div>
         <FullWidget
           v-for="wid in widgets"
@@ -45,6 +34,16 @@
         />
 
         <ChangeBackground  @onChangeBG="handleChangeBG" v-show="changeBackgroundShow" />
+        <div class="roomid">
+          <NotificationCard
+            v-for="a in alerts"
+            :key="a.id"
+            @destroy="endAlert"
+            :Msg="a.msg"
+            :Timeout="a.timeout"
+            :Self="a.id"
+          />
+        </div>
       </div>
     </div>
 </template>
@@ -168,6 +167,8 @@ function createWidget(data) {
             me: user,
             isHost: networkData.isHost,
         }
+    } else if(newData.name == 'Settings') {
+        newData.data = networkData.settings;
     }
     const wids2 = CloneForWidgets(wids);
     wids2.push(newData);
@@ -191,6 +192,9 @@ function updateWidget(id, data) {
 function otherHandler(code, data) {
     if(code == 'S') {
         Object.assign(networkData.settings, data);
+    } else if(code == "K") {
+        const toKick = Object.keys(networkData.dataStatuses).find((conn)=>{networkData.dataStatuses[conn].username == data.member});
+        toKick.close();
     }
 }
 
@@ -223,9 +227,12 @@ function handleNetwork(dataConnection) {
         dataConnection.on('close', ()=>{
             networkData.dataConnections = networkData.dataConnections.filter((con) => {return con !== dataConnection})
             const mem = isProxy(networkData.members.value) ? toRaw(networkData.members.value) : networkData.members.value;
-            const mem2 = structuredClone(mem).filter(u=>{return u != networkData.dataStatuses[dataConnection].user});
+            const mem2 = structuredClone(mem).filter(u=>{return u != networkData.dataStatuses[dataConnection].username});
             networkData.members.value.splice(0, mem.length, ...mem2);
             delete networkData.dataStatuses[dataConnection];
+            console.log((networkData.dataConnections));
+            console.log(toRaw(networkData.members.value));
+            console.log(networkData.dataStatuses);
         })
     }
     else {
@@ -263,12 +270,15 @@ function handleNetwork(dataConnection) {
 function respondHostNetworkProtocol(code, data, dataConnection) {
     if(code == 'C') {
         if(networkData.settings.newUsers) {
-            const user = data.user;
+            const newUser = data.user;
             const mem = isProxy(networkData.members.value) ? toRaw(networkData.members.value) : networkData.members.value;
             const mem2 = structuredClone(mem);
-            mem2.push(user);
+            mem2.push(newUser);
             networkData.members.value.splice(0, mem.length, ...mem2);
-            networkData.dataStatuses[dataConnection] = {username: user}
+            networkData.dataStatuses[dataConnection] = {username: newUser}
+            console.log((networkData.dataConnections));
+            console.log(toRaw(networkData.members));
+            console.log(toRaw(networkData.dataStatuses));
             const wids = isProxy(widgets.value) ? toRaw(widgets.value) : widgets.value;
             const wids2 = wids.filter((wid) => {
                 return wid.isGroup;
@@ -281,7 +291,7 @@ function respondHostNetworkProtocol(code, data, dataConnection) {
                 NETWORKCODE: 'U',
                 data: {
                     users: mem2,
-                    alert: `${user} connected!`
+                    alert: `${newUser} connected!`
                 }
             }
             const networkPayloadAlt = {
@@ -296,10 +306,10 @@ function respondHostNetworkProtocol(code, data, dataConnection) {
                 if(conn === dataConnection) conn.send(networkPayloadAlt);
                 else conn.send(networkPayload);
             }
+            startAlert(`${newUser} connected!`, 5);
         } else {
             dataConnection.send({NETWORKCODE: 'REJ'});
         }
-        startAlert(`${user} connected!`, 5);
     } else if(code == 'U') {
         respondClientNetworkProtocol(code, data);
         for(const conn of networkData.dataConnections.filter((c)=>{return c!== dataConnection})) {

@@ -38,10 +38,13 @@
   export default {
     data() {
       return {
-        isCheckedNewUsers: true,
-        isCheckedUserWidgets: true,
+        isCheckedNewUsers: this.data.newUsers,
+        isCheckedUserWidgets: this.data.userWidgets,
         colorThemes: ["#FFFFFF", "#373636", "#FEE6A8", "#A8C0FC", "#FEA7C6", "#05B89E", "#A637CD"],
       };
+    },
+    props: {
+      data: Object
     },
     emits: ['other'],
     methods: {

@@ -40,6 +40,13 @@
               id="Sound"
             ></i>
           </div>
+          <div class="item">
+            <i
+              class="fa-solid fa-envelope fa-xl icon"
+              @click="showPopup('Invite')"
+              id="Invite"
+            ></i>
+          </div>
           <div
             v-show="!iconsActive"
             @click="toggleMoreWidgets"
@@ -77,32 +84,18 @@
                 id="Sticky-Notes"
               ></i>
             </div>
-            <div class="item">
-              <i class="fa-regular fa-image fa-xl icon"
-                @click="showPopup('ChangeBG')"
-              ></i>
-            </div>
           </div>
-          <div class="item">
-          <i
-            class="fa-solid fa-envelope fa-xl icon"
-            @click="showPopup('Invite')"
-            id="Invite"
-          ></i>
-        </div>
         </div>
       </div>
 
-      <div class="right" v-if="isHost">
+      <div class="right">
         <div class="divider"></div>
         <div class="item">
-          <img
+          <i class="fa-solid fa-fill-drip fa-xl icon"
             @click="showPopup('ChangeBG')"
-            src="@/assets/icons/changeBackground.png"
-            alt="Change Background"
-          />
+          ></i>
         </div>
-        <div class="item">
+        <div class="item" v-if="isHost">
           <i class="fa-solid fa-gear fa-xl icon"
             @click="showPopup('Settings')"
           ></i>
