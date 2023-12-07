@@ -112,3 +112,9 @@ dist/
 # Serverless directories
 .serverless/
 backend/functions/study-buddy-51a85-d6a815364a38.json
+.DS_Store
+backend/.DS_Store
+backend/functions/.DS_Store
+backend/functions/lib/.DS_Store
+backend/functions/src/.DS_Store
+backend/functions/key.json
